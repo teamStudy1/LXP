@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key ="user.findById">
+        SELECT
+            user_id,
+            name,
+            password,
+            nickname,
+            active_status,
+            created_at,
+            updated_at
+        FROM user
+        WHERE user_id=?
+    </query>
+
+</properties>
