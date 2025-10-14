@@ -2,10 +2,8 @@ package com.lxp.util;
 
 public enum QueryType {
 
-
     // user_queries.xml
     USER_FIND_BY_ID("user.findById");
-
 
     private final String key;
 
@@ -16,5 +14,4 @@ public enum QueryType {
     public String getQuery() {
         return QueryUtil.getQuery(this.key);
     }
-
 }

@@ -1,17 +1,17 @@
 package com.lxp.util;
 
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 public class QueryUtil {
     private static final Map<String, String> queries = new HashMap<>();
+
     static {
         loadQueries("queries/category_queries.xml");
         loadQueries("queries/course_queries.xml");
@@ -20,9 +20,8 @@ public class QueryUtil {
     }
 
     private static void loadQueries(String xmlPath) {
-        try{
-            InputStream inputStream = QueryUtil.class.getClassLoader()
-                    .getResourceAsStream(xmlPath);
+        try {
+            InputStream inputStream = QueryUtil.class.getClassLoader().getResourceAsStream(xmlPath);
             if (inputStream == null) {
                 throw new RuntimeException("not found: " + xmlPath);
             }
@@ -34,7 +33,7 @@ public class QueryUtil {
             doc.getDocumentElement().normalize();
 
             NodeList nodeList = doc.getElementsByTagName("query");
-            for(int i = 0; i < nodeList.getLength(); i++){
+            for (int i = 0; i < nodeList.getLength(); i++) {
                 Element queryElement = (Element) nodeList.item(i);
 
                 String key = queryElement.getAttribute("key");
@@ -42,12 +41,12 @@ public class QueryUtil {
 
                 queries.put(key, sql);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("error loading queries.xml");
         }
     }
 
-    public static String getQuery(String key){
+    public static String getQuery(String key) {
         String query = queries.get(key);
         if (query == null) {
             throw new RuntimeException("Query not found: " + key);

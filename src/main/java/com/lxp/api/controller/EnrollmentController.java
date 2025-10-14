@@ -3,7 +3,7 @@ package com.lxp.api.controller;
 import com.lxp.service.EnrollmentService;
 
 public class EnrollmentController {
-    final private EnrollmentService enrollmentService;
+    private final EnrollmentService enrollmentService;
 
     public EnrollmentController(EnrollmentService enrollmentService) {
         this.enrollmentService = enrollmentService;

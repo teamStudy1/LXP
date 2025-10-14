@@ -4,7 +4,6 @@ import com.lxp.config.ApplicationContext;
 import com.lxp.config.DatabaseInitializer;
 import com.lxp.util.CLIRouter;
 
-
 public class Main {
     public static void main(String[] args) {
         DatabaseInitializer.initialize();
