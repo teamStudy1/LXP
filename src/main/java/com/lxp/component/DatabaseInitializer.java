@@ -1,5 +1,6 @@
-package com.lxp.config;
+package com.lxp.component;
 
+import com.lxp.config.JDBCConnection;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;

@@ -10,6 +10,6 @@ public class EnrollmentController {
     }
 
     public void enroll(Long studentId, Long courseId) {
-        enrollmentService.saveEnroll(studentId, courseId);
+        // enrollmentService.saveEnroll(studentId, courseId);
     }
 }
