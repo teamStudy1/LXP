@@ -8,10 +8,25 @@
             password,
             nickname,
             active_status,
+            role,
             created_at,
             updated_at
         FROM user
         WHERE user_id=?
+    </query>
+
+    <query key ="user.findByName">
+        SELECT
+        user_id,
+        name,
+        password,
+        nickname,
+        active_status,
+        role,
+        created_at,
+        updated_at
+        FROM user
+        WHERE name=?
     </query>
 
 </properties>
