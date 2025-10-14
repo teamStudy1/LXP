@@ -1,14 +1,13 @@
 package com.lxp.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseInitializer {
     private static final Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
@@ -17,11 +16,9 @@ public class DatabaseInitializer {
         try {
             log.info("=== Database Initialization Started ===");
 
-
             executeSqlFile("/init/schema.sql");
 
             executeSqlFile("/init/data.sql");
-
 
             log.info("=== Database Initialization Completed ===");
 
@@ -35,7 +32,7 @@ public class DatabaseInitializer {
         String sql = readSqlFile(filePath);
 
         try (Connection conn = JDBCConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
 
             String[] statements = sql.split(";");
             for (String statement : statements) {
@@ -54,10 +51,10 @@ public class DatabaseInitializer {
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-            return reader.lines()
+            return reader
+                    .lines()
                     .filter(line -> !line.trim().startsWith("--")) // 주석 제거
                     .collect(Collectors.joining("\n"));
         }
     }
 }
-

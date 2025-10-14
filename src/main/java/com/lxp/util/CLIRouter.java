@@ -1,7 +1,6 @@
 package com.lxp.util;
 
 import com.lxp.api.controller.EnrollmentController;
-
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -52,7 +51,6 @@ public class CLIRouter {
         }
         return true;
     }
-
 
     private void handleEnrollment() throws SQLException {
         System.out.print("학생 ID: ");

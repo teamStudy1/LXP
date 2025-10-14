@@ -14,8 +14,7 @@ public class ApplicationContext {
     }
 
     private static class EnrollmentServiceHolder {
-        private static final EnrollmentService INSTANCE =
-                new EnrollmentService(getEnrollmentDao());
+        private static final EnrollmentService INSTANCE = new EnrollmentService(getEnrollmentDao());
     }
 
     private static class EnrollmentControllerHolder {
@@ -27,7 +26,6 @@ public class ApplicationContext {
         return EnrollmentDaoHolder.INSTANCE;
     }
 
-
     public static EnrollmentService getEnrollmentService() {
         return EnrollmentServiceHolder.INSTANCE;
     }
@@ -37,13 +35,10 @@ public class ApplicationContext {
     }
 
     private static class RouterHolder {
-        private static final CLIRouter INSTANCE = new CLIRouter(
-                getEnrollmentController()
-        );
+        private static final CLIRouter INSTANCE = new CLIRouter(getEnrollmentController());
     }
 
     public static CLIRouter getRouter() {
         return RouterHolder.INSTANCE;
     }
 }
-

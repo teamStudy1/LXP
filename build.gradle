@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'org.example'
@@ -7,6 +8,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
@@ -16,6 +18,28 @@ dependencies {
     implementation('com.mysql:mysql-connector-j:8.3.0')
     implementation("org.slf4j:slf4j-simple:2.0.16")
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
+}
+
+spotless {
+    java {
+        importOrder(
+                'java|javax|jakarta',
+                'org.springframework',
+                'lombok',
+                '',
+                'org.junit|org.mockito',
+                '\\#',
+                '\\#org.junit'
+        )
+
+        googleJavaFormat()
+        indentWithTabs(2)
+        indentWithSpaces(4)
+        formatAnnotations()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 test {

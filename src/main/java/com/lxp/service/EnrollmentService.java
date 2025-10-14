@@ -9,6 +9,5 @@ public class EnrollmentService {
         this.enrollmentDao = new EnrollmentDao();
     }
 
-    public void saveEnroll(Long studentId, Long courseId) {
-    }
+    public void saveEnroll(Long studentId, Long courseId) {}
 }
