@@ -1,6 +1,6 @@
 // Tag.java 파일의 최종 내용
 
-package com.lxp.config.course; // 👈 1. 파일의 실제 경로에 맞는 패키지 선언
+package com.lxp.domain.course; // 👈 1. 파일의 실제 경로에 맞는 패키지 선언
 
 import java.util.Objects;
 

@@ -1,5 +1,5 @@
 // domain/course/Section.java
-package com.lxp.config.course;
+package com.lxp.domain.course;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,8 +52,6 @@ public class Section {
 
         lec1.changeOrder(order2); // Lecture는 자신의 값만 변경
         lec2.changeOrder(order1); // Section은 전체 순서 변경 로직을 책임
-
-        // (필수) DB 업데이트를 위해 Section의 변경 사항을 Course AR에 알려야 합니다.
     }
 
     //  2. 특정 위치에 강의 삽입 (추가 생성 시 몇 번째에 넣을지)

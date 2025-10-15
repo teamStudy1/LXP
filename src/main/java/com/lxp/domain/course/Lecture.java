@@ -1,5 +1,5 @@
 // domain/course/Lecture.java
-package com.lxp.config.course;
+package com.lxp.domain.course;
 
 public class Lecture {
     private final Long id;          // 고유 식별자 (불변)
