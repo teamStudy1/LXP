@@ -1,10 +1,12 @@
 package com.lxp.infrastructure.dao;
 
-import com.lxp.domain.user.ActiveStatus;
+import com.lxp.config.TransactionManager;
 import com.lxp.domain.user.User;
-import com.lxp.domain.user.UserRole;
+import com.lxp.domain.user.enums.ActiveStatus;
+import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.row.UserRow;
-import com.lxp.util.QueryUtil;
+import com.lxp.util.QueryType;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ public class UserDao {
     }
 
     public Optional<UserRow> findById(Long id) throws SQLException {
-        String sql = QueryUtil.getQuery("user.findById");
+        String sql = QueryType.USER_FIND_BY_ID.getQuery();
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setLong(1, id);
             ResultSet re = pstmt.executeQuery();
@@ -41,7 +43,7 @@ public class UserDao {
     }
 
     public Optional<UserRow> findByName(String name) throws SQLException {
-        String sql = QueryUtil.getQuery("user.findByName");
+        String sql = QueryType.USER_FIND_BY_NAME.getQuery();
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, name);
