@@ -1,31 +1,35 @@
 package com.lxp.domain.course;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 //엔티티
 public class Course {
-    private long id;
-    private String title; //강의 제목
-    private long instructorId;
+    private final Long id;
+    private String title;
+    private String instructor;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    private CourseDetail detail; //강의 상세 설명
-    private Set<Tag> tags = new HashSet<>(); //  태그 중복 x 위해
-    private List<Section> sections = new ArrayList<>(); // 강의 섹션들 순서가 중요
+    private CourseDetail detail;
+    private final Set<Tag> tags = new HashSet<>();
+    private final List<Section> sections = new ArrayList<>();
 
 
-    public Course(String title, long instructorId) {
+    public Course(String title, String instructor) {
+        this.id = null;
         this.title = title;
-        this.instructorId = instructorId;
+        this.instructor = instructor;
+        this.createdAt = null;
+        this.updatedAt = null;
     }
 
-    // 여러 개 태그 한번에 추가
-    public void addTags(List<Tag> tagList) {
-        this.tags.addAll(tagList);
-    }
-
-    // 여러 개 태그 한번에 제거
-    public void removeTags(List<Tag> tagList) {
-        this.tags.removeAll(tagList);
+    public Course(Long id, String title, String instructor, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.title = title;
+        this.instructor = instructor;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void rename(String newTitle) {
@@ -34,6 +38,14 @@ public class Course {
 
     public void changeDetail(CourseDetail newDetail) {
         this.detail = newDetail;
+    }
+
+    public void addTags(Collection<Tag> tagToAdd) {
+        this.tags.addAll(tagToAdd);
+    }
+
+    public void removeTags(Collection<Tag> tagToRemove) {
+        this.tags.removeAll(tagToRemove);
     }
 
     public void addSection(Section section) {
@@ -45,27 +57,28 @@ public class Course {
         section.setCourse(null);
     }
 
-    public int getTotalSeconds() {
-        return this.sections.stream() // section 리스트를 stream으로 바꿈
-                .mapToInt(Section::calculateSectionDuration) //각 section 객체에 총 재생시간 계산하라 요청
-                .sum(); // 그걸 더함
+    public void clearTags() {
+        this.tags.clear();
     }
 
-
-    public long getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public long getInstructorId() {
-        return instructorId;
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public CourseDetail getCourseDetail() {
@@ -74,7 +87,6 @@ public class Course {
 
     /**
      * 외부에서 sections 리스트를 맘대로 못바꾸게
-     * @return
      */
     public List<Section> getSections() {
         return Collections.unmodifiableList(sections);

@@ -1,36 +1,37 @@
 package com.lxp.domain.course;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 //엔티티
 public class Tag {
-    private long id;
-    private String name;
+    private final Long id;
+    private final String name;
+    private LocalDateTime createdAt;
 
-    /**
-     * 이름만으로 새로운 태그 만들 때 사용
-     * @param name
-     */
     public Tag(String name) {
+        this.id = null;
         this.name = name;
+        this.createdAt = null;
     }
 
-    /**
-     * 태그의 이름을 바꿀 때 사용
-     */
-    public void rename(String newName) {
-        this.name = newName;
+    public Tag(Long id, String name, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.createdAt = createdAt;
     }
 
     // 데이터 읽고, 쓰기 위한 기본 기능들
-    public long getId() {
+    public Long getId() {
         return id;
     }
-
 
     public String getName() {
         return name;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
     /**
      * '이름'이 같으면 같은 태그로 취급하기 위한 규칙입니다.
      */
