@@ -4,22 +4,26 @@ package com.lxp.domain.course;
 public class Lecture {
     private long id;
     private String name;
-    private long seconds;
+    private int seconds; //이 강의가 몇 초짜리 인지 길이 저장하는 변수(초 단위)
 
 
-    public Lecture() {
-    }
-
-    public Lecture(String name, long seconds) {
+    public Lecture(String name, int seconds) {
         this.name = name;
         this.seconds = seconds;
     }
 
+    /**
+     * 이름을 변경하는 기능
+     * @param newName
+     */
     public void rename(String newName) {
         this.name = newName;
     }
 
-    public void changeDuration(long newSeconds) {
+    /**
+     * 재생 시간을 변경하는 기능
+     */
+    public void changeDuration(int newSeconds) {
         this.seconds = newSeconds;
     }
 
@@ -36,7 +40,7 @@ public class Lecture {
         return name;
     }
 
-    public long getSeconds() {
+    public int getSeconds() {
         return seconds;
     }
 }
