@@ -29,11 +29,15 @@ public class Lecture {
 
     // [강의 수정 기능]: 순서 변경
     public void changeOrder(int newOrder) {
+
         this.lectureOrder = newOrder;
     }
 
     // 필수 Getter
     public Long getId() { return id; }
     public int getDuration() { return duration; }
+    public int getLectureOrder() {
+        return lectureOrder;
+    }
     // ... (나머지 Getter 생략)
 }
