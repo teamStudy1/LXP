@@ -25,6 +25,8 @@ public class EnrollmentService {
             //            User user = userDao.existById();
             //            Course course = courseDao.existById();
 
+            TransactionManager.commit();
+
         } catch (Exception e) {
             TransactionManager.rollback();
             throw new RuntimeException("Enrollment failed", e);
