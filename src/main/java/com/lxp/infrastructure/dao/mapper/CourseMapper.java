@@ -5,7 +5,7 @@ import com.lxp.domain.course.CourseDetail;
 
 public class CourseMapper {
 
-    public Course rowToEntity(CorseRow row) {
+    public Course rowToEntity(CourseRow row) {
         Course course = new Course();
     }
 }
