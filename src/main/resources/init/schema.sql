@@ -1,3 +1,7 @@
+
+
+
+
 drop table if exists course_tag;
 drop table if exists tag;
 drop table if exists enrollment;
@@ -101,6 +105,7 @@ CREATE TABLE IF NOT EXISTS Tag (
 CREATE TABLE IF NOT EXISTS Enrollment (
                             user_id BIGINT NOT NULL,
                             course_id BIGINT NOT NULL,
+                            enrollment_status ENUM('ACTIVE', 'DEACTIVE') NOT NULL DEFAULT 'ACTIVE',
                             enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                             PRIMARY KEY (user_id, course_id),

@@ -8,4 +8,6 @@ public class EnrollmentDao {
     public Enrollment findById(Long id) throws SQLException {
         return null;
     }
+
+    public void save() {}
 }
