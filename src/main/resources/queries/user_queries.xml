@@ -4,9 +4,9 @@
     <query key ="user.findById">
         SELECT
             user_id,
-            name,
+            email,
             password,
-            nickname,
+            name,
             active_status,
             role,
             created_at,
@@ -17,13 +17,13 @@
 
     <query key ="user.findByName">
         SELECT
-        user_id,
-        name,
-        password,
-        nickname,
-        active_status,
-        role,
-        created_at,
+            user_id,
+            email,
+            password,
+            name,
+            active_status,
+            role,
+            created_at,
         updated_at
         FROM user
         WHERE name=?

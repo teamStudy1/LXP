@@ -52,7 +52,11 @@ public class UserHandler {
     public void requestUserById() {
         System.out.print("조회할 사용자의 id를 입력해 주세요: ");
         long id = scanner.nextInt();
-        System.out.println(userController.getUserById(id));
+        try {
+            System.out.println(userController.getUserById(id));
+        } catch (Exception e) {
+            System.out.println("사용자 조회에 실패했습니다. " + e.getMessage() + "\n");
+        }
         scanner.nextLine();
     }
 

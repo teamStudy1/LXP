@@ -7,8 +7,8 @@ import com.lxp.domain.user.enums.UserRole;
 import java.sql.Timestamp;
 
 public record UserResponse(
+        String email,
         String name,
-        String nickname,
         ActiveStatus activeStatus,
         UserRole userRole,
         Timestamp createdAt,
@@ -16,8 +16,8 @@ public record UserResponse(
 ) {
     public static UserResponse from(User user) {
         return new UserResponse(
+                user.getEmail(),
                 user.getName(),
-                user.getNickname(),
                 user.getActiveStatus(),
                 user.getRole(),
                 user.getCreatedAt(),
@@ -28,8 +28,8 @@ public record UserResponse(
     @Override
     public String toString() {
         return "UserResponse{" +
-                "name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
+                "email='" + email + '\'' +
+                ", name='" + name + '\'' +
                 ", activeStatus=" + activeStatus +
                 ", userRole=" + userRole +
                 ", createdAt=" + createdAt +

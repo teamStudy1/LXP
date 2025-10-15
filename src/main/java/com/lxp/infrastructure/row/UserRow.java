@@ -6,9 +6,9 @@ import java.sql.Timestamp;
 
 public record UserRow(
         Long id,
-        String name,
+        String email,
         String password,
-        String nickname,
+        String name,
         ActiveStatus activeStatus,
         UserRole role,
         Timestamp createdAt,

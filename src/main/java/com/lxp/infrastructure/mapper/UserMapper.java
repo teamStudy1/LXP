@@ -7,9 +7,9 @@ public class UserMapper {
     public static User toUser(UserRow userRow) {
         return new User(
                 userRow.id(),
-                userRow.name(),
+                userRow.email(),
                 userRow.password(),
-                userRow.nickname(),
+                userRow.name(),
                 userRow.activeStatus(),
                 userRow.role(),
                 userRow.createdAt(),

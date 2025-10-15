@@ -12,7 +12,7 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User getUserById(Long id) throws SQLException {
+    public User getUserById(Long id) throws Exception {
         try {
             TransactionManager.beginTransaction();
             return userDao.findById(TransactionManager.getConnection(), id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));

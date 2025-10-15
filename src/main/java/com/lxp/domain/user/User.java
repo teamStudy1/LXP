@@ -6,9 +6,9 @@ import java.sql.Timestamp;
 
 public class User {
     private Long id;
-    private String name;
+    private String email;
     private String password;
-    private String nickname;
+    private String name;
     private ActiveStatus activeStatus;
     private UserRole role;
     private Timestamp createdAt;
@@ -16,28 +16,29 @@ public class User {
 
     public User(
             Long id,
-            String name,
+            String email,
             String password,
-            String nickname,
+            String name,
             ActiveStatus activeStatus,
             UserRole role,
             Timestamp createdAt,
             Timestamp updatedAt) {
         this.id = id;
+        this.email = email;
+        this.password = password;
         this.name = name;
-        this.nickname = nickname;
         this.activeStatus = activeStatus;
         this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
     public ActiveStatus getActiveStatus() {

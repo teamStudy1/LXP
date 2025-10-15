@@ -25,9 +25,9 @@ public class UserDao {
                 UserRow row =
                         new UserRow(
                                 re.getLong("user_id"),
-                                re.getString("name"),
+                                re.getString("email"),
                                 re.getString("password"),
-                                re.getString("nickname"),
+                                re.getString("name"),
                                 ActiveStatus.valueOf(re.getString("active_status")),
                                 UserRole.valueOf(re.getString("role")),
                                 re.getTimestamp("created_at"),
@@ -49,9 +49,9 @@ public class UserDao {
                 UserRow row =
                         new UserRow(
                                 re.getLong("user_id"),
-                                re.getString("name"),
+                                re.getString("email"),
                                 re.getString("password"),
-                                re.getString("nickname"),
+                                re.getString("name"),
                                 ActiveStatus.valueOf(re.getString("active_status")),
                                 UserRole.valueOf(re.getString("role")),
                                 re.getTimestamp("created_at"),
