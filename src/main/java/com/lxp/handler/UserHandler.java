@@ -32,6 +32,7 @@ public class UserHandler {
 
     private void printMenu() {
         System.out.println("1. 사용자 조회");
+        System.out.println("2. 사용자 권한 조회");
         System.out.println("0. 뒤로가기");
         System.out.print("선택: ");
     }
@@ -41,6 +42,8 @@ public class UserHandler {
             case "1":
                 requestUserById();
                 break;
+            case "2":
+                requestUserRoleById();
             case "0":
                 return false;
             default:
@@ -56,6 +59,17 @@ public class UserHandler {
             System.out.println(userController.getUserById(id));
         } catch (Exception e) {
             System.out.println("사용자 조회에 실패했습니다. " + e.getMessage() + "\n");
+        }
+        scanner.nextLine();
+    }
+
+    public void requestUserRoleById() {
+        System.out.print("조회할 사용자의 id를 입력해 주세요: ");
+        long id = scanner.nextInt();
+        try {
+            System.out.println(userController.getUserRoleById(id));
+        } catch (Exception e) {
+            System.out.println("사용자 권한 조회에 실패했습니다. " + e.getMessage() + "\n");
         }
         scanner.nextLine();
     }

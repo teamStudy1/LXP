@@ -61,4 +61,18 @@ public class UserDao {
         }
         return Optional.empty();
     }
+
+    public Optional<UserRole> findRoleById(Connection connection, Long id) throws SQLException {
+        String sql = QueryType.USER_FIND_ROLE_BY_ID.getQuery();
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, id);
+            ResultSet re = pstmt.executeQuery();
+
+            if (re.next()) {
+                UserRole role = UserRole.valueOf(re.getString("role"));
+                return Optional.of(role);
+            }
+        }
+        return Optional.empty();
+    }
 }

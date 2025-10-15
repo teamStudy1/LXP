@@ -2,6 +2,7 @@ package com.lxp.service;
 
 import com.lxp.config.TransactionManager;
 import com.lxp.domain.user.User;
+import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.dao.UserDao;
 import java.sql.SQLException;
 
@@ -27,6 +28,17 @@ public class UserService {
             return userDao
                     .findByName(TransactionManager.getConnection(), username)
                     .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
+        } finally {
+            TransactionManager.close();
+        }
+    }
+
+    public UserRole getUserRoleById(Long id) throws Exception {
+        getUserById(id);
+
+        try {
+            TransactionManager.beginTransaction();
+            return userDao.findRoleById(TransactionManager.getConnection(), id).orElseThrow(() -> new IllegalStateException("권한 조회에 실패했습니다."));
         } finally {
             TransactionManager.close();
         }
