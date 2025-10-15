@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//엔티티
 public class Section {
     private final Long id;
     private String name;
@@ -15,6 +16,7 @@ public class Section {
 
 
     public Section(String name) {
+        validateName(name);
         this.id = null;
         this.name = name;
         this.createdAt = null;
@@ -50,9 +52,15 @@ public class Section {
     }
 
     public void rename(String newName) {
+        validateName(newName);
         this.name = newName;
     }
 
+    private void validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("강의 이름은 비어있을 수 없습니다.");
+        }
+    }
 
     public Long getId() {
         return id;

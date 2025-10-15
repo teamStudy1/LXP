@@ -12,7 +12,7 @@ public class Course {
     private LocalDateTime updatedAt;
 
     private CourseDetail detail;
-    private final Set<Tag> tags = new HashSet<>();
+    private final Set<Tag> tags = new HashSet<>(); //NullPointerException 원천 차단.
     private final List<Section> sections = new ArrayList<>();
 
 
@@ -23,6 +23,7 @@ public class Course {
         this.createdAt = null;
         this.updatedAt = null;
     }
+
 
     public Course(Long id, String title, String instructor, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
@@ -37,10 +38,16 @@ public class Course {
     }
 
     public void changeDetail(CourseDetail newDetail) {
+        if (newDetail == null) {
+            throw new IllegalArgumentException("상세 설명은 null일 수 없습니다.");
+        }
         this.detail = newDetail;
     }
 
     public void addTags(Collection<Tag> tagToAdd) {
+        if (tagToAdd == null) {
+            throw new IllegalArgumentException("태그는 null일 수 없습니다.");
+        }
         this.tags.addAll(tagToAdd);
     }
 
@@ -49,8 +56,14 @@ public class Course {
     }
 
     public void addSection(Section section) {
-        this.sections.add(section);
-        section.setCourse(this);
+        if (section == null) {
+            throw new IllegalArgumentException("null인 섹션을 추가할 수 없습니다.");
+        }
+
+        if (!this.sections.contains(section)) {
+            this.sections.add(section);
+            section.setCourse(this);
+        }
     }
     public void removeSection(Section section) {
         this.sections.remove(section);
@@ -86,7 +99,7 @@ public class Course {
     }
 
     /**
-     * 외부에서 sections 리스트를 맘대로 못바꾸게
+     * 외부에서 sections 리스트를 맘대로 못바꿈
      */
     public List<Section> getSections() {
         return Collections.unmodifiableList(sections);

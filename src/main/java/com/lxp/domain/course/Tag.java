@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 //엔티티
 public class Tag {
-    private final Long id;
+    private final Long id;  //Long 타입이라 아직 DB에 저장 안된 상태(null) 표현 가능
     private final String name;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     public Tag(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("태그 이름은 비어있을 수 없습니다.");
+        }
         this.id = null;
         this.name = name;
         this.createdAt = null;
@@ -20,7 +23,7 @@ public class Tag {
         this.createdAt = createdAt;
     }
 
-    // 데이터 읽고, 쓰기 위한 기본 기능들
+
     public Long getId() {
         return id;
     }
@@ -33,7 +36,7 @@ public class Tag {
         return createdAt;
     }
     /**
-     * '이름'이 같으면 같은 태그로 취급하기 위한 규칙입니다.
+     * '이름'이 같으면 같은 태그로 취급하기 위한 규칙
      */
     @Override
     public boolean equals(Object o) {

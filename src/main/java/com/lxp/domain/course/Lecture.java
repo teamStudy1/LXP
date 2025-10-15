@@ -1,8 +1,7 @@
 package com.lxp.domain.course;
 
-
 import java.time.LocalDateTime;
-
+//엔티티
 public class Lecture {
     private final Long id;
     private String name;
@@ -12,6 +11,8 @@ public class Lecture {
 
 
     public Lecture(String name, int seconds) {
+        validateName(name);
+        validateSeconds(seconds);
         this.id = null;
         this.name = name;
         this.seconds = seconds;
@@ -27,11 +28,8 @@ public class Lecture {
         this.updatedAt = updatedAt;
     }
 
-    /**
-     * 이름을 변경하는 기능
-     * @param newName
-     */
     public void rename(String newName) {
+        validateName(newName);
         this.name = newName;
     }
 
@@ -39,7 +37,20 @@ public class Lecture {
      * 재생 시간을 변경하는 기능
      */
     public void changeDuration(int newSeconds) {
+        validateSeconds(newSeconds);
         this.seconds = newSeconds;
+    }
+
+    private void validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("강의 이름은 비어있을 수 없습니다.");
+        }
+    }
+
+    private void validateSeconds(int seconds) {
+        if (seconds < 0) {
+            throw new IllegalArgumentException("강의 시간은 음수일 수 없습니다.");
+        }
     }
 
     public Long getId() {
