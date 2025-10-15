@@ -1,15 +1,16 @@
 package com.lxp.util;
 
+import com.lxp.handler.EnrollmentHandler;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CLIRouter {
     private final Scanner scanner;
-    private final HandleController handleController;
+    private final EnrollmentHandler enrollmentHandler;
 
-    public CLIRouter(HandleController handleController) {
+    public CLIRouter(EnrollmentHandler enrollmentHandler) {
         this.scanner = new Scanner(System.in);
-        this.handleController = handleController;
+        this.enrollmentHandler = enrollmentHandler;
     }
 
     public void start() {
@@ -39,7 +40,7 @@ public class CLIRouter {
     private boolean handleCommand(String command) throws SQLException {
         switch (command) {
             case "4":
-                handleController.start();
+                enrollmentHandler.start();
                 break;
             case "0":
                 return false;

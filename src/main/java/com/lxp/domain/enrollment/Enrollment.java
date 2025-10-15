@@ -1,7 +1,6 @@
 package com.lxp.domain.enrollment;
 
 import com.lxp.domain.enrollment.enums.EnrollmentStatus;
-
 import java.time.LocalDateTime;
 
 public class Enrollment {

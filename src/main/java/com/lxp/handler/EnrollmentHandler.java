@@ -1,14 +1,13 @@
-package com.lxp.util;
+package com.lxp.handler;
 
-import com.lxp.api.controller.EnrollmentController;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class HandleController {
+public class EnrollmentHandler {
     private final Scanner scanner;
-    private final EnrollmentController enrollmentController;
+    private final com.lxp.api.controller.EnrollmentController enrollmentController;
 
-    public HandleController(EnrollmentController enrollmentController) {
+    public EnrollmentHandler(com.lxp.api.controller.EnrollmentController enrollmentController) {
         this.scanner = new Scanner(System.in);
         this.enrollmentController = enrollmentController;
     }

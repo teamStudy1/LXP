@@ -1,10 +1,9 @@
 package com.lxp.component;
 
-import com.lxp.api.controller.EnrollmentController;
+import com.lxp.handler.EnrollmentHandler;
 import com.lxp.infrastructure.dao.EnrollmentDao;
 import com.lxp.service.EnrollmentService;
 import com.lxp.util.CLIRouter;
-import com.lxp.util.HandleController;
 
 public class ApplicationContext {
 
@@ -20,8 +19,8 @@ public class ApplicationContext {
     }
 
     private static class EnrollmentControllerHolder {
-        private static final EnrollmentController INSTANCE =
-                new EnrollmentController(getEnrollmentService());
+        private static final com.lxp.api.controller.EnrollmentController INSTANCE =
+                new com.lxp.api.controller.EnrollmentController(getEnrollmentService());
     }
 
     public static EnrollmentDao getEnrollmentDao() {
@@ -32,17 +31,17 @@ public class ApplicationContext {
         return EnrollmentServiceHolder.INSTANCE;
     }
 
-    public static EnrollmentController getEnrollmentController() {
+    public static com.lxp.api.controller.EnrollmentController getEnrollmentController() {
         return EnrollmentControllerHolder.INSTANCE;
     }
 
     // handleController component
     private static class HandleControllerHolder {
-        private static final HandleController INSTANCE =
-                new HandleController(getEnrollmentController());
+        private static final EnrollmentHandler INSTANCE =
+                new EnrollmentHandler(getEnrollmentController());
     }
 
-    public static HandleController getHandleController() {
+    public static EnrollmentHandler getHandleController() {
         return HandleControllerHolder.INSTANCE;
     }
 

@@ -1,7 +1,6 @@
 package com.lxp.service;
 
 import com.lxp.config.TransactionManager;
-import com.lxp.domain.enrollment.Enrollment;
 import com.lxp.infrastructure.dao.EnrollmentDao;
 import java.sql.SQLException;
 
@@ -23,8 +22,6 @@ public class EnrollmentService {
     public void saveEnroll(Long studentId, Long courseId) throws SQLException {
         try {
             TransactionManager.beginTransaction();
-            Enrollment enrollment = new Enrollment(studentId,null);
-
             //            User user = userDao.existById();
             //            Course course = courseDao.existById();
 
