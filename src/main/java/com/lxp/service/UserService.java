@@ -1,7 +1,8 @@
 package com.lxp.service;
 
+import com.lxp.config.TransactionManager;
+import com.lxp.domain.user.User;
 import com.lxp.infrastructure.dao.UserDao;
-import com.lxp.infrastructure.row.UserRow;
 import java.sql.SQLException;
 
 public class UserService {
@@ -11,27 +12,23 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public UserRow getUserById(Long id) {
+    public User getUserById(Long id) throws SQLException {
         try {
-            return userDao.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
-        } catch (SQLException e) {
-            System.out.println("sql Exception Error" + e.getMessage());
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+            TransactionManager.beginTransaction();
+            return userDao.findById(TransactionManager.getConnection(), id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
+        } finally {
+            TransactionManager.close();
         }
-        return null;
     }
 
-    public UserRow getUserByName(String username) {
+    public User getUserByName(String username) throws SQLException {
         try {
+            TransactionManager.beginTransaction();
             return userDao
-                    .findByName(username)
+                    .findByName(TransactionManager.getConnection(), username)
                     .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
-        } catch (SQLException e) {
-            System.out.println("sql Exception Error" + e.getMessage());
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+        } finally {
+            TransactionManager.close();
         }
-        return null;
     }
 }

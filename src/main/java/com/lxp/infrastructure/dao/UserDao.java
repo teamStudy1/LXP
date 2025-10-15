@@ -3,6 +3,7 @@ package com.lxp.infrastructure.dao;
 import com.lxp.domain.user.User;
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
+import com.lxp.infrastructure.mapper.UserMapper;
 import com.lxp.infrastructure.row.UserRow;
 import com.lxp.util.QueryType;
 
@@ -13,35 +14,31 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserDao {
-    private final Connection connection;
 
-    public UserDao(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Optional<UserRow> findById(Long id) throws SQLException {
+    public Optional<User> findById(Connection connection, Long id) throws SQLException {
         String sql = QueryType.USER_FIND_BY_ID.getQuery();
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setLong(1, id);
             ResultSet re = pstmt.executeQuery();
 
             if (re.next()) {
-                User user =
-                        new User(
+                UserRow row =
+                        new UserRow(
                                 re.getLong("user_id"),
                                 re.getString("name"),
+                                re.getString("password"),
                                 re.getString("nickname"),
                                 ActiveStatus.valueOf(re.getString("active_status")),
                                 UserRole.valueOf(re.getString("role")),
                                 re.getTimestamp("created_at"),
                                 re.getTimestamp("updated_at"));
-                return Optional.of(user.toRow());
+                return Optional.of(UserMapper.toUser(row));
             }
         }
         return Optional.empty();
     }
 
-    public Optional<UserRow> findByName(String name) throws SQLException {
+    public Optional<User> findByName(Connection connection, String name) throws SQLException {
         String sql = QueryType.USER_FIND_BY_NAME.getQuery();
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -49,16 +46,17 @@ public class UserDao {
             ResultSet re = pstmt.executeQuery();
 
             if (re.next()) {
-                User user =
-                        new User(
+                UserRow row =
+                        new UserRow(
                                 re.getLong("user_id"),
                                 re.getString("name"),
+                                re.getString("password"),
                                 re.getString("nickname"),
                                 ActiveStatus.valueOf(re.getString("active_status")),
                                 UserRole.valueOf(re.getString("role")),
                                 re.getTimestamp("created_at"),
                                 re.getTimestamp("updated_at"));
-                return Optional.of(user.toRow());
+                return Optional.of(UserMapper.toUser(row));
             }
         }
         return Optional.empty();

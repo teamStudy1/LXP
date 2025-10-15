@@ -2,7 +2,6 @@ package com.lxp.domain.user;
 
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
-import com.lxp.infrastructure.row.UserRow;
 import java.sql.Timestamp;
 
 public class User {
@@ -18,6 +17,7 @@ public class User {
     public User(
             Long id,
             String name,
+            String password,
             String nickname,
             ActiveStatus activeStatus,
             UserRole role,
@@ -32,17 +32,8 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public UserRow toRow() {
-        return new UserRow(
-                name, password, nickname, activeStatus == ActiveStatus.ACTIVE, role, createdAt, updatedAt);
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getNickname() {
