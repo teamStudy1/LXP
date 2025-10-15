@@ -1,6 +1,5 @@
 package com.lxp.infrastructure.dao;
 
-import com.lxp.config.TransactionManager;
 import com.lxp.domain.user.User;
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
