@@ -1,5 +1,7 @@
 package com.lxp.domain.user;
 
+import com.lxp.domain.user.enums.ActiveStatus;
+import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.row.UserRow;
 import java.sql.Timestamp;
 

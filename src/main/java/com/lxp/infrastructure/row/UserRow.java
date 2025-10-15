@@ -1,6 +1,6 @@
 package com.lxp.infrastructure.row;
 
-import com.lxp.domain.user.UserRole;
+import com.lxp.domain.user.enums.UserRole;
 import java.sql.Timestamp;
 
 public record UserRow(
