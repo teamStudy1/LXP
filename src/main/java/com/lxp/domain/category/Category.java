@@ -1,13 +1,15 @@
 package com.lxp.domain.category;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Category {
-
     private Long id;
     private String name;
     private Long parentId;
     private int depth;  // 0: 최상위
+
+    private List<Category> children;
 
     // DB 조회 등을 위한 생성자
     public Category(Long id, String name, Long parentId, int depth) {
@@ -15,6 +17,7 @@ public class Category {
         this.name = name;
         this.parentId = parentId;
         this.depth = depth;
+        this.children = new ArrayList<>();
     }
 
     // 신규 카테고리 생성을 위한 생성자
@@ -39,7 +42,7 @@ public class Category {
      * CategoryService에 의해서만 호출되어야 하는 내부 상태 변경 메서드.
      * Service가 외부 규칙(예: 새 부모의 depth가 올바른지)을 모두 검증했다고 가정
      */
-    void changeDepthAndParent(int newDepth, Long newParentId) {
+    public void changeDepthAndParent(int newDepth, Long newParentId) {
         // 객체 스스로의 최소한의 규칙(내부 일관성)만 검사
         validateParentByDepth(newDepth, newParentId);
         this.depth = newDepth;
@@ -68,9 +71,14 @@ public class Category {
         }
     }
 
+    public void addChidren(Category child) {
+        children.add(child);
+    }
+
     // --- Getters ---
     public Long getId() { return id; }
     public String getName() { return name; }
     public Long getParentId() { return parentId; }
     public int getDepth() { return depth; }
-    }
+    public List<Category> getChildren() { return children; }
+}
