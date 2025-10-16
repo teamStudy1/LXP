@@ -11,6 +11,7 @@ public class User {
     private String name;
     private ActiveStatus activeStatus;
     private UserRole role;
+    private UserProfile profile;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -31,29 +32,5 @@ public class User {
         this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ActiveStatus getActiveStatus() {
-        return activeStatus;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
     }
 }

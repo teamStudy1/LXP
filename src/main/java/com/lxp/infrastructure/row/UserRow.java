@@ -2,6 +2,8 @@ package com.lxp.infrastructure.row;
 
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
+import com.lxp.service.query.UserView;
+
 import java.sql.Timestamp;
 
 public record UserRow(
@@ -12,4 +14,5 @@ public record UserRow(
         ActiveStatus activeStatus,
         UserRole role,
         Timestamp createdAt,
-        Timestamp updatedAt) {}
+        Timestamp updatedAt) {
+}

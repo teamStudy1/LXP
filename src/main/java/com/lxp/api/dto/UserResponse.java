@@ -1,6 +1,5 @@
 package com.lxp.api.dto;
 
-import com.lxp.domain.user.User;
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
 
@@ -14,16 +13,6 @@ public record UserResponse(
         Timestamp createdAt,
         Timestamp updatedAt
 ) {
-    public static UserResponse from(User user) {
-        return new UserResponse(
-                user.getEmail(),
-                user.getName(),
-                user.getActiveStatus(),
-                user.getRole(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
-    }
 
     @Override
     public String toString() {

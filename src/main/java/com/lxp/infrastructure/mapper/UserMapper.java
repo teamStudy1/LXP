@@ -1,11 +1,11 @@
 package com.lxp.infrastructure.mapper;
 
-import com.lxp.domain.user.User;
 import com.lxp.infrastructure.row.UserRow;
+import com.lxp.service.query.UserView;
 
 public class UserMapper {
-    public static User toUser(UserRow userRow) {
-        return new User(
+    public static UserView toUserView(UserRow userRow) {
+        return new UserView(
                 userRow.id(),
                 userRow.email(),
                 userRow.password(),
@@ -14,7 +14,6 @@ public class UserMapper {
                 userRow.role(),
                 userRow.createdAt(),
                 userRow.updatedAt()
-
         );
     }
 }

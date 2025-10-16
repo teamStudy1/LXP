@@ -15,18 +15,17 @@
         WHERE user_id=?
     </query>
 
-    <query key ="user.findByName">
+    <query key ="user.findRoleById">
         SELECT
-            user_id,
-            email,
-            password,
-            name,
-            active_status,
-            role,
-            created_at,
-        updated_at
+            role
         FROM user
-        WHERE name=?
+        WHERE user_id=?
     </query>
 
+    <query key="user.existsById">
+        SELECT
+            CASE WHEN count(user_id)>0 THEN TRUE ELSE FALSE END
+        FROM user
+        WHERE user_id=?
+    </query>
 </properties>
