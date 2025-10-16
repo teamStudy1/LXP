@@ -5,35 +5,39 @@ import java.util.*;
 
 //엔티티
 public class Course {
-    private final Long id;
+    private Long id;
     private String title;
-    private String instructor;
-    private final LocalDateTime createdAt;
+    private final Long instructorId;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     private CourseDetail detail;
-    private final Set<Tag> tags = new HashSet<>(); //NullPointerException 원천 차단.
-    private final List<Section> sections = new ArrayList<>();
+    private final Set<Tag> tags;
+    private final List<Section> sections;
+    private int totalSeconds;
 
 
-    public Course(String title, String instructor) {
-        this.id = null;
+    public Course(String title, Long instructorId, LocalDateTime createdAt, List<Section> sections, Set<Tag> tags) {
         this.title = title;
-        this.instructor = instructor;
-        this.createdAt = null;
-        this.updatedAt = null;
+        this.instructorId = instructorId;
+        this.createdAt = createdAt;
+        this.sections = sections != null ? sections : new ArrayList<Section>();
+        this.tags = tags != null ? tags : new HashSet<Tag>();
+        updateTotalDuration();
     }
 
 
-    public Course(Long id, String title, String instructor, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long instructorId, List<Section> sections, Set<Tag> tags, LocalDateTime createdAt) {
+        this(title, instructorId, createdAt, sections, tags);
         this.id = id;
-        this.title = title;
-        this.instructor = instructor;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        updateTotalDuration();
     }
 
     public void rename(String newTitle) {
+        if (newTitle == null || newTitle.trim().isEmpty()) {
+            throw new IllegalArgumentException("강좌 이름은 필수입니다.");
+        }
         this.title = newTitle;
     }
 
@@ -45,9 +49,6 @@ public class Course {
     }
 
     public void addTags(Collection<Tag> tagToAdd) {
-        if (tagToAdd == null) {
-            throw new IllegalArgumentException("태그는 null일 수 없습니다.");
-        }
         this.tags.addAll(tagToAdd);
     }
 
@@ -63,16 +64,22 @@ public class Course {
         if (!this.sections.contains(section)) {
             this.sections.add(section);
             section.setCourse(this);
+            updateTotalDuration();
         }
     }
+
+    private void updateTotalDuration() {
+        this.totalSeconds = this.sections.stream()
+                .mapToInt(Section::calculateSectionDuration)
+                .sum();
+    }
+
     public void removeSection(Section section) {
         this.sections.remove(section);
         section.setCourse(null);
+        updateTotalDuration();
     }
 
-    public void clearTags() {
-        this.tags.clear();
-    }
 
     public Long getId() {
         return id;
@@ -82,8 +89,8 @@ public class Course {
         return title;
     }
 
-    public String getInstructor() {
-        return instructor;
+    public Long getInstructorId() {
+        return instructorId;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -98,8 +105,16 @@ public class Course {
         return detail;
     }
 
+    public int getTotalSeconds() {
+        return totalSeconds;
+    }
+
+    public void setTotalSeconds(int totalSeconds) {
+        this.totalSeconds = totalSeconds;
+    }
+
     /**
-     * 외부에서 sections 리스트를 맘대로 못바꿈
+     * 외부에서 sections 리스트를 맘대로 못바꾸게
      */
     public List<Section> getSections() {
         return Collections.unmodifiableList(sections);

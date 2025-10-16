@@ -8,56 +8,71 @@ import java.util.List;
 //엔티티
 public class Section {
     private final Long id;
-    private String name;
-    private Course course;
-    private final LocalDateTime createdAt;
+    private String title;
+    private final int sectionOrder;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private final List<Lecture> lectures = new ArrayList<>();
 
 
-    public Section(String name) {
-        validateName(name);
-        this.id = null;
-        this.name = name;
-        this.createdAt = null;
-        this.updatedAt = null;
-    }
-
-    public Section(Long id, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Section(Long id, String title, int sectionOrder, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
+        this.title = title;
+        this.sectionOrder = sectionOrder;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    /**
-     * 이 강의들의 총 재생 시간을
-     * 계산하는 기능
-     * @return 포함된 모든 영상의 재생 시간을 합한 값
-     */
-    public int calculateSectionDuration() {
-        // lectures 리스트에 있는 모든 Lecture 객체들의 seconds 값을 다 더해서 알려줘!
-        return this.lectures.stream()
-                .mapToInt(Lecture::getSeconds)
-                .sum();
-    }
 
 
     public void addLecture(Lecture lecture) {
         this.lectures.add(lecture);
     }
 
-    public void removeLecture(Lecture lecture) {
-        this.lectures.remove(lecture);
+    public void removeLecture(Long lectureId) {
+        this.lectures.removeIf(l -> lectureId.equals(l.getId()));
     }
 
-    public void rename(String newName) {
-        validateName(newName);
-        this.name = newName;
+    public void rename(String newTitle) {
+        validateTitle(newTitle);
+        this.title = newTitle;
     }
 
-    private void validateName(String name) {
-        if (name == null || name.trim().isEmpty()) {
+    public void swapLectureOrder(Long lectureId1, Long lectureId2) {
+
+        Lecture lec1 = findLectureById(lectureId1);
+        Lecture lec2 = findLectureById(lectureId2);
+
+
+        int order1 = lec1.getLectureOrder();
+        int order2 = lec2.getLectureOrder();
+
+        lec1.changeOrder(order2);
+        lec2.changeOrder(order1);
+
+    }
+
+    public void insertNewLecture(Lecture newLecture, int targetOrder) {
+
+        for (Lecture lecture : lectures) {
+            if (lecture.getLectureOrder() < targetOrder) {
+                continue;
+            }
+            lecture.changeOrder(lecture.getLectureOrder() + 1);
+        }
+
+        newLecture.changeOrder(targetOrder);
+        this.lectures.add(newLecture);
+
+    }
+
+    public int calculateSectionDuration() {
+        return this.lectures.stream().mapToInt(Lecture::getDuration).sum();
+    }
+
+
+    private void validateTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("강의 이름은 비어있을 수 없습니다.");
         }
     }
@@ -67,8 +82,12 @@ public class Section {
     }
 
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
+    }
+
+    public int getSectionOrder() {
+        return sectionOrder;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -85,12 +104,11 @@ public class Section {
         return Collections.unmodifiableList(lectures);
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
+    private Lecture findLectureById(Long lectureId) {
+        return lectures.stream()
+                .filter(l -> l.getId().equals(lectureId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 강의를 찾을 수 없습니다."));
     }
 
 

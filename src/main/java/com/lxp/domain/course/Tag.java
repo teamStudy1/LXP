@@ -35,9 +35,7 @@ public class Tag {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    /**
-     * '이름'이 같으면 같은 태그로 취급하기 위한 규칙
-     */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
