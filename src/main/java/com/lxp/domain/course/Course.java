@@ -63,7 +63,6 @@ public class Course {
 
         if (!this.sections.contains(section)) {
             this.sections.add(section);
-            section.setCourse(this);
             updateTotalDuration();
         }
     }
@@ -76,7 +75,6 @@ public class Course {
 
     public void removeSection(Section section) {
         this.sections.remove(section);
-        section.setCourse(null);
         updateTotalDuration();
     }
 
