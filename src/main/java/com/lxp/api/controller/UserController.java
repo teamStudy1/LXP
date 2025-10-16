@@ -12,7 +12,7 @@ public class UserController {
     }
 
     public UserResponse getUserById(Long id) throws Exception {
-        return userService.getUserById(id).toResponse();
+        return userService.getUserById(id);
     }
 
     public UserRole getUserRoleById(Long id) throws Exception {

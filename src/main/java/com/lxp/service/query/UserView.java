@@ -1,6 +1,5 @@
 package com.lxp.service.query;
 
-import com.lxp.api.dto.UserResponse;
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
 
@@ -15,15 +14,4 @@ public record UserView(
         UserRole role,
         Timestamp createdAt,
         Timestamp updatedAt
-) {
-    public UserResponse toResponse() {
-        return new UserResponse(
-                email,
-                name,
-                activeStatus,
-                role,
-                createdAt,
-                updatedAt
-        );
-    }
-}
+) { }
