@@ -1,9 +1,5 @@
 package com.lxp.config;
 
-import com.lxp.handler.EnrollmentHandler;
-import com.lxp.infrastructure.dao.EnrollmentDao;
-import com.lxp.service.EnrollmentService;
-import com.lxp.util.CLIRouter;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariPoolMXBean;
@@ -45,55 +41,5 @@ public class JDBCConnection {
         System.out.println("유후 커넥션 개수" + poolMXBean.getIdleConnections());
         System.out.println(
                 "대기중인 커넥션 요청 수" + poolMXBean.getThreadsAwaitingConnection()); // 풀에서 연결을 기다리는 스레드 수를 가져옴
-    }
-
-    public static class ApplicationContext {
-
-        private ApplicationContext() {}
-
-        // enrollment component
-        private static class EnrollmentDaoHolder {
-            private static final EnrollmentDao INSTANCE = new EnrollmentDao();
-        }
-
-        private static class EnrollmentServiceHolder {
-            private static final EnrollmentService INSTANCE = new EnrollmentService(getEnrollmentDao());
-        }
-
-        private static class EnrollmentControllerHolder {
-            private static final com.lxp.api.controller.EnrollmentController INSTANCE =
-                    new com.lxp.api.controller.EnrollmentController(getEnrollmentService());
-        }
-
-        public static EnrollmentDao getEnrollmentDao() {
-            return EnrollmentDaoHolder.INSTANCE;
-        }
-
-        public static EnrollmentService getEnrollmentService() {
-            return EnrollmentServiceHolder.INSTANCE;
-        }
-
-        public static com.lxp.api.controller.EnrollmentController getEnrollmentController() {
-            return EnrollmentControllerHolder.INSTANCE;
-        }
-
-        // handleController component
-        private static class HandleControllerHolder {
-            private static final EnrollmentHandler INSTANCE =
-                    new EnrollmentHandler(getEnrollmentController());
-        }
-
-        public static EnrollmentHandler getHandleController() {
-            return HandleControllerHolder.INSTANCE;
-        }
-
-        // router component
-        private static class RouterHolder {
-            private static final CLIRouter INSTANCE = new CLIRouter(getHandleController());
-        }
-
-        public static CLIRouter getRouter() {
-            return RouterHolder.INSTANCE;
-        }
     }
 }
