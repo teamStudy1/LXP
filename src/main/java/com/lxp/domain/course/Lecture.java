@@ -1,7 +1,8 @@
 package com.lxp.domain.course;
 
 import java.time.LocalDateTime;
-//엔티티
+
+// 엔티티
 public class Lecture {
     private final Long id;
     private String title;
@@ -11,8 +12,14 @@ public class Lecture {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-
-    public Lecture(Long id, String title, int lectureOrder, String videoUrl, int duration,LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Lecture(
+            Long id,
+            String title,
+            int lectureOrder,
+            String videoUrl,
+            int duration,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.lectureOrder = lectureOrder;
@@ -25,7 +32,6 @@ public class Lecture {
         validateName(newName);
         this.title = newName;
     }
-
 
     public void changeVideo(String newUrl, int newDuration) {
         this.videoUrl = newUrl;

@@ -1,12 +1,8 @@
 package com.lxp.util;
 
-import java.time.LocalTime;
-
-/**
- * 시간 형식 변환을 도와주는 유틸리티 클래스입니다.
- */
+/** 시간 형식 변환을 도와주는 유틸리티 클래스입니다. */
 public class TimeConverter {
-    static public String getFormattedDuration(int totalSeconds) {
+    public static String getFormattedDuration(int totalSeconds) {
         // 1. totalSeconds 값을 초단위로.
 
         // 2. 시간 계산 (3600초 = 1시간)
@@ -21,8 +17,7 @@ public class TimeConverter {
         // 5. 문자열로 조합하여 반환
         StringBuilder sb = new StringBuilder();
 
-        if (hours > 0)
-            sb.append(hours).append("시간");
+        if (hours > 0) sb.append(hours).append("시간");
         if (minutes > 0) { // 분이 표시될 때만 공백 추가
             sb.append(" ");
         }
