@@ -5,6 +5,7 @@ import com.lxp.handler.EnrollmentHandler;
 import com.lxp.infrastructure.dao.EnrollmentDao;
 import com.lxp.service.EnrollmentService;
 import com.lxp.util.CLIRouter;
+import javax.sql.DataSource;
 
 public class ApplicationContext {
     private ApplicationContext() {}
@@ -49,5 +50,13 @@ public class ApplicationContext {
 
     public static CLIRouter getRouter() {
         return RouterHolder.INSTANCE;
+    }
+
+    private static class DataSourceHolder {
+        private static final DataSource INSTANCE = DataSourceFactory.getDataSource();
+    }
+
+    public static DataSource getDataSource() {
+        return DataSourceHolder.INSTANCE;
     }
 }

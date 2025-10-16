@@ -30,7 +30,6 @@ public class DatabaseInitializer {
 
     private static void executeSqlFile(String filePath) throws Exception {
         String sql = readSqlFile(filePath);
-
         try (Connection conn = JDBCConnection.getConnection();
                 Statement stmt = conn.createStatement()) {
 
