@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS Category (
 
 CREATE TABLE IF NOT EXISTS User (
                       user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                      name VARCHAR(255) NOT NULL UNIQUE,
+                      email VARCHAR(255) NOT NULL UNIQUE,
                       password VARCHAR(255) NOT NULL,
-                      nickname VARCHAR(50) NOT NULL,
+                      name VARCHAR(50) NOT NULL,
                       active_status ENUM('ACTIVE', 'DEACTIVE') NOT NULL DEFAULT 'ACTIVE',
                       role ENUM('STUDENT', 'INSTRUCTOR', 'ADMIN') NOT NULL DEFAULT 'STUDENT',
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

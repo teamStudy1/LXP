@@ -14,7 +14,7 @@ INSERT INTO Category (name, parent_id) VALUES
                                            ('콘텐츠 마케팅', 4);
 
 
-INSERT INTO User (name, password, nickname, active_status, role) VALUES
+INSERT INTO User (email, password, name, active_status, role) VALUES
                                                                      ('admin@example.com', '$2a$10$abcdefghijklmnopqrstuvwxyz', '관리자', 'ACTIVE', 'ADMIN'),
                                                                      ('john.doe@example.com', '$2a$10$abcdefghijklmnopqrstuvwxyz', 'John', 'ACTIVE', 'INSTRUCTOR'),
                                                                      ('jane.smith@example.com', '$2a$10$abcdefghijklmnopqrstuvwxyz', 'Jane', 'ACTIVE', 'INSTRUCTOR'),
