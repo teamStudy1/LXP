@@ -1,37 +1,18 @@
 package com.lxp.config;
 
-import com.lxp.api.controller.UserController;
-import com.lxp.handler.EnrollmentHandler;
-import com.lxp.handler.UserHandler;
-import com.lxp.infrastructure.dao.EnrollmentDao;
-import com.lxp.infrastructure.dao.UserDao;
-import com.lxp.service.EnrollmentService;
-import com.lxp.service.UserService;
-import com.lxp.util.CLIRouter;
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariPoolMXBean;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JDBCConnection {
-    private static final HikariDataSource dataSource;
-
-    static {
-        try {
-            Properties prop = new Properties();
-            prop.load(JDBCConnection.class.getClassLoader().getResourceAsStream("config.properties"));
-            HikariConfig config = new HikariConfig(prop);
-            dataSource = new HikariDataSource(config);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final Logger log = LoggerFactory.getLogger(JDBCConnection.class);
+    private static final HikariDataSource dataSource = DataSourceFactory.getDataSource();
 
     public static Connection getConnection() throws SQLException {
+        log.debug("get Connection");
         return dataSource.getConnection();
     }
 
