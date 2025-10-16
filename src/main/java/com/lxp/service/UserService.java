@@ -1,7 +1,6 @@
 package com.lxp.service;
 
 import com.lxp.api.dto.UserResponse;
-import com.lxp.config.TransactionManager;
 import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.dao.UserDao;
 import com.lxp.infrastructure.mapper.UserMapper;
@@ -15,26 +14,15 @@ public class UserService {
     }
 
     public UserResponse getUserById(Long id) throws Exception {
-        try {
-            TransactionManager.beginTransaction();
-            UserView userView = userDao.findById(TransactionManager.getConnection(), id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
+            UserView userView = userDao.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
             return UserMapper.toUserResponse(userView);
-        } finally {
-            TransactionManager.close();
-        }
     }
 
     public UserRole getUserRoleById(Long id) throws Exception {
-
-        try {
-            TransactionManager.beginTransaction();
-            boolean isNotExistsUser = !userDao.existsById(TransactionManager.getConnection(), id);
-            if (isNotExistsUser) {
-                throw new IllegalStateException("존재하지 않는 사용자 입니다. ");
-            }
-            return userDao.findRoleById(TransactionManager.getConnection(), id).orElseThrow(() -> new IllegalStateException("권한 조회에 실패했습니다."));
-        } finally {
-            TransactionManager.close();
+        boolean isNotExistsUser = !userDao.existsById(id);
+        if (isNotExistsUser) {
+            throw new IllegalStateException("존재하지 않는 사용자 입니다. ");
         }
+        return userDao.findRoleById(id).orElseThrow(() -> new IllegalStateException("권한 조회에 실패했습니다."));
     }
 }

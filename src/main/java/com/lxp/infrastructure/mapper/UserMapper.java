@@ -1,8 +1,13 @@
 package com.lxp.infrastructure.mapper;
 
 import com.lxp.api.dto.UserResponse;
+import com.lxp.domain.user.enums.ActiveStatus;
+import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.row.UserRow;
 import com.lxp.service.query.UserView;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserMapper {
     public static UserView toUserView(UserRow userRow) {
@@ -27,5 +32,18 @@ public class UserMapper {
                     userView.createdAt(),
                     userView.updatedAt()
             );
+    }
+
+    public static UserRow fromResultSet(ResultSet rs) throws SQLException {
+        return new UserRow(
+                rs.getLong("user_id"),
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getString("name"),
+                ActiveStatus.valueOf(rs.getString("active_status")),
+                UserRole.valueOf(rs.getString("role")),
+                rs.getTimestamp("created_at"),
+                rs.getTimestamp("updated_at")
+        );
     }
 }
