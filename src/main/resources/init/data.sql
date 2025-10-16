@@ -1,4 +1,4 @@
-INSERT INTO Category (name, parent_id) VALUES
+INSERT INTO Category (name, parent_id, parentdepth) VALUES
                                            ('개발', NULL),
                                            ('디자인', NULL),
                                            ('비즈니스', NULL),
