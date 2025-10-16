@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS Category (
                           category_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           name VARCHAR(100) NOT NULL,
                           parent_id BIGINT,
+                          depth INT NOT NULL DEFAULT 0,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           FOREIGN KEY (parent_id) REFERENCES Category(category_id) ON DELETE SET NULL
