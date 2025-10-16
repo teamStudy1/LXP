@@ -41,31 +41,7 @@ public class Course {
         this.title = newTitle;
     }
 
-    public void changeDetail(CourseDetail newDetail) {
-        if (newDetail == null) {
-            throw new IllegalArgumentException("상세 설명은 null일 수 없습니다.");
-        }
-        this.detail = newDetail;
-    }
 
-    public void addTags(Collection<Tag> tagToAdd) {
-        this.tags.addAll(tagToAdd);
-    }
-
-    public void removeTags(Collection<Tag> tagToRemove) {
-        this.tags.removeAll(tagToRemove);
-    }
-
-    public void addSection(Section section) {
-        if (section == null) {
-            throw new IllegalArgumentException("null인 섹션을 추가할 수 없습니다.");
-        }
-
-        if (!this.sections.contains(section)) {
-            this.sections.add(section);
-            updateTotalDuration();
-        }
-    }
 
     private void updateTotalDuration() {
         this.totalSeconds = this.sections.stream()
