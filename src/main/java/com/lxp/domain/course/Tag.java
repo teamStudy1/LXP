@@ -2,9 +2,10 @@ package com.lxp.domain.course;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-//엔티티
+
+// 엔티티
 public class Tag {
-    private final Long id;  //Long 타입이라 아직 DB에 저장 안된 상태(null) 표현 가능
+    private final Long id; // Long 타입이라 아직 DB에 저장 안된 상태(null) 표현 가능
     private final String name;
     private final LocalDateTime createdAt;
 
@@ -22,7 +23,6 @@ public class Tag {
         this.name = name;
         this.createdAt = createdAt;
     }
-
 
     public Long getId() {
         return id;

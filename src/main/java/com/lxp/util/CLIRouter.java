@@ -1,5 +1,6 @@
 package com.lxp.util;
 
+import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -7,10 +8,12 @@ import java.util.Scanner;
 public class CLIRouter {
     private final Scanner scanner;
     private final EnrollmentHandler enrollmentHandler;
+    private final CourseHandler courseHandler;
 
-    public CLIRouter(EnrollmentHandler enrollmentHandler) {
+    public CLIRouter(EnrollmentHandler enrollmentHandler, CourseHandler courseHandler) {
         this.scanner = new Scanner(System.in);
         this.enrollmentHandler = enrollmentHandler;
+        this.courseHandler = courseHandler;
     }
 
     public void start() {
@@ -42,7 +45,8 @@ public class CLIRouter {
             case "4":
                 enrollmentHandler.start();
                 break;
-            case "0":
+            case "2":
+                courseHandler.start();
                 return false;
             default:
                 System.out.println("잘못된 입력입니다.");
