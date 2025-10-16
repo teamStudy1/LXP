@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//엔티티
+// 엔티티
 public class Section {
     private final Long id;
     private String title;
@@ -14,16 +14,14 @@ public class Section {
     private LocalDateTime updatedAt;
     private final List<Lecture> lectures = new ArrayList<>();
 
-
-    public Section(Long id, String title, int sectionOrder, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Section(
+            Long id, String title, int sectionOrder, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.sectionOrder = sectionOrder;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-
 
     public void addLecture(Lecture lecture) {
         this.lectures.add(lecture);
@@ -43,13 +41,11 @@ public class Section {
         Lecture lec1 = findLectureById(lectureId1);
         Lecture lec2 = findLectureById(lectureId2);
 
-
         int order1 = lec1.getLectureOrder();
         int order2 = lec2.getLectureOrder();
 
         lec1.changeOrder(order2);
         lec2.changeOrder(order1);
-
     }
 
     public void insertNewLecture(Lecture newLecture, int targetOrder) {
@@ -63,13 +59,11 @@ public class Section {
 
         newLecture.changeOrder(targetOrder);
         this.lectures.add(newLecture);
-
     }
 
     public int calculateSectionDuration() {
         return this.lectures.stream().mapToInt(Lecture::getDuration).sum();
     }
-
 
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
@@ -80,7 +74,6 @@ public class Section {
     public Long getId() {
         return id;
     }
-
 
     public String getTitle() {
         return title;
@@ -93,13 +86,12 @@ public class Section {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-    /**
-     * 강의 목록을 외부에서 볼 수 있게 해주지만,
-     * 외부에서 마음대로 추가하거나 삭제 못하게 읽기 전용으로 포장해서 줌
-     */
+
+    /** 강의 목록을 외부에서 볼 수 있게 해주지만, 외부에서 마음대로 추가하거나 삭제 못하게 읽기 전용으로 포장해서 줌 */
     public List<Lecture> getLectures() {
         return Collections.unmodifiableList(lectures);
     }
@@ -110,6 +102,4 @@ public class Section {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 강의를 찾을 수 없습니다."));
     }
-
-
 }

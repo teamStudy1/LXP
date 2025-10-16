@@ -3,7 +3,7 @@ package com.lxp.domain.course;
 import java.time.LocalDateTime;
 import java.util.*;
 
-//엔티티
+// 엔티티
 public class Course {
     private Long id;
     private String title;
@@ -16,8 +16,12 @@ public class Course {
     private final List<Section> sections;
     private int totalSeconds;
 
-
-    public Course(String title, Long instructorId, LocalDateTime createdAt, List<Section> sections, Set<Tag> tags) {
+    public Course(
+            String title,
+            Long instructorId,
+            LocalDateTime createdAt,
+            List<Section> sections,
+            Set<Tag> tags) {
         this.title = title;
         this.instructorId = instructorId;
         this.createdAt = createdAt;
@@ -26,8 +30,13 @@ public class Course {
         updateTotalDuration();
     }
 
-
-    public Course(Long id, String title, Long instructorId, List<Section> sections, Set<Tag> tags, LocalDateTime createdAt) {
+    public Course(
+            Long id,
+            String title,
+            Long instructorId,
+            List<Section> sections,
+            Set<Tag> tags,
+            LocalDateTime createdAt) {
         this(title, instructorId, createdAt, sections, tags);
         this.id = id;
         this.createdAt = createdAt;
@@ -41,19 +50,14 @@ public class Course {
         this.title = newTitle;
     }
 
-
-
     private void updateTotalDuration() {
-        this.totalSeconds = this.sections.stream()
-                .mapToInt(Section::calculateSectionDuration)
-                .sum();
+        this.totalSeconds = this.sections.stream().mapToInt(Section::calculateSectionDuration).sum();
     }
 
     public void removeSection(Section section) {
         this.sections.remove(section);
         updateTotalDuration();
     }
-
 
     public Long getId() {
         return id;
@@ -87,9 +91,7 @@ public class Course {
         this.totalSeconds = totalSeconds;
     }
 
-    /**
-     * 외부에서 sections 리스트를 맘대로 못바꾸게
-     */
+    /** 외부에서 sections 리스트를 맘대로 못바꾸게 */
     public List<Section> getSections() {
         return Collections.unmodifiableList(sections);
     }
@@ -97,5 +99,4 @@ public class Course {
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
-
 }
