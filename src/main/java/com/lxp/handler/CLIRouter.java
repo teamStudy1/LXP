@@ -1,8 +1,4 @@
-package com.lxp.util;
-
-import com.lxp.handler.CourseHandler;
-import com.lxp.handler.EnrollmentHandler;
-import com.lxp.handler.UserHandler;
+package com.lxp.handler;
 
 import java.sql.SQLException;
 import java.util.Scanner;

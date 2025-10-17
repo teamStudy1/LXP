@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key="section.findAllByCourseId">
+        SELECT
+        section_id,
+        course_id,
+        name,
+        order_num,
+        created_at,
+        updated_at
+        FROM Section
+        WHERE course_id = ?
+        ORDER BY order_num
+    </query>
+</properties>
+

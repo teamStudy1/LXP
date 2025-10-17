@@ -1,4 +1,4 @@
-package com.lxp.domain.course;
+package com.lxp.course.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

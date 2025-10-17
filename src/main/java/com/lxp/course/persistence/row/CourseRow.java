@@ -1,4 +1,4 @@
-package com.lxp.infrastructure.row.course;
+package com.lxp.course.persistence.row;
 
 import java.sql.Timestamp;
 
@@ -9,5 +9,8 @@ public record CourseRow(
         Long categoryId,
         int totalTime,
         int totalLectureCount,
+        String content,
+        String contentDetail,
         Timestamp createdAt,
-        Timestamp updatedAt) {}
+        Timestamp updatedAt) {
+}

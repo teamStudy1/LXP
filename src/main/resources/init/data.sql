@@ -45,42 +45,22 @@ INSERT INTO User_Profile(user_id, introduction, resume) VALUES
 
 
 
-INSERT INTO Course (title, instructor_id, category_id, total_time, total_lecture_count) VALUES
-                                                                                            ('React 완벽 마스터', 2, 13,5, 150),
-                                                                                            ('Vue.js 시작하기', 2, 12,8.0, 120),
-                                                                                            ('Java 스프링 부트', 12, 6, 40.5, 200),
-                                                                                            ('Python 데이터 분석', 13, 11,30.0, 180),
-                                                                                            ('UI/UX 디자인 기초', 3, 8, 15.5, 90),
-                                                                                            ('Figma 실전 프로젝트', 3, 9,12.0, 80),
-                                                                                            ('Node.js 백엔드 개발', 4, 6, 35.0, 190),
-                                                                                            ('안드로이드 앱 개발', 5, 12,28.0, 160),
-                                                                                            ('iOS 스위프트 프로그래밍', 5, 11,32.0, 170),
-                                                                                            ('풀스택 웹 개발 부트캠프', 2, 1, 80.0, 400),
-                                                                                            ('디지털 마케팅 전략', 4, 12, 20.0, 100),
-                                                                                            ('React Native 모바일 앱', 2, 7, 25.0, 140),
-                                                                                            ('Python Django 웹 프레임워크', 13, 2,8.0, 195),
-                                                                                            ('TypeScript 마스터클래스', 12, 5, 22.0, 130),
-                                                                                            ('그래픽 디자인 with 포토샵', 3, 9, 18.5, 95);
-
-
-INSERT INTO Course_Detail(course_id, content, content_detail) VALUES
-                                                                  (1, 'React의 기초부터 고급까지 모든 것을 배웁니다.', 'Hooks, Context API, Redux, Next.js까지 포함된 완벽한 React 코스입니다.'),
-                                                                  (2, 'Vue.js 3의 Composition API를 활용한 모던 웹 개발', 'Vue Router, Vuex, Pinia를 활용한 실전 프로젝트'),
-                                                                  (3, '스프링 부트로 RESTful API 서버 구축하기', 'JPA, Security, JWT 인증, 테스트 코드 작성까지'),
-                                                                  (4, 'Pandas, NumPy, Matplotlib을 활용한 데이터 분석', '실제 데이터셋을 활용한 프로젝트 중심 학습'),
-                                                                  (5, '사용자 중심의 디자인 사고방식 배우기', '와이어프레임부터 프로토타입까지 전 과정'),
-                                                                  (6, 'Figma를 활용한 실무 디자인 프로젝트', '협업 도구 활용과 디자인 시스템 구축'),
-                                                                  (7, 'Express.js로 확장 가능한 서버 만들기', 'MongoDB, PostgreSQL 연동 및 배포'),
-                                                                  (8, 'Kotlin으로 안드로이드 앱 만들기', 'Material Design과 최신 안드로이드 기술'),
-                                                                  (9, 'SwiftUI를 활용한 iOS 앱 개발', 'App Store 출시까지의 전 과정'),
-                                                                  (10, '프론트엔드부터 백엔드까지 완성하기', 'MERN 스택을 활용한 풀스택 개발'),
-                                                                  (11, 'SEO, SNS 마케팅, 구글 애널리틱스', '실전 마케팅 캠페인 기획 및 운영'),
-                                                                  (12, 'React Native로 iOS/Android 동시 개발', '네이티브 모듈 연동과 앱 스토어 배포'),
-                                                                  (13, 'Django REST Framework로 API 서버 구축', 'Celery, Redis를 활용한 비동기 처리'),
-                                                                  (14, 'JavaScript의 타입 안정성 확보하기', '제네릭, 데코레이터 등 고급 TypeScript'),
-                                                                  (15, '포토샵 기초부터 실무 디자인까지', '로고, 포스터, 배너 디자인 프로젝트');
-
-
+INSERT INTO Course (title, instructor_id, category_id, total_time, total_lecture_count, content, content_detail) VALUES
+                                                                                                                     ('React 완벽 마스터', 2, 13, 5.0, 150, 'React의 기초부터 고급까지 모든 것을 배웁니다.', 'Hooks, Context API, Redux, Next.js까지 포함된 완벽한 React 코스입니다.'),
+                                                                                                                     ('Vue.js 시작하기', 2, 12, 8.0, 120, 'Vue.js 3의 Composition API를 활용한 모던 웹 개발', 'Vue Router, Vuex, Pinia를 활용한 실전 프로젝트'),
+                                                                                                                     ('Java 스프링 부트', 12, 6, 40.5, 200, '스프링 부트로 RESTful API 서버 구축하기', 'JPA, Security, JWT 인증, 테스트 코드 작성까지'),
+                                                                                                                     ('Python 데이터 분석', 13, 11, 30.0, 180, 'Pandas, NumPy, Matplotlib을 활용한 데이터 분석', '실제 데이터셋을 활용한 프로젝트 중심 학습'),
+                                                                                                                     ('UI/UX 디자인 기초', 3, 8, 15.5, 90, '사용자 중심의 디자인 사고방식 배우기', '와이어프레임부터 프로토타입까지 전 과정'),
+                                                                                                                     ('Figma 실전 프로젝트', 3, 9, 12.0, 80, 'Figma를 활용한 실무 디자인 프로젝트', '협업 도구 활용과 디자인 시스템 구축'),
+                                                                                                                     ('Node.js 백엔드 개발', 4, 6, 35.0, 190, 'Express.js로 확장 가능한 서버 만들기', 'MongoDB, PostgreSQL 연동 및 배포'),
+                                                                                                                     ('안드로이드 앱 개발', 5, 12, 28.0, 160, 'Kotlin으로 안드로이드 앱 만들기', 'Material Design과 최신 안드로이드 기술'),
+                                                                                                                     ('iOS 스위프트 프로그래밍', 5, 11, 32.0, 170, 'SwiftUI를 활용한 iOS 앱 개발', 'App Store 출시까지의 전 과정'),
+                                                                                                                     ('풀스택 웹 개발 부트캠프', 2, 1, 80.0, 400, '프론트엔드부터 백엔드까지 완성하기', 'MERN 스택을 활용한 풀스택 개발'),
+                                                                                                                     ('디지털 마케팅 전략', 4, 12, 20.0, 100, 'SEO, SNS 마케팅, 구글 애널리틱스', '실전 마케팅 캠페인 기획 및 운영'),
+                                                                                                                     ('React Native 모바일 앱', 2, 7, 25.0, 140, 'React Native로 iOS/Android 동시 개발', '네이티브 모듈 연동과 앱 스토어 배포'),
+                                                                                                                     ('Python Django 웹 프레임워크', 13, 2, 8.0, 195, 'Django REST Framework로 API 서버 구축', 'Celery, Redis를 활용한 비동기 처리'),
+                                                                                                                     ('TypeScript 마스터클래스', 12, 5, 22.0, 130, 'JavaScript의 타입 안정성 확보하기', '제네릭, 데코레이터 등 고급 TypeScript'),
+                                                                                                                     ('그래픽 디자인 with 포토샵', 3, 9, 18.5, 95, '포토샵 기초부터 실무 디자인까지', '로고, 포스터, 배너 디자인 프로젝트');
 
 INSERT INTO Section (course_id, name, order_num) VALUES
 -- Course 1: React 완벽 마스터
