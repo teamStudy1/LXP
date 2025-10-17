@@ -17,16 +17,61 @@
         WHERE c.course_id = ?
     </query>
 
-    <query key="course.findAllByCourseId">
+
+    <query key="course.findByIdJoinInstructor">
         SELECT
-        t.tag_id,
-        t.name,
-        t.created_at
-        FROM course AS c
-        JOIN course_tag AS ct ON c.course_id = ct.course_id
-        JOIN Tag AS t ON t.tag_id = ct.tag_id
-        WHERE c.course_id = ?
-        ORDER BY t.tag_id
+        u.user_id AS instructor_id,
+        u.email,
+        u.name,
+        u.role,
+        u.created_at,
+        u.updated_at
+        FROM
+        Course AS c
+        JOIN
+        User AS u ON c.instructor_id = u.user_id
+        WHERE
+        c.course_id = ?
+    </query>
+
+
+    <query key="course.findByIdJoinCategory">
+        WITH RECURSIVE CategoryHierarchy AS (
+        SELECT
+        co.course_id,
+        co.title,
+        ca.category_id,
+        ca.name AS category_name,
+        ca.parent_id,
+        0 AS depth
+        FROM
+        Course co
+        JOIN
+        Category ca ON co.category_id = ca.category_id
+        WHERE
+        co.course_id = ?
+        UNION ALL
+        SELECT
+        ch.course_id,
+        ch.title,
+        p.category_id,
+        p.name AS category_name,
+        p.parent_id,
+        ch.depth + 1
+        FROM
+        Category p
+        JOIN
+        CategoryHierarchy ch ON p.category_id = ch.parent_id
+        )
+        SELECT
+        course_id,
+        title,
+        category_id,
+        category_name
+        FROM
+        CategoryHierarchy
+        ORDER BY
+        depth DESC;
     </query>
 
 

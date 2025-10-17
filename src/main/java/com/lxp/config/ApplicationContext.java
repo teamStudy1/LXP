@@ -1,19 +1,22 @@
 package com.lxp.config;
 
-import com.lxp.api.controller.CourseController;
+import com.lxp.course.persistence.dao.CourseDao;
+import com.lxp.course.persistence.dao.LectureDao;
+import com.lxp.course.persistence.dao.SectionDao;
+import com.lxp.course.persistence.dao.TagDao;
+import com.lxp.course.web.CourseController;
 import com.lxp.api.controller.EnrollmentController;
 import com.lxp.api.controller.UserController;
 import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
-import com.lxp.infrastructure.dao.course.*;
 import com.lxp.infrastructure.dao.enrollment.EnrollmentDao;
 import com.lxp.infrastructure.dao.UserDao;
-import com.lxp.infrastructure.dao.course.repository.JdbcCourseRepository;
-import com.lxp.service.CourseService;
+import com.lxp.course.persistence.JdbcCourseRepository;
+import com.lxp.course.service.CourseService;
 import com.lxp.service.EnrollmentService;
 import com.lxp.service.UserService;
-import com.lxp.util.CLIRouter;
+import com.lxp.handler.CLIRouter;
 import javax.sql.DataSource;
 
 public class ApplicationContext {

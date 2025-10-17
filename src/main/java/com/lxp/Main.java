@@ -2,7 +2,7 @@ package com.lxp;
 
 import com.lxp.config.ApplicationContext;
 import com.lxp.config.DatabaseInitializer;
-import com.lxp.util.CLIRouter;
+import com.lxp.handler.CLIRouter;
 
 public class Main {
     public static void main(String[] args) {

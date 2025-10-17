@@ -1,6 +1,9 @@
 package com.lxp.handler;
 
-import com.lxp.api.controller.CourseController;
+import com.lxp.course.web.CourseController;
+import com.lxp.course.web.dto.response.CourseResponse;
+import com.lxp.formatter.CourseFormatter;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -56,7 +59,10 @@ public class CourseHandler {
     public void requestFindByIdCourse() throws SQLException {
         System.out.print("course ID: ");
         Long courseId = Long.parseLong(scanner.nextLine());
-        courseController.findById(courseId);
+        CourseResponse response =  courseController.findById(courseId);
+        CourseFormatter courseFormatter = new CourseFormatter();
+        String output = courseFormatter.format(response);
+        System.out.println(output);
         System.out.println("강좌 상세 조회가 완료 되었습니다.");
     }
 }

@@ -1,0 +1,127 @@
+package com.lxp.course.domain.model;
+
+import java.time.LocalDateTime;
+import java.util.*;
+
+public class Course {
+    private Long id;
+    private String title;
+    private final Long instructorId;
+    private Long categoryId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private CourseDetail detail;
+    private final Set<Tag> tags;
+    private final List<Section> sections;
+    private double totalSeconds;
+
+    private Course(String title, Long instructorId, CourseDetail detail, Long categoryId,
+                   List<Section> sections, Set<Tag> tags) {
+        this.title = title;
+        this.instructorId = instructorId;
+        this.detail = detail;
+        this.categoryId = categoryId;
+        this.createdAt = LocalDateTime.now();
+        this.sections = sections != null ? sections : new ArrayList<>();
+        this.tags = tags != null ? tags : new HashSet<>();
+        updateTotalDuration();
+    }
+
+    public Course(Long id, String title, Long instructorId, LocalDateTime createdAt, LocalDateTime updatedAt,
+                  CourseDetail detail, Set<Tag> tags, List<Section> sections, Long categoryId, int totalSeconds) { // totalSeconds 추가
+        this.id = id;
+        this.title = title;
+        this.instructorId = instructorId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.detail = detail;
+        this.tags = tags;
+        this.sections = sections;
+        this.categoryId = categoryId;
+        this.totalSeconds = totalSeconds; // DB의 값을 그대로 할당
+    }
+
+    public static Course create(String title, Long instructorId, CourseDetail detail, Long categoryId,
+                                List<Section> sections, Set<Tag> tags) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("강좌 제목은 필수입니다.");
+        }
+        return new Course(title, instructorId, detail, categoryId, sections, tags);
+    }
+
+    public void rename(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("강좌 이름은 필수입니다.");
+        }
+        this.title = title;
+    }
+
+    public void setDetail(CourseDetail detail) {
+        if (detail == null) throw new IllegalArgumentException("강좌 상세는 필수입니다.");
+        this.detail = detail;
+    }
+
+
+    public void addSection(Section section) {
+        Objects.requireNonNull(section, "section은 null일 수 없습니다.");
+
+        int nextOrder = sections.stream()
+                .mapToInt(Section::getSectionOrder)
+                .max()
+                .orElse(0) + 1;
+        section.changeOrder(nextOrder);
+        sections.add(section);
+        updateTotalDuration();
+    }
+
+
+
+    public void removeSectionById(Long sectionId) {
+        boolean removed = this.sections.removeIf(s -> Objects.equals(s.getId(), sectionId));
+        if (removed) {
+            updateTotalDuration();
+        }
+    }
+
+    public void removeSection(Section section) {
+        if (this.sections.remove(section)) {
+            updateTotalDuration();
+        }
+    }
+
+    public void addTag(Tag tag) {
+        Objects.requireNonNull(tag, "태그는 null일 수 없습니다.");
+        if (this.tags.add(tag)) {
+        }
+    }
+
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+    }
+
+    private void updateTotalDuration() {
+        this.totalSeconds = this.sections.stream()
+                .mapToInt(Section::calculateSectionDuration)
+                .sum();
+    }
+
+
+
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public Long getInstructorId() { return instructorId; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public CourseDetail getCourseDetail() { return detail; }
+    public double getTotalSeconds() { return totalSeconds; }
+    public Long getCategoryId() { return categoryId; }
+
+    public List<Section> getSections() {
+        return Collections.unmodifiableList(new ArrayList<>(sections));
+    }
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(new HashSet<>(tags));
+    }
+
+}
