@@ -1,6 +1,7 @@
 package com.lxp.handler;
 
 import com.lxp.api.controller.UserController;
+import com.lxp.api.dto.CreateUserRequest;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -33,6 +34,7 @@ public class UserHandler {
     private void printMenu() {
         System.out.println("1. 사용자 조회");
         System.out.println("2. 사용자 권한 조회");
+        System.out.println("3. 회원 가입");
         System.out.println("0. 뒤로가기");
         System.out.print("선택: ");
     }
@@ -44,6 +46,10 @@ public class UserHandler {
                 break;
             case "2":
                 requestUserRoleById();
+                break;
+            case "3":
+                requestSaveUser();
+                break;
             case "0":
                 return false;
             default:
@@ -74,4 +80,28 @@ public class UserHandler {
         scanner.nextLine();
     }
 
+    public void requestSaveUser() {
+        System.out.print("이메일을 입력해 주세요: ");
+        String email = scanner.nextLine();
+        System.out.print("비밀번호를 입력해 주세요: ");
+        String password = scanner.nextLine();
+        System.out.print("이름을 입력해 주세요: ");
+        String name = scanner.nextLine();
+        System.out.print("자기 소개를 입력해 주세요: ");
+        String introduction = scanner.nextLine();
+        introduction = introduction != null || introduction.isEmpty() ? null : introduction;
+        System.out.print("이력을 입력해 주세요: ");
+        String resume = scanner.nextLine();
+        resume = resume != null || resume.isEmpty() ? null : resume;
+
+        CreateUserRequest request = new CreateUserRequest(
+                email, password, name, introduction, resume
+        );
+
+        try {
+            System.out.println("회원가입에 성공했습니다. 사용자 id: " + userController.saveUser(request));
+        } catch (Exception e) {
+            System.out.println("회원가입에 실패했습니다. " + e.getMessage());
+        }
+    }
 }

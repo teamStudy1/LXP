@@ -10,6 +10,7 @@ import com.lxp.util.QueryType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 
 public class UserDao {
@@ -54,5 +55,53 @@ public class UserDao {
             }
             return false;
         }
+    }
+
+    public boolean existsByEmail(String email) throws SQLException {
+        String sql = QueryType.USER_EXISTS_BY_EMAIL.getQuery();
+        try (PreparedStatement pstmt = DataSourceFactory.getDataSource().getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+            return false;
+        }
+    }
+
+    public Long saveUser(String email, String password, String name) throws SQLException {
+        String sql = QueryType.USER_SAVE.getQuery();
+        try (PreparedStatement pstmt = DataSourceFactory.getDataSource().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+            pstmt.setString(3, name);
+            int result = pstmt.executeUpdate();
+            if (result > 0) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getLong(1);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Long saveUserProfile(Long userId, String introduction, String resume) throws SQLException {
+        String sql = QueryType.USER_PROFILE.getQuery();
+        try (PreparedStatement pstmt = DataSourceFactory.getDataSource().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setLong(1, userId);
+            pstmt.setString(2, introduction);
+            pstmt.setString(3, resume);
+            int result = pstmt.executeUpdate();
+            if (result > 0) {
+                try(ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getLong(1);
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
