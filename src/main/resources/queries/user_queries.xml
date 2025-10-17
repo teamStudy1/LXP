@@ -3,16 +3,22 @@
 <properties>
     <query key ="user.findById">
         SELECT
-            user_id,
-            email,
-            password,
-            name,
-            active_status,
-            role,
-            created_at,
-            updated_at
-        FROM user
-        WHERE user_id=?
+            u.user_id AS user_id,
+            u.email AS email,
+            u.password AS password,
+            u.name AS name,
+            u.active_status AS active_status,
+            u.role AS role,
+            u.created_at AS user_created_at,
+            u.updated_at AS user_updated_at,
+            up.user_profile_id AS user_profile_id,
+            up.introduction AS introduction,
+            up.resume AS resume,
+            up.created_at AS user_profile_created_at,
+            up.updated_at AS user_profile_updated_at
+        FROM user u
+        LEFT JOIN user_profile up ON u.user_id = up.user_id
+        WHERE u.user_id=?
     </query>
 
     <query key ="user.findRoleById">
@@ -41,5 +47,10 @@
         VALUES (?, ?, ?)
     </query>
 
+    <query key="user.updateRoleById">
+        UPDATE user
+        SET role=?
+        WHERE user_id=?
+    </query>
 
 </properties>

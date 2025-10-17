@@ -54,7 +54,7 @@ public class ApplicationContext {
 
     // user component
     private static class UserDaoHolder {
-        private static final UserDao INSTANCE = new UserDao();
+        private static final UserDao INSTANCE = new UserDao(getDataSource());
     }
 
     private static class UserServiceHolder {

@@ -2,6 +2,7 @@ package com.lxp.handler;
 
 import com.lxp.api.controller.UserController;
 import com.lxp.api.dto.CreateUserRequest;
+import com.lxp.api.dto.UpdateUserRoleRequest;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -35,6 +36,7 @@ public class UserHandler {
         System.out.println("1. 사용자 조회");
         System.out.println("2. 사용자 권한 조회");
         System.out.println("3. 회원 가입");
+        System.out.println("4. 사용자 권한 변경");
         System.out.println("0. 뒤로가기");
         System.out.print("선택: ");
     }
@@ -49,6 +51,9 @@ public class UserHandler {
                 break;
             case "3":
                 requestSaveUser();
+                break;
+            case "4":
+                requestUpdateUserRole();
                 break;
             case "0":
                 return false;
@@ -102,6 +107,21 @@ public class UserHandler {
             System.out.println("회원가입에 성공했습니다. 사용자 id: " + userController.saveUser(request));
         } catch (Exception e) {
             System.out.println("회원가입에 실패했습니다. " + e.getMessage());
+        }
+    }
+
+    public void requestUpdateUserRole() {
+        System.out.print("변경할 사용자의 id를 입력해 주세요: ");
+        long userId = scanner.nextLong();
+        scanner.nextLine();
+        System.out.print("변경할 권한을 입력해 주세요 (STUDENT, INSTRUCTOR): ");
+        String userRole = scanner.nextLine();
+
+        UpdateUserRoleRequest request = new UpdateUserRoleRequest(userId, userRole);
+        try {
+            userController.updateUserRole(request);
+        } catch (SQLException e) {
+            System.out.println("권한 변경에 실패했습니다. " + e.getMessage());
         }
     }
 }

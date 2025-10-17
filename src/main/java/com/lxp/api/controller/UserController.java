@@ -1,6 +1,7 @@
 package com.lxp.api.controller;
 
 import com.lxp.api.dto.CreateUserRequest;
+import com.lxp.api.dto.UpdateUserRoleRequest;
 import com.lxp.api.dto.UserResponse;
 import com.lxp.domain.user.enums.UserRole;
 import com.lxp.service.UserService;
@@ -15,7 +16,7 @@ public class UserController {
     }
 
     public UserResponse getUserById(Long id) throws Exception {
-        return userService.getUserById(id);
+        return userService.getUserViewById(id);
     }
 
     public UserRole getUserRoleById(Long id) throws Exception {
@@ -25,5 +26,10 @@ public class UserController {
     public long saveUser(CreateUserRequest userRequest) throws SQLException {
         userRequest.validate();
         return userService.saveUser(userRequest);
+    }
+
+    public void updateUserRole(UpdateUserRoleRequest userRoleRequest) throws SQLException {
+        userRoleRequest.validate();
+        userService.updateUserRole(userRoleRequest.userId(), userRoleRequest.getUserRole());
     }
 }
