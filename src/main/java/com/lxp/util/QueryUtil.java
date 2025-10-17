@@ -1,6 +1,7 @@
 package com.lxp.util;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -13,9 +14,12 @@ public class QueryUtil {
     private static final Map<String, String> queries = new HashMap<>();
 
     static {
-        loadQueries("queries/category_queries.xml");
+//        loadQueries("queries/category_queries.xml");
         loadQueries("queries/course_queries.xml");
-        loadQueries("queries/course_tag_queries.xml");
+        loadQueries("queries/section_queries.xml");
+        loadQueries("queries/tag_queries.xml");
+//        loadQueries("queries/enrollment_queries.xml");
+        loadQueries("queries/tag_queries.xml");
         loadQueries("queries/user_queries.xml");
     }
 
@@ -42,6 +46,7 @@ public class QueryUtil {
                 queries.put(key, sql);
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("error loading queries.xml");
         }
     }
@@ -52,5 +57,11 @@ public class QueryUtil {
             throw new RuntimeException("Query not found: " + key);
         }
         return query;
+    }
+
+    public static String buildInQuery(String key, int paramCount) {
+        String query = getQuery(key);
+        String placeholders = String.join(",", Collections.nCopies(paramCount, "?"));
+        return query.replace(":in_clause", placeholders);
     }
 }

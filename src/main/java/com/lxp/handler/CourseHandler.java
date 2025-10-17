@@ -43,11 +43,20 @@ public class CourseHandler {
         switch (command) {
             case "1":
                 break;
+            case "3":
+                requestFindByIdCourse();
+                break;
             case "0":
                 return false;
             default:
                 System.out.println("잘못된 입력입니다.");
         }
         return true;
+    }
+    public void requestFindByIdCourse() throws SQLException {
+        System.out.print("course ID: ");
+        Long courseId = Long.parseLong(scanner.nextLine());
+        courseController.findById(courseId);
+        System.out.println("강좌 상세 조회가 완료 되었습니다.");
     }
 }

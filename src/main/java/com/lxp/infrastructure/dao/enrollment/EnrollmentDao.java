@@ -1,4 +1,4 @@
-package com.lxp.infrastructure.dao;
+package com.lxp.infrastructure.dao.enrollment;
 
 import com.lxp.domain.enrollment.Enrollment;
 import java.sql.SQLException;

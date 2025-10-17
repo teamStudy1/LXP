@@ -3,26 +3,26 @@ package com.lxp.domain.course;
 import java.time.LocalDateTime;
 import java.util.*;
 
-// 엔티티
 public class Course {
     private Long id;
     private String title;
     private final Long instructorId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
     private CourseDetail detail;
     private final Set<Tag> tags;
     private final List<Section> sections;
-    private int totalSeconds;
+    private double totalSeconds;
 
     public Course(
             String title,
             Long instructorId,
+            CourseDetail detail,
             LocalDateTime createdAt,
             List<Section> sections,
             Set<Tag> tags) {
         this.title = title;
+        this.detail = detail;
         this.instructorId = instructorId;
         this.createdAt = createdAt;
         this.sections = sections != null ? sections : new ArrayList<Section>();
@@ -30,73 +30,87 @@ public class Course {
         updateTotalDuration();
     }
 
-    public Course(
-            Long id,
-            String title,
-            Long instructorId,
-            List<Section> sections,
-            Set<Tag> tags,
-            LocalDateTime createdAt) {
-        this(title, instructorId, createdAt, sections, tags);
+    public Course(Long id, String title, Long instructorId, LocalDateTime createdAt, LocalDateTime updatedAt, CourseDetail detail, Set<Tag> tags, List<Section> sections) {
+        this(title, instructorId, detail,  createdAt, sections, tags);
         this.id = id;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         updateTotalDuration();
     }
 
-    public void rename(String newTitle) {
-        if (newTitle == null || newTitle.trim().isEmpty()) {
+    public void rename(String title) {
+        if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("강좌 이름은 필수입니다.");
         }
-        this.title = newTitle;
+        this.title = title;
     }
 
-    private void updateTotalDuration() {
-        this.totalSeconds = this.sections.stream().mapToInt(Section::calculateSectionDuration).sum();
+    public void setDetail(CourseDetail detail) {
+        if (detail == null) throw new IllegalArgumentException("강좌 상세는 필수입니다.");
+        this.detail = detail;
+    }
+
+
+    public void addSection(Section section) {
+        Objects.requireNonNull(section, "section은 null일 수 없습니다.");
+
+        int nextOrder = sections.stream()
+                .mapToInt(Section::getSectionOrder)
+                .max()
+                .orElse(0) + 1;
+        section.changeOrder(nextOrder);
+        sections.add(section);
+        updateTotalDuration();
+    }
+
+
+
+    public void removeSectionById(Long sectionId) {
+        boolean removed = this.sections.removeIf(s -> Objects.equals(s.getId(), sectionId));
+        if (removed) {
+            updateTotalDuration();
+        }
     }
 
     public void removeSection(Section section) {
-        this.sections.remove(section);
-        updateTotalDuration();
+        if (this.sections.remove(section)) {
+            updateTotalDuration();
+        }
     }
 
-    public Long getId() {
-        return id;
+    public void addTag(Tag tag) {
+        Objects.requireNonNull(tag, "태그는 null일 수 없습니다.");
+        if (this.tags.add(tag)) {
+        }
     }
 
-    public String getTitle() {
-        return title;
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
     }
 
-    public Long getInstructorId() {
-        return instructorId;
+    private void updateTotalDuration() {
+        this.totalSeconds = this.sections.stream()
+                .mapToInt(Section::calculateSectionDuration)
+                .sum();
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 
-    public CourseDetail getCourseDetail() {
-        return detail;
-    }
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public Long getInstructorId() { return instructorId; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public CourseDetail getCourseDetail() { return detail; }
+    public double getTotalSeconds() { return totalSeconds; }
 
-    public int getTotalSeconds() {
-        return totalSeconds;
-    }
 
-    public void setTotalSeconds(int totalSeconds) {
-        this.totalSeconds = totalSeconds;
-    }
-
-    /** 외부에서 sections 리스트를 맘대로 못바꾸게 */
     public List<Section> getSections() {
-        return Collections.unmodifiableList(sections);
+        return Collections.unmodifiableList(new ArrayList<>(sections));
+    }
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(new HashSet<>(tags));
     }
 
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
-    }
 }

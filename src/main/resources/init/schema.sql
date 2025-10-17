@@ -53,8 +53,10 @@ CREATE TABLE IF NOT EXISTS Course (
                         title VARCHAR(255) NOT NULL,
                         instructor_id BIGINT NOT NULL,
                         category_id BIGINT,
-                        total_time INT DEFAULT 0,
+                        total_time DECIMAL(5, 1) DEFAULT 0.0,
                         total_lecture_count INT DEFAULT 0,
+                        content TEXT,
+                        content_detail TEXT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         FOREIGN KEY (instructor_id) REFERENCES User(user_id) ON DELETE CASCADE,
@@ -62,16 +64,6 @@ CREATE TABLE IF NOT EXISTS Course (
 );
 
 
-
-CREATE TABLE IF NOT EXISTS Course_Detail(
-                              course_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                              course_id BIGINT NOT NULL UNIQUE,
-                              content TEXT,
-                              content_detail TEXT,
-                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                              FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS Section (
                          section_id BIGINT PRIMARY KEY AUTO_INCREMENT,

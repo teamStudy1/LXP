@@ -6,9 +6,10 @@ import com.lxp.api.controller.UserController;
 import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
-import com.lxp.infrastructure.dao.CourseDao;
-import com.lxp.infrastructure.dao.EnrollmentDao;
+import com.lxp.infrastructure.dao.course.*;
+import com.lxp.infrastructure.dao.enrollment.EnrollmentDao;
 import com.lxp.infrastructure.dao.UserDao;
+import com.lxp.infrastructure.dao.course.repository.JdbcCourseRepository;
 import com.lxp.service.CourseService;
 import com.lxp.service.EnrollmentService;
 import com.lxp.service.UserService;
@@ -101,7 +102,8 @@ public class ApplicationContext {
     }
 
     private static class CourseServiceHolder {
-        private static final CourseService INSTANCE = new CourseService(getCourseDao());
+        private static final CourseService INSTANCE = new CourseService(getJdbcCourseRepository()
+        );
     }
 
     private static class CourseControllerHolder {
@@ -127,6 +129,55 @@ public class ApplicationContext {
     public static CourseHandler getCourseHandler() {
         return CourseHandlerHolder.INSTANCE;
     }
+
+
+    // sections
+    public static class SectionDaoHolder {
+        private static final SectionDao INSTANCE = new SectionDao(getDataSource());
+    }
+
+    public static SectionDao getSectionDao() {
+        return SectionDaoHolder.INSTANCE;
+    }
+
+
+    // lecture
+    public static class LectureDaoHolder {
+        private static final LectureDao INSTANCE = new LectureDao(getDataSource());
+    }
+
+    public static LectureDao getLectureDao() {
+        return LectureDaoHolder.INSTANCE;
+    }
+
+
+    //tag
+    public static class TagDaoHolder {
+        private static final TagDao INSTANCE = new TagDao(getDataSource());
+    }
+
+    public static TagDao getTagDao() {
+        return TagDaoHolder.INSTANCE;
+    }
+
+
+    public static class JdbcCourseRepositoryHolder {
+        private static final JdbcCourseRepository INSTANCE = new JdbcCourseRepository(
+                getCourseDao(),
+                getSectionDao(),
+                getLectureDao(),
+                getTagDao()
+        );
+    }
+
+    public static JdbcCourseRepository getJdbcCourseRepository() {
+        return JdbcCourseRepositoryHolder.INSTANCE;
+    }
+
+
+
+
+
 
     private static class RouterHolder {
         private static final CLIRouter INSTANCE = new CLIRouter(getEnrollmentHandler(), getCourseHandler(), getUserHandler());

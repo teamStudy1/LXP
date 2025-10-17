@@ -9,5 +9,8 @@ public record CourseRow(
         Long categoryId,
         int totalTime,
         int totalLectureCount,
+        String content,
+        String contentDetail,
         Timestamp createdAt,
-        Timestamp updatedAt) {}
+        Timestamp updatedAt) {
+}

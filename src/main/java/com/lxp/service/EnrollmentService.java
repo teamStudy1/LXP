@@ -1,7 +1,7 @@
 package com.lxp.service;
 
 import com.lxp.config.TransactionManager;
-import com.lxp.infrastructure.dao.EnrollmentDao;
+import com.lxp.infrastructure.dao.enrollment.EnrollmentDao;
 import java.sql.SQLException;
 
 public class EnrollmentService {

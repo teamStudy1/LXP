@@ -1,11 +1,27 @@
 package com.lxp.service;
 
-import com.lxp.infrastructure.dao.CourseDao;
+import com.lxp.domain.course.Course;
+import com.lxp.infrastructure.dao.course.repository.JdbcCourseRepository;
 
 public class CourseService {
-    private final CourseDao courseDao;
+    private final JdbcCourseRepository jdbcCourseRepository;
 
-    public CourseService(CourseDao courseDao) {
-        this.courseDao = courseDao;
+    public CourseService(
+            JdbcCourseRepository jdbcCourseRepository
+    ) {
+        this.jdbcCourseRepository = jdbcCourseRepository;
     }
+
+    // detail
+    public Course findById(Long courseId) {
+        return jdbcCourseRepository.findAggregateById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + courseId));
+    }
+
+
+
+
+
+
+
 }

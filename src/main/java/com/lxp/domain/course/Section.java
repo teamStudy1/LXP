@@ -4,23 +4,50 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 // 엔티티
 public class Section {
-    private final Long id;
+    private Long id;
     private String title;
-    private final int sectionOrder;
+    private int sectionOrder;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private final List<Lecture> lectures = new ArrayList<>();
 
-    public Section(
-            Long id, String title, int sectionOrder, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Section(Long id,
+                   String title,
+                   int sectionOrder,
+                   LocalDateTime createdAt,
+                   LocalDateTime updatedAt) {
+        validateTitle(title);
         this.id = id;
+        this.title = title.trim();
+        this.sectionOrder = sectionOrder;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
+        this.updatedAt = updatedAt != null ? updatedAt : this.createdAt;
+    }
+
+    private Section(
+            String title, int sectionOrder) {
         this.title = title;
         this.sectionOrder = sectionOrder;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    }
+
+    public Lecture createLecture(String title, String videoUrl, int duration) {
+        int nextOrder = lectures.stream().mapToInt(Lecture::getLectureOrder).max().orElse(0)+1;
+        return createLectureAt(title, videoUrl, duration, nextOrder);
+    }
+
+    public Lecture createLectureAt(String title, String videoUrl, int duration, int nextOrder) {
+        Lecture lec = new Lecture(
+                title,
+                nextOrder,
+                videoUrl,
+                duration
+        );
+        lectures.add(lec);
+        return lec;
     }
 
     public void addLecture(Lecture lecture) {
@@ -36,6 +63,10 @@ public class Section {
         this.title = newTitle;
     }
 
+    public void changeOrder(int order) {
+        this.sectionOrder = order;
+}
+
     public void swapLectureOrder(Long lectureId1, Long lectureId2) {
 
         Lecture lec1 = findLectureById(lectureId1);
@@ -48,58 +79,34 @@ public class Section {
         lec2.changeOrder(order1);
     }
 
-    public void insertNewLecture(Lecture newLecture, int targetOrder) {
 
-        for (Lecture lecture : lectures) {
-            if (lecture.getLectureOrder() < targetOrder) {
-                continue;
-            }
-            lecture.changeOrder(lecture.getLectureOrder() + 1);
-        }
-
-        newLecture.changeOrder(targetOrder);
-        this.lectures.add(newLecture);
+    public List<Lecture> getLectures() {
+        return Collections.unmodifiableList(new ArrayList<>(lectures));
     }
+
 
     public int calculateSectionDuration() {
         return this.lectures.stream().mapToInt(Lecture::getDuration).sum();
     }
 
+    private Lecture findLectureById(Long lectureId) {
+        return lectures.stream()
+                .filter(l -> Objects.equals(l.getId(), lectureId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 강의를 찾을 수 없습니다. id=" + lectureId));
+    }
+
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("강의 이름은 비어있을 수 없습니다.");
+            throw new IllegalArgumentException("섹션 제목은 비어있을 수 없습니다.");
         }
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public int getSectionOrder() {
-        return sectionOrder;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /** 강의 목록을 외부에서 볼 수 있게 해주지만, 외부에서 마음대로 추가하거나 삭제 못하게 읽기 전용으로 포장해서 줌 */
-    public List<Lecture> getLectures() {
-        return Collections.unmodifiableList(lectures);
-    }
-
-    private Lecture findLectureById(Long lectureId) {
-        return lectures.stream()
-                .filter(l -> l.getId().equals(lectureId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 강의를 찾을 수 없습니다."));
-    }
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public int getSectionOrder() { return sectionOrder; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 }
+
+

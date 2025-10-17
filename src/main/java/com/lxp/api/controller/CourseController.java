@@ -8,4 +8,8 @@ public class CourseController {
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
+
+    public void findById(Long courseId){
+        courseService.findById(courseId);
+    }
 }
