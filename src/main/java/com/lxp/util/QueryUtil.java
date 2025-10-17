@@ -16,6 +16,7 @@ public class QueryUtil {
         loadQueries("queries/category_queries.xml");
         loadQueries("queries/course_queries.xml");
         loadQueries("queries/course_tag_queries.xml");
+        loadQueries("queries/user_profile_queries.xml");
         loadQueries("queries/user_queries.xml");
     }
 
