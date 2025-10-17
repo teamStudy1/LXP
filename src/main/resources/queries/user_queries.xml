@@ -53,4 +53,10 @@
         WHERE user_id=?
     </query>
 
+    <query key="user.updateActiveStatus">
+        UPDATE user
+        SET active_status=?
+        WHERE user_id=?
+    </query>
+
 </properties>

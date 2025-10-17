@@ -10,6 +10,7 @@ public enum QueryType {
     USER_SAVE("user.save"),
     USER_PROFILE("userProfile.save"),
     USER_UPDATE_ROLE("user.updateRoleById"),
+    USER_UPDATE_ACTIVE_STATUS("user.updateActiveStatus"),
     ;
 
     private final String key;

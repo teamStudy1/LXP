@@ -1,6 +1,7 @@
 package com.lxp.infrastructure.dao;
 
 import com.lxp.domain.user.User;
+import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.mapper.UserMapper;
 import com.lxp.infrastructure.row.user.UserRow;
@@ -129,8 +130,17 @@ public class UserDao {
             pstmt.setString(1, userRole.name());
             pstmt.setLong(2, userId);
 
-            int result = pstmt.executeUpdate();
-            return result;
+            return pstmt.executeUpdate();
+        }
+    }
+
+    public int updateUserActiveStatus(Long userId, ActiveStatus activeStatus) throws SQLException {
+        String sql = QueryType.USER_UPDATE_ACTIVE_STATUS.getQuery();
+        try (PreparedStatement pstmt = dataSource.getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, activeStatus.name());
+            pstmt.setLong(2, userId);
+
+            return pstmt.executeUpdate();
         }
     }
 }

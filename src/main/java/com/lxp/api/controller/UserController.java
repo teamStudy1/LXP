@@ -32,4 +32,9 @@ public class UserController {
         userRoleRequest.validate();
         userService.updateUserRole(userRoleRequest.userId(), userRoleRequest.getUserRole());
     }
+
+    public void deactivateUser(Long userId) throws SQLException {
+        if (userId <= 0) throw new IllegalStateException("유효하지 않은 사용자 id 값입니다.");
+        userService.deactivateUser(userId);
+    }
 }

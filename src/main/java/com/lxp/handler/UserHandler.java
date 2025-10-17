@@ -37,6 +37,7 @@ public class UserHandler {
         System.out.println("2. 사용자 권한 조회");
         System.out.println("3. 회원 가입");
         System.out.println("4. 사용자 권한 변경");
+        System.out.println("5. 사용자 탈퇴 처리");
         System.out.println("0. 뒤로가기");
         System.out.print("선택: ");
     }
@@ -54,6 +55,9 @@ public class UserHandler {
                 break;
             case "4":
                 requestUpdateUserRole();
+                break;
+            case "5":
+                requestDeactiveUser();
                 break;
             case "0":
                 return false;
@@ -122,6 +126,17 @@ public class UserHandler {
             userController.updateUserRole(request);
         } catch (SQLException e) {
             System.out.println("권한 변경에 실패했습니다. " + e.getMessage());
+        }
+    }
+
+    public void requestDeactiveUser() {
+        System.out.print("변경할 사용자의 id를 입력해 주세요: ");
+        long userId = scanner.nextLong();
+        scanner.nextLine();
+        try {
+            userController.deactivateUser(userId);
+        } catch (SQLException e) {
+            System.out.println("사용자 탈퇴 처리에 실패했습니다. " + e.getMessage());
         }
     }
 }

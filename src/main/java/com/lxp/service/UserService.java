@@ -79,4 +79,26 @@ public class UserService {
             TransactionManager.close();
         }
     }
+
+    public void deactivateUser(Long userId) throws SQLException {
+        User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
+        if (user.isWithdrawal()) throw new IllegalStateException("이미 탈퇴한 사용자 입니다.");
+
+        user.withdrawal();
+
+        try {
+            TransactionManager.beginTransaction();
+            int result = userDao.updateUserActiveStatus(userId, user.getActiveStatus());
+            if (result == 0) {
+                throw new IllegalStateException("사용자 탈퇴에 실패했습니다.");
+            }
+            System.out.println("사용자 탈퇴에 성공했습니다.");
+            TransactionManager.commit();
+        } catch (SQLException e) {
+            TransactionManager.rollback();
+            throw new RuntimeException();
+        } finally {
+            TransactionManager.close();
+        }
+    }
 }

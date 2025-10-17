@@ -41,7 +41,20 @@ public class User {
         role = userRole;
     }
 
+    public void withdrawal() {
+        if (role == UserRole.ADMIN) throw new IllegalStateException("관리자는 탈퇴할 수 없습니다.");
+        if (activeStatus == ActiveStatus.DEACTIVE) throw new IllegalStateException("이미 탈퇴한 사용자 입니다.");
+        activeStatus = ActiveStatus.DEACTIVE;
+    }
+
+    public boolean isWithdrawal() {
+        return activeStatus == ActiveStatus.DEACTIVE;
+    }
     public UserRole getUserRole() {
         return role;
+    }
+
+    public ActiveStatus getActiveStatus() {
+        return activeStatus;
     }
 }
