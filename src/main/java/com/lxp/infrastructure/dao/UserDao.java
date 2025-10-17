@@ -7,10 +7,7 @@ import com.lxp.infrastructure.row.UserRow;
 import com.lxp.service.query.UserView;
 import com.lxp.util.QueryType;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Optional;
 
 public class UserDao {
@@ -69,9 +66,9 @@ public class UserDao {
         }
     }
 
-    public Long saveUser(String email, String password, String name) throws SQLException {
+    public Long saveUser(Connection connection, String email, String password, String name) throws SQLException {
         String sql = QueryType.USER_SAVE.getQuery();
-        try (PreparedStatement pstmt = DataSourceFactory.getDataSource().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, email);
             pstmt.setString(2, password);
             pstmt.setString(3, name);
@@ -87,9 +84,9 @@ public class UserDao {
         return null;
     }
 
-    public Long saveUserProfile(Long userId, String introduction, String resume) throws SQLException {
+    public Long saveUserProfile(Connection connection, Long userId, String introduction, String resume) throws SQLException {
         String sql = QueryType.USER_PROFILE.getQuery();
-        try (PreparedStatement pstmt = DataSourceFactory.getDataSource().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setLong(1, userId);
             pstmt.setString(2, introduction);
             pstmt.setString(3, resume);

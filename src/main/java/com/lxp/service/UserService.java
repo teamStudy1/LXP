@@ -2,6 +2,7 @@ package com.lxp.service;
 
 import com.lxp.api.dto.CreateUserRequest;
 import com.lxp.api.dto.UserResponse;
+import com.lxp.config.TransactionManager;
 import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.dao.UserDao;
 import com.lxp.infrastructure.mapper.UserMapper;
@@ -36,16 +37,25 @@ public class UserService {
             throw new IllegalStateException("이미 가입된 이메일입니다.");
         }
 
-        Long userId = userDao.saveUser(userRequest.email(), SHA256Util.getSHA256Hash(userRequest.password()), userRequest.name());
-        if (userId == null) {
-            throw new IllegalStateException("사용자 가입에 실패했습니다.");
-        }
+        try {
+            TransactionManager.beginTransaction();
+            Long userId = userDao.saveUser(TransactionManager.getConnection(), userRequest.email(), SHA256Util.getSHA256Hash(userRequest.password()), userRequest.name());
+            if (userId == null) {
+                throw new IllegalStateException("사용자 가입에 실패했습니다.");
+            }
 
-        Long userProfileId = userDao.saveUserProfile(userId, userRequest.introduction(), userRequest.resume());
-        if (userProfileId == null) {
-            throw new IllegalStateException("사용자 가입에 실패했습니다.");
-        }
+            Long userProfileId = userDao.saveUserProfile(TransactionManager.getConnection(), userId, userRequest.introduction(), userRequest.resume());
+            if (userProfileId == null) {
+                throw new IllegalStateException("사용자 가입에 실패했습니다.");
+            }
 
-        return userId;
+            TransactionManager.commit();
+            return userId;
+        } catch (SQLException ex) {
+            TransactionManager.rollback();
+            throw ex;
+        } finally {
+            TransactionManager.close();
+        }
     }
 }
