@@ -3,17 +3,23 @@ package com.lxp.config;
 import com.lxp.api.controller.CourseController;
 import com.lxp.api.controller.EnrollmentController;
 import com.lxp.api.controller.UserController;
+import com.lxp.domain.course.Course;
 import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
 import com.lxp.infrastructure.dao.CourseDao;
 import com.lxp.infrastructure.dao.EnrollmentDao;
 import com.lxp.infrastructure.dao.UserDao;
+import com.lxp.infrastructure.row.course.CourseRow;
 import com.lxp.service.CourseService;
 import com.lxp.service.EnrollmentService;
 import com.lxp.service.UserService;
 import com.lxp.util.CLIRouter;
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 public class ApplicationContext {
     private ApplicationContext() {}
@@ -97,7 +103,37 @@ public class ApplicationContext {
 
     // course component
     private static class CourseDaoHolder {
-        private static final CourseDao INSTANCE = new CourseDao(getDataSource());
+        private static final CourseDao INSTANCE = new CourseDao() {
+            @Override
+            public CourseRow save(Course course) throws SQLException {
+                return null;
+            }
+
+            @Override
+            public Optional<CourseRow> findById(Long id) throws SQLException {
+                return Optional.empty();
+            }
+
+            @Override
+            public List<CourseRow> findByTitleContaining(String keyword) throws SQLException {
+                return List.of();
+            }
+
+            @Override
+            public List<CourseRow> findAll() throws SQLException {
+                return List.of();
+            }
+
+            @Override
+            public int updateTitle(Long id, String newTitle) throws SQLException {
+                return 0;
+            }
+
+            @Override
+            public CourseRow mapRow(ResultSet rs) throws SQLException {
+                return CourseDao.super.mapRow(rs);
+            }
+        };
     }
 
     private static class CourseServiceHolder {

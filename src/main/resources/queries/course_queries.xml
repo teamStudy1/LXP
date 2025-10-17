@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<properties>
+    <query key="course.findAll">
+        SELECT * FROM course ORDER BY course_id DESC
+    </query>
+
+    <query key="course.findById">
+        SELECT * FROM course WHERE course_id = ?
+    </query>
+
+    <query key="course.findByTitle">
+        SELECT * FROM course WHERE title LIKE ? ORDER BY course_id DESC
+    </query>
+
+    <query key="course.save">
+        INSERT INTO course (title, instructor_id) VALUES (?, ?)
+    </query>
+
+    <query key="course.updateTitle">
+        UPDATE course SET title = ? WHERE course_id = ?
+    </query>
+</properties>
