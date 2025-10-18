@@ -10,10 +10,6 @@
         SELECT * FROM Category WHERE category_id = ?
     </query>
 
-    <query key="category.findByName">
-        SELECT * FROM Category WHERE parent_id = ?
-    </query>
-
     <query key="category.findAllByParentId">
         SELECT * FROM Category WHERE parent_id = ?
     </query>
@@ -27,8 +23,8 @@
         FROM Category WHERE category_id = ?
     </query>
 
-    <query key="category.updataName">
-        UPDATA Category
+    <query key="category.updateName">
+        UPDATE Category
         SET name = ?
         WHERE category_id =?
     </query>
@@ -42,5 +38,4 @@
     <query key="category.deleteById">
         DELETE FROM Category WHERE category_id =?
     </query>
-
 </properties>
