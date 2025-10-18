@@ -25,8 +25,8 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
-    public Course createCourse(String title, Long instructorId) throws SQLException {
-        return courseService.createCourse(title, instructorId);
+    public Course createCourse(String title, Long instructorId, double totalTime, int totalLectureCount, String content, String contentDetail) {
+        return courseService.createCourse(title, instructorId, totalTime, totalLectureCount, content, contentDetail);
     }
 
     public boolean updateCourseTitle(Long id, String newTitle) throws SQLException {

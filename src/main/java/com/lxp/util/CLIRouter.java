@@ -4,60 +4,58 @@ import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CLIRouter {
     private final Scanner scanner;
+    private final CourseHandler courseHandler;
     private final EnrollmentHandler enrollmentHandler;
     private final UserHandler userHandler;
-    private final CourseHandler courseHandler;
 
-    public CLIRouter(EnrollmentHandler enrollmentHandler, CourseHandler courseHandler, UserHandler userHandler) {
+    public CLIRouter(CourseHandler courseHandler, EnrollmentHandler enrollmentHandler, UserHandler userHandler) {
         this.scanner = new Scanner(System.in);
-        this.enrollmentHandler = enrollmentHandler;
         this.courseHandler = courseHandler;
+        this.enrollmentHandler = enrollmentHandler;
         this.userHandler = userHandler;
     }
 
     public void start() {
-        System.out.println("=== Course Management System ===");
+        System.out.println("=== LXP Course Management System ===");
         while (true) {
             printMenu();
             String command = scanner.nextLine().trim();
-            try {
-                if (!handleCommand(command)) {
-                    break; // exit
-                }
-            } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
+            if (command.equals("0")) {
+                break;
             }
+            handleCommand(command);
         }
     }
 
     private void printMenu() {
-        System.out.println("1. 카테고리");
-        System.out.println("2. 강좌");
-        System.out.println("3. 사용자");
-        System.out.println("4. 수강신청");
+        System.out.println("\n[메인 메뉴]");
+        System.out.println("1. 카테고리 관리");
+        System.out.println("2. 강좌 관리");
+        System.out.println("3. 사용자 관리");
+        System.out.println("4. 수강신청 관리");
         System.out.println("0. 종료");
         System.out.print("선택: ");
     }
 
-    private boolean handleCommand(String command) throws SQLException {
+    private void handleCommand(String command) {
         switch (command) {
+            case "2":
+                courseHandler.start();
+                break;
+            case "1":
             case "3":
                 userHandler.start();
                 break;
             case "4":
-                enrollmentHandler.start();
+                System.out.println("해당 기능은 아직 구현되지 않았습니다.");
                 break;
-            case "2":
-                courseHandler.start();
-                return false;
             default:
-                System.out.println("잘못된 입력입니다.");
+                System.out.println("잘못된 입력입니다. 메뉴에 있는 번호를 입력해주세요.");
+                break;
         }
-        return true;
     }
 }

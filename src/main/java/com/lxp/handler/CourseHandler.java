@@ -3,7 +3,10 @@ package com.lxp.handler;
 import com.lxp.api.controller.CourseController;
 import com.lxp.api.dto.CourseView;
 import com.lxp.domain.course.Course;
+import com.lxp.util.TimeConverter;
+
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,11 +21,11 @@ public class CourseHandler {
 
     public void start() {
         System.out.println("=== Course Management System ===");
-        while (true) {
+        while (handleCourse()) {
             printMenu();
             String command = scanner.nextLine().trim();
             try {
-                if (!handleCourse(command)) {
+                if (!handleCourse()) {
                     break;
                 }
             } catch (Exception e) {
@@ -36,19 +39,25 @@ public class CourseHandler {
         System.out.print("선택: ");
     }
 
-    private boolean handleCourse(String command) throws SQLException {
-        switch (command) {
-            case "1": listAllCourses(); break;
-            case "2": searchCourse(); break;
-            case "3": getCourseDetails(); break;
-            case "4": createCourse(); break;
-            case "5": updateCourse(); break;
-            case "0":
-                System.out.println("메인 메뉴로 돌아갑니다.");
-                return false;
-            default:
-                System.out.println("잘못된 입력입니다.");
-                break;
+    private boolean handleCourse() {
+        printMenu();
+        String command = scanner.nextLine().trim();
+        try {
+            switch (command) {
+                case "1": listAllCourses(); break;
+                case "2": searchCourse(); break;
+                case "3": getCourseDetails(); break;
+                case "4": createCourse(); break;
+                case "5": updateCourse(); break;
+                case "0":
+                    System.out.println("메인 메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.println("잘못된 입력입니다.");
+                    break;
+            }
+        } catch (Exception e) {
+            System.err.println("오류가 발생했습니다: " + e.getMessage());
         }
         return true;
     }
@@ -73,11 +82,19 @@ public class CourseHandler {
         try {
             long id = Long.parseLong(scanner.nextLine());
             CourseView course = courseController.getCourseById(id);
-            System.out.println("[상세 정보]");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            System.out.println("\n[ 강좌 상세 정보 ]");
+            System.out.println("------------------------------------------");
             System.out.println(" - ID: " + course.id());
             System.out.println(" - 제목: " + course.title());
-            System.out.println(" - 강사 ID: " + course.instructorId());
-            System.out.println(" - 생성일: " + course.createdAt());
+            System.out.println(" - 강사: " + course.instructorName());
+            System.out.println(" - 총 시간: " + TimeConverter.getFormattedDurationFromHours(course.totalTime()));
+            System.out.println(" - 총 강의 수: " + course.totalLectureCount());
+            System.out.println(" - 생성일: " + (course.createdAt() != null ? course.createdAt().format(formatter) : "N/A"));
+            System.out.println(" - 상세 설명: " + course.contentDetail());
+            System.out.println("------------------------------------------");
+
         } catch (NumberFormatException e) {
             System.out.println("숫자 ID를 입력해야 합니다.");
         } catch (Exception e) {
@@ -88,16 +105,31 @@ public class CourseHandler {
     private void createCourse() {
         System.out.println("\n--- 4. 강좌 생성 ---");
         try {
-            System.out.print("새 강좌 제목: ");
+            System.out.print("강좌 제목: ");
             String title = scanner.nextLine();
+
             System.out.print("강사 ID: ");
             long instructorId = Long.parseLong(scanner.nextLine());
-            Course createdCourse = courseController.createCourse(title, instructorId);
+
+            System.out.print("총 강의 시간 (예: 13.5): ");
+            double totalTime = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("총 강의 수: ");
+            int totalLectureCount = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("강좌 소개 (목록용): ");
+            String content = scanner.nextLine();
+
+            System.out.print("강좌 상세 설명: ");
+            String contentDetail = scanner.nextLine();
+
+            Course createdCourse = courseController.createCourse(title, instructorId, totalTime, totalLectureCount, content, contentDetail);
             System.out.println("강좌가 성공적으로 생성되었습니다! (ID: " + createdCourse.getId() + ")");
+
         } catch (NumberFormatException e) {
-            System.out.println("강사 ID는 숫자로 입력해야 합니다.");
+            System.out.println("ID, 시간, 강의 수는 숫자로 입력해야 합니다.");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -124,7 +156,34 @@ public class CourseHandler {
             System.out.println("조회된 강좌가 없습니다.");
         } else {
             System.out.println("총 " + courses.size() + "개의 강좌를 찾았습니다.");
-            courses.forEach(c -> System.out.printf("ID: %-3d | 제목: %s%n", c.id(), c.title()));
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-4s | %-25s | %-8s | %-15s | %-25s | %s%n", "ID", "강좌 제목", "강사 이름", "총 강의 시간", "강좌 설명", "생성 시간");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            for (CourseView c : courses) {
+                String formattedTime = TimeConverter.getFormattedDurationFromHours(c.totalTime());
+                String formattedCreatedAt = (c.createdAt() != null) ? c.createdAt().format(formatter) : "";
+
+                String shortContent = c.content();
+                if (shortContent != null && shortContent.length() > 40) {
+                    shortContent = shortContent.substring(0, 40) + "...";
+                } else if (shortContent == null) {
+                    shortContent = "";
+                }
+
+                System.out.printf(
+                        "%-4d | %-25s | %-8s | %-15s | %-25s | %s%n",
+                        c.id(),
+                        c.title(),
+                        c.instructorName(),
+                        formattedTime,
+                        shortContent,
+                        formattedCreatedAt
+                );
+            }
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 }

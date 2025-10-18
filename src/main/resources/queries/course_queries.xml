@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <properties>
     <query key="course.findAll">
-        SELECT * FROM course ORDER BY course_id DESC
+        SELECT
+        c.*,
+        u.name AS instructor_name,
+        cd.content,
+        cd.content_detail
+        FROM
+        course c
+        LEFT JOIN user u ON c.instructor_id = u.user_id
+        LEFT JOIN course_detail cd ON c.course_id = cd.course_id
+        ORDER BY c.course_id DESC
     </query>
 
     <query key="course.findById">
-        SELECT * FROM course WHERE course_id = ?
+        SELECT
+        c.*,
+        u.name AS instructor_name,
+        cd.content,
+        cd.content_detail
+        FROM
+        course c
+        LEFT JOIN user u ON c.instructor_id = u.user_id
+        LEFT JOIN course_detail cd ON c.course_id = cd.course_id
+        WHERE c.course_id = ?
     </query>
 
     <query key="course.findByTitle">
-        SELECT * FROM course WHERE title LIKE ? ORDER BY course_id DESC
+        SELECT
+        c.*,
+        u.name AS instructor_name,
+        cd.content,
+        cd.content_detail
+        FROM
+        course c
+        LEFT JOIN user u ON c.instructor_id = u.user_id
+        LEFT JOIN course_detail cd ON c.course_id = cd.course_id
+        WHERE c.title LIKE ?
+        ORDER BY c.course_id DESC
     </query>
 
     <query key="course.save">
-        INSERT INTO course (title, instructor_id) VALUES (?, ?)
+        INSERT INTO course (title, instructor_id,total_time, total_lecture_count) VALUES (?, ?, ?, ?)
     </query>
 
     <query key="course.updateTitle">
         UPDATE course SET title = ? WHERE course_id = ?
     </query>
-</properties>
+
+    </properties>
