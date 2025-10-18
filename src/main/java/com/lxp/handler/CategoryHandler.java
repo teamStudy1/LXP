@@ -1,0 +1,160 @@
+package com.lxp.handler;
+
+import com.lxp.api.controller.CategoryController;
+import com.lxp.api.controller.UserController;
+import com.lxp.domain.user.enums.UserRole;
+import com.lxp.service.query.CategoryView;
+
+import java.util.List;
+import java.util.Scanner;
+
+/*
+* 손님의 주문을 직접 받는 '서버' 클래스
+* CLI 화면을 보여주고 입력받아 홀 매니저 (Controller)에게 전달
+* */
+
+public class CategoryHandler {
+    private final Scanner scanner;
+    private final CategoryController categoryController;
+    private final UserController userController;
+
+    /*
+     * '서버'는 주문을 받을 스캐너와 홀매니저
+     * 그리고 손님의 권한을 확인할 보안요원 (UserController)가 필요
+     * @param categoryController 홀매니저
+     * @pram userController 보안요원
+     * */
+    public CategoryHandler(CategoryController categoryController, UserController userController) {
+        this.scanner = new Scanner(System.in);
+        this.categoryController = categoryController;
+        this.userController = userController;
+    }
+
+    /*
+     * 카테고리 관리 시스템 시작 */
+
+    public void start() {
+        System.out.println("\n=== 카테고리 관리시스템에 접속했습니다");
+
+        try {
+            // 신분증 검사
+            System.out.println("관리자 ID를 입력하세요 : ");
+            long userId = Long.parseLong(scanner.nextLine());
+            UserRole role = userController.getUserRoleById(userId);
+
+            if (role != UserRole.ADMIN) {
+                System.out.println("접근 권한이 없습니다. 관리자만 접근 할 수 있습니다 ");
+                return; //
+            }
+            System.out.println("관리자 인증이 완료 되었습니다. 메뉴를 선택해주세요. ");
+            // 검사를 통과한 경우에만 메뉴 루프를 시작합니다.
+            while (true) {
+                printMenu();
+                String command = scanner.nextLine().trim();
+                if (!handleComand(command)) {
+                    System.out.println("메인 메뉴로 돌아갑니다. ");
+                    break; // 0 입력 시 루프 종료
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("오류 : ID는 숫자로 입력해야 합니다");
+        } catch (Exception e) {
+            System.out.println("오류가 발생했습니다. " + e.getMessage());
+        }
+    }
+
+    /*
+     * 메뉴판 출력
+     * */
+    private void printMenu() {
+        System.out.println("\n1. 전체 카테고리 보기 ");
+        System.out.println("2. 카테고리 생성");
+        System.out.println("3. 카테고리 이름 수정");
+        System.out.println("4. 카테고리 이동");
+        System.out.println("5. 카테고리 삭제");
+        System.out.println("0. 뒤로 가기");
+        System.out.println("선택: ");
+    }
+
+    /*
+     * 손님의 주문(command)에 따라 홀 매니저에게 요청을 전달
+     * @param command 손님이 선택한 메뉴 번호
+     * @return 루프를 계속할지 여부 (false면 루프 종료)
+     * */
+    private boolean handleComand(String command) throws Exception {
+        switch (command) {
+            case "1":
+                requestCategoryTree();
+                break;
+            case "2":
+                requestCreateCategory();
+                break;
+            case "3":
+                requestUpdateCategoryName();
+                break;
+            case "4":
+                requestMoveCategory();
+                break;
+            case "5":
+                requestDeleteCategory();
+                break;
+            case "0":
+                return false; // 루프 종료
+            default:
+                System.out.println("잘못된 입력입니다. 다시 선택해주세요");
+                break;
+        }
+        return true; // 루프 계속
+    }
+    // 각 메뉴에 대한 주문 처리 메서드
+
+    private void requestCategoryTree() throws Exception {
+        System.out.println("\n--- 전체 카테고리 목록 ---");
+        List<CategoryView> categoryTree = categoryController.getCategoryTree();
+        if (categoryTree.isEmpty()) {
+            System.out.println("표시할 카테고리가 없습니다.");
+        } else {
+            categoryTree.forEach(System.out::println);
+        }
+    }
+
+    private void requestCreateCategory() throws Exception {
+        System.out.println("생성할 카테고리 이름을 입력하세요: ");
+        String name = scanner.nextLine();
+        System.out.println("부모 카테고리 ID를 입력하세요 (최상위는 Enter) : ");
+        String parentIdInput = scanner.nextLine();
+        Long parentId = parentIdInput.isEmpty() ? null : Long.parseLong(parentIdInput);
+
+        CategoryView created = categoryController.createCategory(name, parentId);
+        System.out.println("성공 : '" + created.getName() + "' 카테고리가 생성되었습니다. (ID: " + created.getId() + ")");
+    }
+
+    private void requestUpdateCategoryName() throws Exception {
+        System.out.println("이름을 수정할 카테고리 ID를 입력하세요 : ");
+        long categoryId = Long.parseLong(scanner.nextLine());
+        System.out.println("새로운 카테고리 이름을 입력하세요: ");
+        String newName = scanner.nextLine();
+
+        categoryController.updateCategoryName(categoryId, newName);
+        System.out.println("성공 : 카테고리 이름이 수정되었습니다.");
+    }
+
+    private void requestMoveCategory() throws Exception {
+        System.out.println("이동할 카테고리 ID를 입력하세요: ");
+        long categoryId = Long.parseLong(scanner.nextLine());
+        System.out.println("새로운 부모 카테고리 ID를 입력하세요 (최상위는 Enter):");
+        String parentIdInput = scanner.nextLine();
+        Long newParentId = parentIdInput.isEmpty() ? null : Long.parseLong(parentIdInput);
+
+        categoryController.moveCategory(categoryId, newParentId);
+        System.out.println("성공: 카테고리가 이동되었습니다.");
+    }
+
+    private void requestDeleteCategory() throws Exception {
+        System.out.println("삭제할 카테고리 ID를 입력하세요 :");
+        long categoryId = Long.parseLong(scanner.nextLine());
+
+        categoryController.deleteCategory(categoryId);
+        System.out.println("성공: 카테고리가 삭제되었습니다. ");
+    }
+}

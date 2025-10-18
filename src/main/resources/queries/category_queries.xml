@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key="category.save">
+        INSERT INTO Category (name, parent_id, depth)
+        VALUES (?, ?, ?)
+    </query>
+
+    <query key="category.findByid">
+        SELECT * FROM Category WHERE category_id = ?
+    </query>
+
+    <query key="category.findByName">
+        SELECT * FROM Category WHERE parent_id = ?
+    </query>
+
+    <query key="category.findAllByParentId">
+        SELECT * FROM Category WHERE parent_id = ?
+    </query>
+
+    <query key="category.findAllByParentIdIsNull">
+        SELECT * FROM Category WHERE parent_id IS NULL
+    </query>
+
+    <query key="category.existsById">
+        SELECT CASE WHEN COUNT(category_id) > 0 THEN TRUE ELSE FALSE END
+        FROM Category WHERE category_id = ?
+    </query>
+
+    <query key="category.updataName">
+        UPDATA Category
+        SET name = ?
+        WHERE category_id =?
+    </query>
+
+    <query key="category.updateParent">
+        UPDATE Category
+        SET parent_id = ?, depth = ?
+        WHERE category_id = ?
+    </query>
+
+    <query key="category.deleteById">
+        DELETE FROM Category WHERE category_id =?
+    </query>
+
+</properties>

@@ -18,6 +18,16 @@ public class Category {
         this.children = new ArrayList<>();
     }
 
+    /*
+    * DAO 에서 '이미 DB에 있는' 데이터를 객체로 만들 때 사용하는 생성자
+    * DB에 저장된 모든 정보(ID 포함)를 받습니다
+    * */
+
+    public Category(Long id, String name, Long parentId, int depth) {
+        this(name, parentId, depth); // 위쪽의 기존 생성자를 먼저 호출해서 이름 ,부모 , 깊이 설정
+        this.id = id; // 그리고 전달 받은 ID를 추가로 설정
+    }
+
     public void rename(String newName) {
         validateName(newName);
         this.name = newName;

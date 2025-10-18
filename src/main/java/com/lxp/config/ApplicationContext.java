@@ -1,22 +1,41 @@
 package com.lxp.config;
 
+import com.lxp.api.controller.CategoryController;
 import com.lxp.api.controller.CourseController;
 import com.lxp.api.controller.EnrollmentController;
 import com.lxp.api.controller.UserController;
+import com.lxp.handler.CategoryHandler;
 import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
+import com.lxp.infrastructure.dao.CategoryDao;
 import com.lxp.infrastructure.dao.CourseDao;
 import com.lxp.infrastructure.dao.EnrollmentDao;
 import com.lxp.infrastructure.dao.UserDao;
 import com.lxp.service.CourseService;
 import com.lxp.service.EnrollmentService;
 import com.lxp.service.UserService;
+import com.lxp.service.CategoryService;
 import com.lxp.util.CLIRouter;
 import javax.sql.DataSource;
 
 public class ApplicationContext {
-    private ApplicationContext() {}
+    private ApplicationContext() {
+
+        }
+        // category
+        private static class CategoryDaoHolder {
+            private static final CategoryDao INSTANCE = new CategoryDao();
+        }
+        private static class CategoryServiceHolder {
+            private static final CategoryService INSTANCE = new CategoryService(getCategoryDao());
+        }
+        private static class CategoryControllerHolder {
+            private static final CategoryController INSTANCE = new CategoryController(getCategoryService());
+        }
+        private static class CategoryHandlerHolder {
+        private static final CategoryHandler INSTANCE = new CategoryHandler(getCategoryController(), getUserController());
+    }
 
     private static class EnrollmentDaoHolder {
         private static final EnrollmentDao INSTANCE = new EnrollmentDao();
@@ -26,6 +45,7 @@ public class ApplicationContext {
         private static final EnrollmentService INSTANCE = new EnrollmentService(getEnrollmentDao());
     }
 
+
     private static class EnrollmentControllerHolder {
         private static final EnrollmentController INSTANCE =
                 new EnrollmentController(getEnrollmentService());
@@ -34,6 +54,22 @@ public class ApplicationContext {
     private static class EnrollmentHandlerHolder {
         private static final EnrollmentHandler INSTANCE =
                 new EnrollmentHandler(getEnrollmentController());
+    }
+
+    public static CategoryDao getCategoryDao() {
+        return CategoryDaoHolder.INSTANCE;
+    }
+
+    public static CategoryService getCategoryService() {
+        return CategoryServiceHolder.INSTANCE;
+    }
+
+    public static CategoryController getCategoryController() {
+        return CategoryControllerHolder.INSTANCE;
+    }
+
+    public static CategoryHandler getCategoryHandler() {
+        return CategoryHandlerHolder.INSTANCE;
     }
 
     public static EnrollmentHandler getEnrollmentHandler() {
@@ -129,7 +165,7 @@ public class ApplicationContext {
     }
 
     private static class RouterHolder {
-        private static final CLIRouter INSTANCE = new CLIRouter(getEnrollmentHandler(), getCourseHandler(), getUserHandler());
+        private static final CLIRouter INSTANCE = new CLIRouter(getEnrollmentHandler(), getCourseHandler(), getUserHandler(), getCategoryHandler());
     }
 
     public static CLIRouter getRouter() {
