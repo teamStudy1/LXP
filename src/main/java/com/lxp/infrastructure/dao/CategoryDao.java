@@ -141,5 +141,29 @@ public class CategoryDao {
             pstmt.executeUpdate();
         }
     }
+
+    /*
+    * 이름에 특정 키워드가 포함된 모든 카테고리를 검색하여 CategoryView 리스트로 반환합니다.
+    * @param name 검색할 키워드
+    * @return 검색 결과 CategoryView 객체들의 리스트
+    * */
+    public List<CategoryView> findByNameContaining(String name) throws SQLException {
+        String sql = QueryType.CATEGORY_FIND_BY_NAME_CONTAING.getQuery();
+        List<CategoryView> categories = new ArrayList<>();
+        try (Connection conn = DataSourceFactory.getDataSource().getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // LIKE 검색을 위해 키워드 앞뒤에 '%'를 붙여 줍니다.
+            pstmt.setString(1, "%" + name + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    CategoryRow row = CategoryMapper.fromResultSet(rs);
+                    categories.add(CategoryMapper.toView(row));
+                }
+            }
+        }
+        return categories;
+    }
 }
 

@@ -5,6 +5,7 @@ import com.lxp.infrastructure.dao.CategoryDao;
 import com.lxp.service.query.CategoryView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -127,5 +128,21 @@ public class CategoryService {
 
         // 3. 자식이 없다는 것이 확인되면, 'DAo 요리사'에게 재료를 버리라고 지시합니다.
         categoryDao.deleteById(categoryId);
+    }
+
+    /*
+    * 검색 기능
+    * 이름에 특정 키워드가 포함된 카테고리 목록을 검색합니다.
+    *
+    * @param name 검색할 키워드
+    * @return 검색 결과 CategoryView 객체들의 리스트
+    * */
+    public List<CategoryView> searchCategory(String name) throws SQLException {
+        if (name == null || name.isEmpty()) {
+            // 검색어가 비어있으면 '전문요리사' 부를 필요 없어
+            // ArrayList를 보내기
+            return new ArrayList<>();
+        }
+        return categoryDao.findByNameContaining(name);
     }
 }

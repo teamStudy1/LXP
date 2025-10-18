@@ -15,13 +15,12 @@ public enum QueryType {
     // category
     CATEGORY_SAVE("category.save"),
     CATEGORY_FIND_BY_ID("category.findById"),
-    CATEGORY_FIND_BY_NAME("category.findByName"),
     CATEGORY_FIND_ALL_BY_PARENT_ID("category.findAllByParentId"),
     CATEGORY_FIND_ALL_BY_PARENT_ID_IS_NULL("category.findAllByParentIdIsNull"),
-    CATEGORY_EXISTS_BY_ID("category.existsById"),
     CATEGORY_DELETE_BY_ID("category.deleteById"),
     CATEGORY_UPDATE_NAME("category.updateName"),
     CATEGORY_UPDATE_PARENT("category.updateParent"),
+    CATEGORY_FIND_BY_NAME_CONTAING("category.findByNameContaining")
     ;
 
     private final String key;

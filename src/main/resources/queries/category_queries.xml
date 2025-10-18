@@ -6,7 +6,7 @@
         VALUES (?, ?, ?)
     </query>
 
-    <query key="category.findByid">
+    <query key="category.findById">
         SELECT * FROM Category WHERE category_id = ?
     </query>
 
@@ -16,11 +16,6 @@
 
     <query key="category.findAllByParentIdIsNull">
         SELECT * FROM Category WHERE parent_id IS NULL
-    </query>
-
-    <query key="category.existsById">
-        SELECT CASE WHEN COUNT(category_id) > 0 THEN TRUE ELSE FALSE END
-        FROM Category WHERE category_id = ?
     </query>
 
     <query key="category.updateName">
@@ -37,5 +32,11 @@
 
     <query key="category.deleteById">
         DELETE FROM Category WHERE category_id =?
+    </query>
+
+    <!-- *** 새로 추가된 검색 기능! *** -->
+    <!-- (R)ead: 이름에 특정 키워드가 포함된 모든 카테고리를 검색합니다. -->
+    <query key="category.findByNameContaining">
+        SELECT * FROM Category WHERE name LIKE ?
     </query>
 </properties>

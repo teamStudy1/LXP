@@ -72,6 +72,7 @@ public class CategoryHandler {
         System.out.println("3. 카테고리 이름 수정");
         System.out.println("4. 카테고리 이동");
         System.out.println("5. 카테고리 삭제");
+        System.out.println("6. 카테고리 이름으로 검색"); // 추가기능
         System.out.println("0. 뒤로 가기");
         System.out.println("선택: ");
     }
@@ -97,6 +98,9 @@ public class CategoryHandler {
                 break;
             case "5":
                 requestDeleteCategory();
+                break;
+            case "6":
+                requestSearchCategory();
                 break;
             case "0":
                 return false; // 루프 종료
@@ -156,5 +160,28 @@ public class CategoryHandler {
 
         categoryController.deleteCategory(categoryId);
         System.out.println("성공: 카테고리가 삭제되었습니다. ");
+    }
+
+    /*
+    * 검색 기능
+    * 이름으로 카테고리 검색하라는 손님의 요청을 처리
+    * */
+
+    private void requestSearchCategory() throws Exception {
+        System.out.println("검색할 카테고리 이름을 입력하세요 : ");
+        String name  = scanner.nextLine();
+
+        // 홀매니저에게 검색을 요청하고 결과를 받기
+        List<CategoryView> results = categoryController.searchCategoryByName(name);
+
+        System.out.println("\n--- ' " + name + " ' 검색결과 ---");
+        if (results.isEmpty()) {
+            System.out.println("검색된 카테고리가 없습니다.");
+        } else {
+            // 검색 결과는 계층 구조가 아닌 단순 목록으로 보여줍니다.
+            for (CategoryView category : results) {
+                System.out.println("ID: " + category.getId() + ", 이름: " + category.getName() + ", 깊이:" + category.getDepth());
+            }
+        }
     }
 }

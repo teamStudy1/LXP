@@ -44,4 +44,10 @@ public class CategoryController {
     public void deleteCategory(Long categoryId) throws SQLException {
         categoryService.deleteCategory(categoryId);
     }
+
+
+    // '이름으로 카테고리 검색' 요청을 그대로 전달
+    public List<CategoryView> searchCategoryByName(String name) throws SQLException {
+        return categoryService.searchCategory(name);
+    }
 }
