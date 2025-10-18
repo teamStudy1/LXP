@@ -10,7 +10,7 @@
         course c
         LEFT JOIN user u ON c.instructor_id = u.user_id
         LEFT JOIN course_detail cd ON c.course_id = cd.course_id
-        ORDER BY c.course_id DESC
+        ORDER BY c.course_id ASC
     </query>
 
     <query key="course.findById">
