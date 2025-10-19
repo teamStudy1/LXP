@@ -19,7 +19,6 @@ public class QueryUtil {
         loadQueries("queries/user_queries.xml");
         loadQueries("queries/course_detail_queries.xml");
         loadQueries("queries/enrollment_queries.xml");
-        loadQueries("queries/enrollment_queries.xml");
         loadQueries("queries/tag_queries.xml");
     }
 
