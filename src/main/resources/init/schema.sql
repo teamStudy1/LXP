@@ -1,13 +1,8 @@
 
-
-
-
 drop table if exists course_tag;
 drop table if exists tag;
-drop table if exists enrollment;
 drop table if exists lecture;
 drop table if exists section;
-drop table if exists course_detail;
 drop table if exists course;
 drop table if exists user_profile;
 drop table if exists user;
@@ -54,8 +49,10 @@ CREATE TABLE IF NOT EXISTS Course (
                         title VARCHAR(255) NOT NULL,
                         instructor_id BIGINT NOT NULL,
                         category_id BIGINT,
-                        total_time INT DEFAULT 0,
+                        total_time VARCHAR(100),
                         total_lecture_count INT DEFAULT 0,
+                        content TEXT,
+                        content_detail TEXT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         FOREIGN KEY (instructor_id) REFERENCES User(user_id) ON DELETE CASCADE,
@@ -64,15 +61,6 @@ CREATE TABLE IF NOT EXISTS Course (
 
 
 
-CREATE TABLE IF NOT EXISTS Course_Detail(
-                              course_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                              course_id BIGINT NOT NULL UNIQUE,
-                              content TEXT,
-                              content_detail TEXT,
-                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                              FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS Section (
                          section_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -103,16 +91,6 @@ CREATE TABLE IF NOT EXISTS Tag (
                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Enrollment (
-                            user_id BIGINT NOT NULL,
-                            course_id BIGINT NOT NULL,
-                            enrollment_status ENUM('ACTIVE', 'DEACTIVE') NOT NULL DEFAULT 'ACTIVE',
-                            enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                            PRIMARY KEY (user_id, course_id),
-                            FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE,
-                            FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS Course_Tag(
                            course_id BIGINT NOT NULL,

@@ -7,7 +7,6 @@ import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.row.user.UserProfileRow;
 import com.lxp.infrastructure.row.user.UserRow;
 import com.lxp.service.query.UserView;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,8 +22,7 @@ public class UserMapper {
                 userRow.userProfile().introduction(),
                 userRow.userProfile().resume(),
                 userRow.createdAt(),
-                userRow.updatedAt()
-        );
+                userRow.updatedAt());
     }
 
     public static User toDomain(UserRow userRow) {
@@ -36,22 +34,20 @@ public class UserMapper {
                 userRow.activeStatus(),
                 userRow.role(),
                 userRow.createdAt(),
-                userRow.updatedAt()
-        );
+                userRow.updatedAt());
     }
 
     public static UserResponse toUserResponse(UserView userView) {
-            return new UserResponse(
-                    userView.id(),
-                    userView.email(),
-                    userView.name(),
-                    userView.activeStatus(),
-                    userView.role(),
-                    userView.introduction(),
-                    userView.resume(),
-                    userView.createdAt(),
-                    userView.updatedAt()
-            );
+        return new UserResponse(
+                userView.id(),
+                userView.email(),
+                userView.name(),
+                userView.activeStatus(),
+                userView.role(),
+                userView.introduction(),
+                userView.resume(),
+                userView.createdAt(),
+                userView.updatedAt());
     }
 
     public static UserRow fromResultSet(ResultSet rs) throws SQLException {
@@ -67,10 +63,8 @@ public class UserMapper {
                         rs.getString("introduction"),
                         rs.getString("resume"),
                         rs.getTimestamp("user_profile_created_at"),
-                        rs.getTimestamp("user_profile_updated_at")
-                ),
+                        rs.getTimestamp("user_profile_updated_at")),
                 rs.getTimestamp("user_created_at"),
-                rs.getTimestamp("user_updated_at")
-        );
+                rs.getTimestamp("user_updated_at"));
     }
 }

@@ -1,18 +1,23 @@
 package com.lxp.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /** 시간 형식 변환을 도와주는 유틸리티 클래스입니다. */
 public class TimeConverter {
-    public static String getFormattedDuration(int totalSeconds) {
-        // 1. totalSeconds 값을 초단위로.
+    public static String getFormattedDuration(long totalMilliseconds) {
+        if (totalMilliseconds < 0) {
+            return "0분";
+        }
+
+        // 1. 밀리초를 초 단위로 변환합니다. (핵심 수정!)
+        long totalSeconds = totalMilliseconds / 1000;
 
         // 2. 시간 계산 (3600초 = 1시간)
-        int hours = totalSeconds / 3600;
-
-        // 3. 남은 초 계산 (나머지 연산)
-        int remainingSeconds = totalSeconds % 3600;
+        long hours = totalSeconds / 3600;
 
         // 4. 분 계산 (60초 = 1분)
-        int minutes = remainingSeconds / 60;
+        long minutes = (totalSeconds % 3600) / 60;
 
         // 5. 문자열로 조합하여 반환
         StringBuilder sb = new StringBuilder();
@@ -33,5 +38,12 @@ public class TimeConverter {
         }
 
         return sb.toString().trim();
+    }
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    public static String DateTimeFormatter(LocalDateTime localDateTime) {
+        return localDateTime.format(DATE_TIME_FORMATTER);
     }
 }

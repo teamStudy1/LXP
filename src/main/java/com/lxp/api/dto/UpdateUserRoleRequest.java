@@ -2,10 +2,7 @@ package com.lxp.api.dto;
 
 import com.lxp.domain.user.enums.UserRole;
 
-public record UpdateUserRoleRequest(
-        long userId,
-        String userRole
-) {
+public record UpdateUserRoleRequest(long userId, String userRole) {
     public void validate() {
         if (userId <= 0) throw new IllegalStateException("유효하지 않은 사용자 id 값입니다.");
 

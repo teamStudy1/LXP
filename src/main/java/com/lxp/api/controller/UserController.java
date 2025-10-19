@@ -5,7 +5,6 @@ import com.lxp.api.dto.UpdateUserRoleRequest;
 import com.lxp.api.dto.UserResponse;
 import com.lxp.domain.user.enums.UserRole;
 import com.lxp.service.UserService;
-
 import java.sql.SQLException;
 
 public class UserController {

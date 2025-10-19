@@ -3,7 +3,6 @@ package com.lxp.handler;
 import com.lxp.api.controller.UserController;
 import com.lxp.api.dto.CreateUserRequest;
 import com.lxp.api.dto.UpdateUserRoleRequest;
-
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -103,9 +102,7 @@ public class UserHandler {
         String resume = scanner.nextLine();
         resume = resume != null || resume.isEmpty() ? null : resume;
 
-        CreateUserRequest request = new CreateUserRequest(
-                email, password, name, introduction, resume
-        );
+        CreateUserRequest request = new CreateUserRequest(email, password, name, introduction, resume);
 
         try {
             System.out.println("회원가입에 성공했습니다. 사용자 id: " + userController.saveUser(request));

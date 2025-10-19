@@ -20,6 +20,7 @@ public class TransactionManager {
             conn = JDBCConnection.getConnection();
             connectionHolder.set(conn);
         }
+        System.out.println(conn.toString());
         return conn;
     }
 
@@ -27,7 +28,6 @@ public class TransactionManager {
         Connection conn = connectionHolder.get();
         if (conn != null) {
             conn.commit();
-            conn.close();
         }
     }
 

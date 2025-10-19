@@ -1,23 +1,20 @@
 package com.lxp.util;
 
-import com.lxp.handler.CourseHandler;
-import com.lxp.handler.EnrollmentHandler;
-import com.lxp.handler.UserHandler;
 import com.lxp.handler.CategoryHandler;
-
+import com.lxp.handler.CourseHandler;
+import com.lxp.handler.UserHandler;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CLIRouter {
     private final Scanner scanner;
-    private final EnrollmentHandler enrollmentHandler;
     private final UserHandler userHandler;
     private final CourseHandler courseHandler;
     private final CategoryHandler categoryHandler;
 
-    public CLIRouter(EnrollmentHandler enrollmentHandler, CourseHandler courseHandler, UserHandler userHandler, CategoryHandler categoryHandler) {
+    public CLIRouter(
+            CourseHandler courseHandler, UserHandler userHandler, CategoryHandler categoryHandler) {
         this.scanner = new Scanner(System.in);
-        this.enrollmentHandler = enrollmentHandler;
         this.courseHandler = courseHandler;
         this.userHandler = userHandler;
         this.categoryHandler = categoryHandler;
@@ -42,7 +39,6 @@ public class CLIRouter {
         System.out.println("1. 카테고리");
         System.out.println("2. 강좌");
         System.out.println("3. 사용자");
-        System.out.println("4. 수강신청");
         System.out.println("0. 종료");
         System.out.print("선택: ");
     }
@@ -51,14 +47,14 @@ public class CLIRouter {
         switch (command) {
             case "1":
                 categoryHandler.start();
+                break;
             case "3":
                 userHandler.start();
                 break;
-            case "4":
-                enrollmentHandler.start();
-                break;
             case "2":
                 courseHandler.start();
+                break;
+            case "0":
                 return false;
             default:
                 System.out.println("잘못된 입력입니다.");

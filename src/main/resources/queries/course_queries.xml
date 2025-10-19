@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key ="course.findById">
+        SELECT
+        c.course_id,
+        c.title,
+        c.instructor_id,
+        c.category_id,
+        c.total_time,
+        c.total_lecture_count,
+        c.content,
+        c.content_detail,
+        c.created_at,
+        c.updated_at
+        FROM course AS c
+        WHERE c.course_id = ?
+    </query>
+
+
+    <query key="course.findByIdJoinInstructor">
+        SELECT
+        u.user_id AS instructor_id,
+        u.email,
+        u.name,
+        u.role,
+        u.created_at,
+        u.updated_at
+        FROM
+        Course AS c
+        JOIN
+        User AS u ON c.instructor_id = u.user_id
+        WHERE
+        c.course_id = ?
+    </query>
+
+
+    <query key="course.insert">
+        INSERT INTO Course (title, instructor_id, category_id, total_time, total_lecture_count, content, content_detail)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    </query>
+
+
+    <query key ="course.findAll">
+        SELECT
+        c.course_id,
+        c.title,
+        c.instructor_id,
+        c.category_id,
+        c.total_time,
+        c.total_lecture_count,
+        c.content,
+        c.content_detail,
+        c.created_at,
+        c.updated_at
+        FROM course AS c
+        ORDER BY c.course_id
+    </query>
+
+    <query key="course.findByKeyword">
+        SELECT DISTINCT
+        c.course_id,
+        c.title,
+        c.instructor_id,
+        c.category_id,
+        c.total_time,
+        c.total_lecture_count,
+        c.content,
+        c.content_detail,
+        c.created_at,
+        c.updated_at
+        FROM course c
+        LEFT JOIN user u ON c.instructor_id = u.user_id
+        LEFT JOIN course_tag ct ON c.course_id = ct.course_id
+        LEFT JOIN tag t ON ct.tag_id = t.tag_id
+        WHERE
+        c.title LIKE ?
+        OR u.name LIKE ?
+        OR t.name LIKE ?
+        ORDER BY c.course_id DESC
+    </query>
+
+
+    <query key="course.update">
+        UPDATE Course
+        SET
+            title = ?,
+            content = ?,
+            content_detail = ?,
+        WHERE
+            course_id = ?
+    </query>
+</properties>
+
+

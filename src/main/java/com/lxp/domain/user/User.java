@@ -37,7 +37,8 @@ public class User {
     public void updateUserRole(UserRole userRole) {
         if (userRole == UserRole.ADMIN) throw new IllegalStateException("관리자 권한으로는 변경할 수 없습니다.");
         if (userRole == role) throw new IllegalStateException("이미 " + userRole.name() + " 권한입니다.");
-        if (userRole == UserRole.STUDENT && role == UserRole.INSTRUCTOR) throw new IllegalStateException("INSTRUCTOR에서 STUDENT가 될 수 없습니다.");
+        if (userRole == UserRole.STUDENT && role == UserRole.INSTRUCTOR)
+            throw new IllegalStateException("INSTRUCTOR에서 STUDENT가 될 수 없습니다.");
         role = userRole;
     }
 
@@ -50,6 +51,7 @@ public class User {
     public boolean isWithdrawal() {
         return activeStatus == ActiveStatus.DEACTIVE;
     }
+
     public UserRole getUserRole() {
         return role;
     }

@@ -1,59 +1,53 @@
 package com.lxp.config;
 
-import com.lxp.api.controller.CategoryController;
-import com.lxp.api.controller.CourseController;
-import com.lxp.api.controller.EnrollmentController;
 import com.lxp.api.controller.UserController;
+import com.lxp.category.persistance.JdbcCategoryRepository;
+import com.lxp.category.persistance.dao.CategoryDao;
+import com.lxp.category.service.CategoryService;
+import com.lxp.category.web.CategoryController;
+import com.lxp.course.persistence.JdbcCourseRepository;
+import com.lxp.course.persistence.dao.CourseDao;
+import com.lxp.course.persistence.dao.LectureDao;
+import com.lxp.course.persistence.dao.SectionDao;
+import com.lxp.course.persistence.dao.TagDao;
+import com.lxp.course.service.CourseService;
+import com.lxp.course.web.CourseController;
 import com.lxp.handler.CategoryHandler;
 import com.lxp.handler.CourseHandler;
-import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
-import com.lxp.infrastructure.dao.CategoryDao;
-import com.lxp.infrastructure.dao.CourseDao;
-import com.lxp.infrastructure.dao.EnrollmentDao;
 import com.lxp.infrastructure.dao.UserDao;
-import com.lxp.service.CourseService;
-import com.lxp.service.EnrollmentService;
 import com.lxp.service.UserService;
-import com.lxp.service.CategoryService;
 import com.lxp.util.CLIRouter;
 import javax.sql.DataSource;
 
 public class ApplicationContext {
-    private ApplicationContext() {
+    private ApplicationContext() {}
 
-        }
-        // category
-        private static class CategoryDaoHolder {
-            private static final CategoryDao INSTANCE = new CategoryDao();
-        }
-        private static class CategoryServiceHolder {
-            private static final CategoryService INSTANCE = new CategoryService(getCategoryDao());
-        }
-        private static class CategoryControllerHolder {
-            private static final CategoryController INSTANCE = new CategoryController(getCategoryService());
-        }
-        private static class CategoryHandlerHolder {
-        private static final CategoryHandler INSTANCE = new CategoryHandler(getCategoryController(), getUserController());
+    public static class JdbcCategoryRepositoryHolder {
+        private static final JdbcCategoryRepository INSTANCE =
+                new JdbcCategoryRepository(getCategoryDao());
     }
 
-    private static class EnrollmentDaoHolder {
-        private static final EnrollmentDao INSTANCE = new EnrollmentDao();
+    public static JdbcCategoryRepository getJdbcCategoryRepository() {
+        return JdbcCategoryRepositoryHolder.INSTANCE;
     }
 
-    private static class EnrollmentServiceHolder {
-        private static final EnrollmentService INSTANCE = new EnrollmentService(getEnrollmentDao());
+    private static class CategoryDaoHolder {
+        private static final CategoryDao INSTANCE = new CategoryDao(getDataSource());
     }
 
-
-    private static class EnrollmentControllerHolder {
-        private static final EnrollmentController INSTANCE =
-                new EnrollmentController(getEnrollmentService());
+    private static class CategoryServiceHolder {
+        private static final CategoryService INSTANCE =
+                new CategoryService(getJdbcCategoryRepository());
     }
 
-    private static class EnrollmentHandlerHolder {
-        private static final EnrollmentHandler INSTANCE =
-                new EnrollmentHandler(getEnrollmentController());
+    private static class CategoryControllerHolder {
+        private static final CategoryController INSTANCE = new CategoryController(getCategoryService());
+    }
+
+    private static class CategoryHandlerHolder {
+        private static final CategoryHandler INSTANCE =
+                new CategoryHandler(getCategoryController(), getUserController());
     }
 
     public static CategoryDao getCategoryDao() {
@@ -70,22 +64,6 @@ public class ApplicationContext {
 
     public static CategoryHandler getCategoryHandler() {
         return CategoryHandlerHolder.INSTANCE;
-    }
-
-    public static EnrollmentHandler getEnrollmentHandler() {
-        return EnrollmentHandlerHolder.INSTANCE;
-    }
-
-    public static EnrollmentDao getEnrollmentDao() {
-        return EnrollmentDaoHolder.INSTANCE;
-    }
-
-    public static EnrollmentService getEnrollmentService() {
-        return EnrollmentServiceHolder.INSTANCE;
-    }
-
-    public static EnrollmentController getEnrollmentController() {
-        return EnrollmentControllerHolder.INSTANCE;
     }
 
     // user component
@@ -113,16 +91,6 @@ public class ApplicationContext {
         return UserControllerHolder.INSTANCE;
     }
 
-    // handleController component
-    private static class HandleControllerHolder {
-        private static final EnrollmentHandler INSTANCE =
-                new EnrollmentHandler(getEnrollmentController());
-    }
-
-    public static EnrollmentHandler getHandleController() {
-        return HandleControllerHolder.INSTANCE;
-    }
-
     private static class UserHandlerHolder {
         private static final UserHandler INSTANCE = new UserHandler(getUserController());
     }
@@ -131,13 +99,50 @@ public class ApplicationContext {
         return UserHandlerHolder.INSTANCE;
     }
 
+    // sections
+    public static class SectionDaoHolder {
+        private static final SectionDao INSTANCE = new SectionDao(getDataSource());
+    }
+
+    public static SectionDao getSectionDao() {
+        return SectionDaoHolder.INSTANCE;
+    }
+
+    // lecture
+    public static class LectureDaoHolder {
+        private static final LectureDao INSTANCE = new LectureDao(getDataSource());
+    }
+
+    public static LectureDao getLectureDao() {
+        return LectureDaoHolder.INSTANCE;
+    }
+
+    // tag
+    public static class TagDaoHolder {
+        private static final TagDao INSTANCE = new TagDao(getDataSource());
+    }
+
+    public static TagDao getTagDao() {
+        return TagDaoHolder.INSTANCE;
+    }
+
     // course component
+    public static class JdbcCourseRepositoryHolder {
+        private static final JdbcCourseRepository INSTANCE =
+                new JdbcCourseRepository(getCourseDao(), getSectionDao(), getLectureDao(), getTagDao());
+    }
+
+    public static JdbcCourseRepository getJdbcCourseRepository() {
+        return JdbcCourseRepositoryHolder.INSTANCE;
+    }
+
     private static class CourseDaoHolder {
         private static final CourseDao INSTANCE = new CourseDao(getDataSource());
     }
 
     private static class CourseServiceHolder {
-        private static final CourseService INSTANCE = new CourseService(getCourseDao());
+        private static final CourseService INSTANCE =
+                new CourseService(getJdbcCourseRepository(), getJdbcCategoryRepository());
     }
 
     private static class CourseControllerHolder {
@@ -165,7 +170,8 @@ public class ApplicationContext {
     }
 
     private static class RouterHolder {
-        private static final CLIRouter INSTANCE = new CLIRouter(getEnrollmentHandler(), getCourseHandler(), getUserHandler(), getCategoryHandler());
+        private static final CLIRouter INSTANCE =
+                new CLIRouter(getCourseHandler(), getUserHandler(), getCategoryHandler());
     }
 
     public static CLIRouter getRouter() {

@@ -1,59 +1,46 @@
 package com.lxp.handler;
 
-import com.lxp.api.controller.CategoryController;
 import com.lxp.api.controller.UserController;
-import com.lxp.domain.user.enums.UserRole;
-import com.lxp.service.query.CategoryView;
-
+import com.lxp.category.web.CategoryController;
+import com.lxp.category.web.dto.response.CategoryResponse;
 import java.util.List;
 import java.util.Scanner;
 
 /*
-* 손님의 주문을 직접 받는 '서버' 클래스
-* CLI 화면을 보여주고 입력받아 홀 매니저 (Controller)에게 전달
-* */
+ * 손님의 주문을 직접 받는 '서버' 클래스
+ * CLI 화면을 보여주고 입력받아 홀 매니저 (Controller)에게 전달
+ * */
 
 public class CategoryHandler {
     private final Scanner scanner;
     private final CategoryController categoryController;
     private final UserController userController;
 
-    /*
-     * '서버'는 주문을 받을 스캐너와 홀매니저
-     * 그리고 손님의 권한을 확인할 보안요원 (UserController)가 필요
-     * @param categoryController 홀매니저
-     * @pram userController 보안요원
-     * */
     public CategoryHandler(CategoryController categoryController, UserController userController) {
         this.scanner = new Scanner(System.in);
         this.categoryController = categoryController;
         this.userController = userController;
     }
 
-    /*
-     * 카테고리 관리 시스템 시작 */
-
     public void start() {
         System.out.println("\n=== 카테고리 관리시스템에 접속했습니다");
 
         try {
-            // 신분증 검사
-            System.out.println("관리자 ID를 입력하세요 : ");
-            long userId = Long.parseLong(scanner.nextLine());
-            UserRole role = userController.getUserRoleById(userId);
-
-            if (role != UserRole.ADMIN) {
-                System.out.println("접근 권한이 없습니다. 관리자만 접근 할 수 있습니다 ");
-                return; //
-            }
-            System.out.println("관리자 인증이 완료 되었습니다. 메뉴를 선택해주세요. ");
-            // 검사를 통과한 경우에만 메뉴 루프를 시작합니다.
+            //            System.out.println("관리자 ID를 입력하세요 : ");
+            //            long userId = Long.parseLong(scanner.nextLine());
+            //            UserRole role = userController.getUserRoleById(userId);
+            //
+            //            if (role != UserRole.ADMIN) {
+            //                System.out.println("접근 권한이 없습니다. 관리자만 접근 할 수 있습니다 ");
+            //                return; //
+            //            }
+            //            System.out.println("관리자 인증이 완료 되었습니다. 메뉴를 선택해주세요. ");
             while (true) {
                 printMenu();
                 String command = scanner.nextLine().trim();
                 if (!handleComand(command)) {
                     System.out.println("메인 메뉴로 돌아갑니다. ");
-                    break; // 0 입력 시 루프 종료
+                    break;
                 }
             }
         } catch (NumberFormatException e) {
@@ -71,17 +58,12 @@ public class CategoryHandler {
         System.out.println("2. 카테고리 생성");
         System.out.println("3. 카테고리 이름 수정");
         System.out.println("4. 카테고리 이동");
-        System.out.println("5. 카테고리 삭제");
+        //        System.out.println("5. 카테고리 삭제");
         System.out.println("6. 카테고리 이름으로 검색"); // 추가기능
         System.out.println("0. 뒤로 가기");
         System.out.println("선택: ");
     }
 
-    /*
-     * 손님의 주문(command)에 따라 홀 매니저에게 요청을 전달
-     * @param command 손님이 선택한 메뉴 번호
-     * @return 루프를 계속할지 여부 (false면 루프 종료)
-     * */
     private boolean handleComand(String command) throws Exception {
         switch (command) {
             case "1":
@@ -96,9 +78,9 @@ public class CategoryHandler {
             case "4":
                 requestMoveCategory();
                 break;
-            case "5":
-                requestDeleteCategory();
-                break;
+                //            case "5":
+                //                requestDeleteCategory();
+                //                break;
             case "6":
                 requestSearchCategory();
                 break;
@@ -110,11 +92,10 @@ public class CategoryHandler {
         }
         return true; // 루프 계속
     }
-    // 각 메뉴에 대한 주문 처리 메서드
 
     private void requestCategoryTree() throws Exception {
         System.out.println("\n--- 전체 카테고리 목록 ---");
-        List<CategoryView> categoryTree = categoryController.getCategoryTree();
+        List<CategoryResponse> categoryTree = categoryController.getCategoryTree();
         if (categoryTree.isEmpty()) {
             System.out.println("표시할 카테고리가 없습니다.");
         } else {
@@ -129,8 +110,8 @@ public class CategoryHandler {
         String parentIdInput = scanner.nextLine();
         Long parentId = parentIdInput.isEmpty() ? null : Long.parseLong(parentIdInput);
 
-        CategoryView created = categoryController.createCategory(name, parentId);
-        System.out.println("성공 : '" + created.getName() + "' 카테고리가 생성되었습니다. (ID: " + created.getId() + ")");
+        categoryController.createCategory(name, parentId);
+        System.out.println("성공");
     }
 
     private void requestUpdateCategoryName() throws Exception {
@@ -154,33 +135,28 @@ public class CategoryHandler {
         System.out.println("성공: 카테고리가 이동되었습니다.");
     }
 
-    private void requestDeleteCategory() throws Exception {
-        System.out.println("삭제할 카테고리 ID를 입력하세요 :");
-        long categoryId = Long.parseLong(scanner.nextLine());
-
-        categoryController.deleteCategory(categoryId);
-        System.out.println("성공: 카테고리가 삭제되었습니다. ");
-    }
-
-    /*
-    * 검색 기능
-    * 이름으로 카테고리 검색하라는 손님의 요청을 처리
-    * */
-
+    //    private void requestDeleteCategory() throws Exception {
+    //        System.out.println("삭제할 카테고리 ID를 입력하세요 :");
+    //        long categoryId = Long.parseLong(scanner.nextLine());
+    //
+    //        categoryController.deleteCategory(categoryId);
+    //        System.out.println("성공: 카테고리가 삭제되었습니다. ");
+    //    }
+    //
     private void requestSearchCategory() throws Exception {
         System.out.println("검색할 카테고리 이름을 입력하세요 : ");
-        String name  = scanner.nextLine();
+        String name = scanner.nextLine();
 
-        // 홀매니저에게 검색을 요청하고 결과를 받기
-        List<CategoryView> results = categoryController.searchCategoryByName(name);
+        List<CategoryResponse> results = categoryController.searchCategoryByName(name);
 
         System.out.println("\n--- ' " + name + " ' 검색결과 ---");
         if (results.isEmpty()) {
             System.out.println("검색된 카테고리가 없습니다.");
         } else {
             // 검색 결과는 계층 구조가 아닌 단순 목록으로 보여줍니다.
-            for (CategoryView category : results) {
-                System.out.println("ID: " + category.getId() + ", 이름: " + category.getName() + ", 깊이:" + category.getDepth());
+            for (CategoryResponse category : results) {
+                System.out.println(
+                        "ID: " + category.id() + ", 이름: " + category.name() + ", 깊이:" + category.depth());
             }
         }
     }

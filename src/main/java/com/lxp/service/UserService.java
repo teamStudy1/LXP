@@ -9,7 +9,6 @@ import com.lxp.infrastructure.dao.UserDao;
 import com.lxp.infrastructure.mapper.UserMapper;
 import com.lxp.service.query.UserView;
 import com.lxp.util.SHA256Util;
-
 import java.sql.SQLException;
 
 public class UserService {
@@ -20,8 +19,11 @@ public class UserService {
     }
 
     public UserResponse getUserViewById(Long id) throws Exception {
-            UserView userView = userDao.findUserViewById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
-            return UserMapper.toUserResponse(userView);
+        UserView userView =
+                userDao
+                        .findUserViewById(id)
+                        .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
+        return UserMapper.toUserResponse(userView);
     }
 
     public UserRole getUserRoleById(Long id) throws Exception {
@@ -40,12 +42,17 @@ public class UserService {
 
         try {
             TransactionManager.beginTransaction();
-            Long userId = userDao.saveUser(userRequest.email(), SHA256Util.getSHA256Hash(userRequest.password()), userRequest.name());
+            Long userId =
+                    userDao.saveUser(
+                            userRequest.email(),
+                            SHA256Util.getSHA256Hash(userRequest.password()),
+                            userRequest.name());
             if (userId == null) {
                 throw new IllegalStateException("사용자 가입에 실패했습니다.");
             }
 
-            Long userProfileId = userDao.saveUserProfile(userId, userRequest.introduction(), userRequest.resume());
+            Long userProfileId =
+                    userDao.saveUserProfile(userId, userRequest.introduction(), userRequest.resume());
             if (userProfileId == null) {
                 throw new IllegalStateException("사용자 가입에 실패했습니다.");
             }
@@ -61,7 +68,10 @@ public class UserService {
     }
 
     public void updateUserRole(Long userId, UserRole userRole) throws SQLException {
-        User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
+        User user =
+                userDao
+                        .findUserById(userId)
+                        .orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
         user.updateUserRole(userRole);
 
         try {
@@ -81,7 +91,10 @@ public class UserService {
     }
 
     public void deactivateUser(Long userId) throws SQLException {
-        User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
+        User user =
+                userDao
+                        .findUserById(userId)
+                        .orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
         if (user.isWithdrawal()) throw new IllegalStateException("이미 탈퇴한 사용자 입니다.");
 
         user.withdrawal();
