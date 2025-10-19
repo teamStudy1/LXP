@@ -24,8 +24,12 @@ public class Category {
     * */
 
     public Category(Long id, String name, Long parentId, int depth) {
-        this(name, parentId, depth); // 위쪽의 기존 생성자를 먼저 호출해서 이름 ,부모 , 깊이 설정
-        this.id = id; // 그리고 전달 받은 ID를 추가로 설정
+        validateName(name);
+        this.id = id; // 위쪽의 기존 생성자를 먼저 호출해서 이름 ,부모 , 깊이 설정
+        this.name = name;
+        this.parentId = parentId;
+        this.depth = depth;
+        this.children = new ArrayList<>();
     }
 
     public void rename(String newName) {
