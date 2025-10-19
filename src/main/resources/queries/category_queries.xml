@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties>
+    <query key="category.save">
+        INSERT INTO Category (name, parent_id, depth)
+        VALUES (?, ?, ?)
+    </query>
+
+    <query key="category.findById">
+        SELECT * FROM Category WHERE category_id = ?
+    </query>
+
+    <query key="category.findAllByParentId">
+        SELECT * FROM Category WHERE parent_id = ?
+    </query>
+
+    <query key="category.findAllByParentIdIsNull">
+        SELECT * FROM Category WHERE parent_id IS NULL
+    </query>
+
+    <query key="category.updateName">
+        UPDATE Category
+        SET name = ?
+        WHERE category_id =?
+    </query>
+
+    <query key="category.updateParent">
+        UPDATE Category
+        SET parent_id = ?, depth = ?
+        WHERE category_id = ?
+    </query>
+
+    <query key="category.deleteById">
+        DELETE FROM Category WHERE category_id =?
+    </query>
+
+    <query key="category.findByNameContaining">
+        SELECT * FROM Category WHERE name LIKE ?
+    </query>
+
+
+    <query key="category.findAllByCategoryId">
+        <![CDATA[
+        WITH RECURSIVE ancestors AS (
+            SELECT
+                c.category_id,
+                c.name,
+                c.parent_id,
+                c.depth,
+                c.created_at,
+                c.updated_at,
+                0 AS level_from_self,
+                c.depth AS start_depth
+            FROM Category c
+            WHERE c.category_id = ?
+
+            UNION ALL
+
+            SELECT
+                p.category_id,
+                p.name,
+                p.parent_id,
+                p.depth,
+                p.created_at,
+                p.updated_at,
+                a.level_from_self + 1,
+                a.start_depth
+            FROM Category p
+            JOIN ancestors a ON a.parent_id = p.category_id
+            WHERE a.level_from_self + 1 <= a.start_depth
+        )
+        SELECT
+            category_id, name, parent_id, depth, created_at, updated_at, level_from_self
+        FROM ancestors
+        ORDER BY level_from_self ASC
+        ]]>
+    </query>
+
+    <query key="category.findAllDescendantsByParentId">
+        <![CDATA[
+        WITH RECURSIVE descendants AS (
+        SELECT
+            c.category_id,
+            c.name,
+            c.parent_id,
+            c.depth
+        FROM Category c
+        WHERE c.category_id = ?
+
+        UNION ALL
+
+        SELECT
+            p.category_id,
+            p.name,
+            p.parent_id,
+            p.depth
+        FROM Category p
+        JOIN descendants d ON p.parent_id = d.category_id
+    )
+    SELECT
+        category_id, name, parent_id, depth
+    FROM descendants
+    ORDER BY depth, name;
+    ]]>
+    </query>
+
+</properties>
