@@ -11,6 +11,16 @@ public enum QueryType {
     USER_PROFILE("userProfile.save"),
     USER_UPDATE_ROLE("user.updateRoleById"),
     USER_UPDATE_ACTIVE_STATUS("user.updateActiveStatus"),
+
+    // category
+    CATEGORY_SAVE("category.save"),
+    CATEGORY_FIND_BY_ID("category.findById"),
+    CATEGORY_FIND_ALL_BY_PARENT_ID("category.findAllByParentId"),
+    CATEGORY_FIND_ALL_BY_PARENT_ID_IS_NULL("category.findAllByParentIdIsNull"),
+    CATEGORY_DELETE_BY_ID("category.deleteById"),
+    CATEGORY_UPDATE_NAME("category.updateName"),
+    CATEGORY_UPDATE_PARENT("category.updateParent"),
+    CATEGORY_FIND_BY_NAME_CONTAING("category.findByNameContaining")
     ;
 
     private final String key;
