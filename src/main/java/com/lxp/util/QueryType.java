@@ -31,8 +31,7 @@ public enum QueryType {
     USER_EXISTS_BY_EMAIL("user.existsByEmail"),
     USER_SAVE("user.save"),
     USER_PROFILE("userProfile.save"),
-    USER_UPDATE_ROLE("user.updateRoleById"),
-    USER_UPDATE_ACTIVE_STATUS("user.updateActiveStatus"),
+    USER_UPDATE("user.update"),
 
     // category
     CATEGORY_FIND_ALL_DESCENDANTS_BY_PARENT_ID("category.findAllDescendantsByParentId"),

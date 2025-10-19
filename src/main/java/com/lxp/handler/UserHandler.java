@@ -1,8 +1,8 @@
 package com.lxp.handler;
 
-import com.lxp.api.controller.UserController;
-import com.lxp.api.dto.CreateUserRequest;
-import com.lxp.api.dto.UpdateUserRoleRequest;
+import com.lxp.user.web.UserController;
+import com.lxp.user.web.dto.request.CreateUserRequest;
+import com.lxp.user.web.dto.request.UpdateUserRoleRequest;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -105,7 +105,8 @@ public class UserHandler {
         CreateUserRequest request = new CreateUserRequest(email, password, name, introduction, resume);
 
         try {
-            System.out.println("회원가입에 성공했습니다. 사용자 id: " + userController.saveUser(request));
+            userController.saveUser(request);
+            System.out.println("회원가입에 성공했습니다.");
         } catch (Exception e) {
             System.out.println("회원가입에 실패했습니다. " + e.getMessage());
         }

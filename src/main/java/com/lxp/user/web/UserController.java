@@ -1,10 +1,10 @@
-package com.lxp.api.controller;
+package com.lxp.user.web;
 
-import com.lxp.api.dto.CreateUserRequest;
-import com.lxp.api.dto.UpdateUserRoleRequest;
-import com.lxp.api.dto.UserResponse;
-import com.lxp.domain.user.enums.UserRole;
-import com.lxp.service.UserService;
+import com.lxp.user.web.dto.request.CreateUserRequest;
+import com.lxp.user.web.dto.request.UpdateUserRoleRequest;
+import com.lxp.user.web.dto.response.UserResponse;
+import com.lxp.user.domain.model.enums.UserRole;
+import com.lxp.user.service.UserService;
 import java.sql.SQLException;
 
 public class UserController {
@@ -22,9 +22,9 @@ public class UserController {
         return userService.getUserRoleById(id);
     }
 
-    public long saveUser(CreateUserRequest userRequest) throws SQLException {
+    public void saveUser(CreateUserRequest userRequest) throws SQLException {
         userRequest.validate();
-        return userService.saveUser(userRequest);
+        userService.saveUser(userRequest);
     }
 
     public void updateUserRole(UpdateUserRoleRequest userRoleRequest) throws SQLException {

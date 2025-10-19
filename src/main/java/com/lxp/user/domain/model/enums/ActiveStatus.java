@@ -1,4 +1,4 @@
-package com.lxp.domain.user.enums;
+package com.lxp.user.domain.model.enums;
 
 public enum ActiveStatus {
     ACTIVE,

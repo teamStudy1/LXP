@@ -1,6 +1,8 @@
 package com.lxp.config;
 
-import com.lxp.api.controller.UserController;
+import com.lxp.user.persistance.JdbcUserRepository;
+import com.lxp.user.persistance.dao.UserProfileDao;
+import com.lxp.user.web.UserController;
 import com.lxp.category.persistance.JdbcCategoryRepository;
 import com.lxp.category.persistance.dao.CategoryDao;
 import com.lxp.category.service.CategoryService;
@@ -15,8 +17,8 @@ import com.lxp.course.web.CourseController;
 import com.lxp.handler.CategoryHandler;
 import com.lxp.handler.CourseHandler;
 import com.lxp.handler.UserHandler;
-import com.lxp.infrastructure.dao.UserDao;
-import com.lxp.service.UserService;
+import com.lxp.user.persistance.dao.UserDao;
+import com.lxp.user.service.UserService;
 import com.lxp.util.CLIRouter;
 import javax.sql.DataSource;
 
@@ -67,12 +69,23 @@ public class ApplicationContext {
     }
 
     // user component
+    public static class JdbcUserRepositoryHolder {
+        private static final JdbcUserRepository INSTANCE = new JdbcUserRepository(getUserDao(), getUserProfileDao());
+    }
+
+    private static JdbcUserRepository getJdbcUserRepository() {
+        return JdbcUserRepositoryHolder.INSTANCE;
+    }
     private static class UserDaoHolder {
         private static final UserDao INSTANCE = new UserDao(getDataSource());
     }
 
+    private static class UserProfileDaoHolder {
+        private static final UserProfileDao INSTANCE = new UserProfileDao(getDataSource());
+    }
+
     private static class UserServiceHolder {
-        private static final UserService INSTANCE = new UserService(getUserDao());
+        private static final UserService INSTANCE = new UserService(getJdbcUserRepository());
     }
 
     private static class UserControllerHolder {
@@ -81,6 +94,10 @@ public class ApplicationContext {
 
     private static UserDao getUserDao() {
         return UserDaoHolder.INSTANCE;
+    }
+
+    private static UserProfileDao getUserProfileDao() {
+        return UserProfileDaoHolder.INSTANCE;
     }
 
     private static UserService getUserService() {

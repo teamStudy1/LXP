@@ -1,6 +1,6 @@
 package com.lxp.handler;
 
-import com.lxp.api.controller.UserController;
+import com.lxp.user.web.UserController;
 import com.lxp.category.web.CategoryController;
 import com.lxp.category.web.dto.response.CategoryResponse;
 import java.util.List;

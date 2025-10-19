@@ -1,4 +1,4 @@
-package com.lxp.infrastructure.row.user;
+package com.lxp.user.persistance.row;
 
 import java.sql.Timestamp;
 

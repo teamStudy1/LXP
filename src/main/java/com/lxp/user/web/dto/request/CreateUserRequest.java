@@ -1,4 +1,4 @@
-package com.lxp.api.dto;
+package com.lxp.user.web.dto.request;
 
 import java.util.regex.Pattern;
 

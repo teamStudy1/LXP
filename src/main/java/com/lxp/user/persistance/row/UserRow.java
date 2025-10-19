@@ -1,17 +1,16 @@
-package com.lxp.service.query;
+package com.lxp.user.persistance.row;
 
-import com.lxp.domain.user.enums.ActiveStatus;
-import com.lxp.domain.user.enums.UserRole;
+import com.lxp.user.domain.model.enums.ActiveStatus;
+import com.lxp.user.domain.model.enums.UserRole;
 import java.sql.Timestamp;
 
-public record UserView(
+public record UserRow(
         Long id,
         String email,
         String password,
         String name,
         ActiveStatus activeStatus,
         UserRole role,
-        String introduction,
-        String resume,
+        UserProfileRow userProfile,
         Timestamp createdAt,
         Timestamp updatedAt) {}

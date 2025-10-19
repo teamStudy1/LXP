@@ -47,15 +47,10 @@
         VALUES (?, ?, ?)
     </query>
 
-    <query key="user.updateRoleById">
+    <query key="user.update">
         UPDATE user
-        SET role=?
-        WHERE user_id=?
-    </query>
-
-    <query key="user.updateActiveStatus">
-        UPDATE user
-        SET active_status=?
+        SET role=?,
+            active_status=?
         WHERE user_id=?
     </query>
 

@@ -1,6 +1,6 @@
-package com.lxp.api.dto;
+package com.lxp.user.web.dto.request;
 
-import com.lxp.domain.user.enums.UserRole;
+import com.lxp.user.domain.model.enums.UserRole;
 
 public record UpdateUserRoleRequest(long userId, String userRole) {
     public void validate() {
