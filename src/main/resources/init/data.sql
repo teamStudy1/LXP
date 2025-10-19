@@ -1,17 +1,17 @@
-INSERT INTO Category (name, parent_id) VALUES
-                                           ('개발', NULL),
-                                           ('디자인', NULL),
-                                           ('비즈니스', NULL),
-                                           ('마케팅', NULL),
-                                           ('프론트엔드', 1),
-                                           ('백엔드', 1),
-                                           ('모바일', 1),
-                                           ('UI/UX', 2),
-                                           ('그래픽 디자인', 2),
-                                           ('경영', 3),
-                                           ('재무', 3),
-                                           ('디지털 마케팅', 4),
-                                           ('콘텐츠 마케팅', 4);
+INSERT INTO Category (name, parent_id, depth) VALUES
+                                           ('개발', NULL, 0),
+                                           ('디자인', NULL, 0),
+                                           ('비즈니스', NULL, 0),
+                                           ('마케팅', NULL, 0),
+                                           ('프론트엔드', 1, 1),
+                                           ('백엔드', 1, 1),
+                                           ('모바일', 1, 1),
+                                           ('UI/UX', 2, 1),
+                                           ('그래픽 디자인', 2, 1),
+                                           ('경영', 3, 1),
+                                           ('재무', 3, 1),
+                                           ('디지털 마케팅', 4, 1),
+                                           ('콘텐츠 마케팅', 4, 1);
 
 
 INSERT INTO User (email, password, name, active_status, role) VALUES

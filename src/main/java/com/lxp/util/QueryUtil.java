@@ -15,7 +15,7 @@ public class QueryUtil {
     static {
         loadQueries("queries/category_queries.xml");
         loadQueries("queries/course_queries.xml");
-        loadQueries("queries/tag_queries.xml");
+        loadQueries("queries/user_profile_queries.xml");
         loadQueries("queries/user_queries.xml");
         loadQueries("queries/course_detail_queries.xml");
         loadQueries("queries/enrollment_queries.xml");

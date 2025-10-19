@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<properties>
 
+<properties>
+    <query key="category.save">
+        INSERT INTO Category (name, parent_id, depth)
+        VALUES (?, ?, ?)
+    </query>
+
+    <query key="category.findById">
+        SELECT * FROM Category WHERE category_id = ?
+    </query>
+
+    <query key="category.findAllByParentId">
+        SELECT * FROM Category WHERE parent_id = ?
+    </query>
+
+    <query key="category.findAllByParentIdIsNull">
+        SELECT * FROM Category WHERE parent_id IS NULL
+    </query>
+
+    <query key="category.updateName">
+        UPDATE Category
+        SET name = ?
+        WHERE category_id =?
+    </query>
+
+    <query key="category.updateParent">
+        UPDATE Category
+        SET parent_id = ?, depth = ?
+        WHERE category_id = ?
+    </query>
+
+    <query key="category.deleteById">
+        DELETE FROM Category WHERE category_id =?
+    </query>
+
+    <!-- *** 새로 추가된 검색 기능! *** -->
+    <!-- (R)ead: 이름에 특정 키워드가 포함된 모든 카테고리를 검색합니다. -->
+    <query key="category.findByNameContaining">
+        SELECT * FROM Category WHERE name LIKE ?
+    </query>
 </properties>

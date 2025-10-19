@@ -1,5 +1,6 @@
 package com.lxp.util;
 
+import com.lxp.handler.CategoryHandler;
 import com.lxp.handler.CourseHandler;
 import com.lxp.handler.EnrollmentHandler;
 import com.lxp.handler.UserHandler;
@@ -11,12 +12,15 @@ public class CLIRouter {
     private final CourseHandler courseHandler;
     private final EnrollmentHandler enrollmentHandler;
     private final UserHandler userHandler;
+    private final CategoryHandler categoryHandler;
 
-    public CLIRouter(CourseHandler courseHandler, EnrollmentHandler enrollmentHandler, UserHandler userHandler) {
+    // [통합] 생성자가 4개의 Handler를 모두 받도록 수정
+    public CLIRouter(CourseHandler courseHandler, EnrollmentHandler enrollmentHandler, UserHandler userHandler, CategoryHandler categoryHandler) {
         this.scanner = new Scanner(System.in);
         this.courseHandler = courseHandler;
         this.enrollmentHandler = enrollmentHandler;
         this.userHandler = userHandler;
+        this.categoryHandler = categoryHandler;
     }
 
     public void start() {
@@ -43,17 +47,17 @@ public class CLIRouter {
 
     private void handleCommand(String command) {
         switch (command) {
+            case "1":
+                categoryHandler.start();
+                break;
             case "2":
                 courseHandler.start();
-                break;
-            case "1":
-                System.out.println("해당 기능은 아직 구현되지 않았습니다.");
                 break;
             case "3":
                 userHandler.start();
                 break;
             case "4":
-                System.out.println("해당 기능은 아직 구현되지 않았습니다.");
+                enrollmentHandler.start();
                 break;
             default:
                 System.out.println("잘못된 입력입니다. 메뉴에 있는 번호를 입력해주세요.");

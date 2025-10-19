@@ -12,6 +12,8 @@ public record UserView(
         String name,
         ActiveStatus activeStatus,
         UserRole role,
+        String introduction,
+        String resume,
         Timestamp createdAt,
         Timestamp updatedAt
 ) { }

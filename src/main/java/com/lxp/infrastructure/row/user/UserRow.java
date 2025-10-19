@@ -1,4 +1,4 @@
-package com.lxp.infrastructure.row;
+package com.lxp.infrastructure.row.user;
 
 import com.lxp.domain.user.enums.ActiveStatus;
 import com.lxp.domain.user.enums.UserRole;
@@ -12,6 +12,8 @@ public record UserRow(
         String name,
         ActiveStatus activeStatus,
         UserRole role,
+        UserProfileRow userProfile,
         Timestamp createdAt,
-        Timestamp updatedAt) {
+        Timestamp updatedAt
+) {
 }
