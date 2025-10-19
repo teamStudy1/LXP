@@ -30,9 +30,8 @@ public class DatabaseInitializer {
 
     private static void executeSqlFile(String filePath) throws Exception {
         String sql = readSqlFile(filePath);
-
         try (Connection conn = JDBCConnection.getConnection();
-                Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
 
             String[] statements = sql.split(";");
             for (String statement : statements) {
@@ -53,7 +52,7 @@ public class DatabaseInitializer {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             return reader
                     .lines()
-                    .filter(line -> !line.trim().startsWith("--")) // 주석 제거
+                    .filter(line -> !line.trim().startsWith("--"))
                     .collect(Collectors.joining("\n"));
         }
     }

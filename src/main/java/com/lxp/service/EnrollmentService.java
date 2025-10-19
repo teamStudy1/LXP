@@ -7,31 +7,40 @@ import java.sql.SQLException;
 public class EnrollmentService {
     private final EnrollmentDao enrollmentDao;
 
-    //    private final CourseDao courseDao ;
-    //    private final UserDao userDao;
-
-    public EnrollmentService(EnrollmentDao enrollmentDao
-            //            CourseDao courseDao,
-            //            UserDao userDao,
-            ) {
+    public EnrollmentService(EnrollmentDao enrollmentDao) {
         this.enrollmentDao = enrollmentDao;
-        //        this.courseDao = courseDao;
-        //        this.userDao = userDao;
     }
 
-    public void saveEnroll(Long studentId, Long courseId) throws SQLException {
+    public boolean enrollUserInCourse(Long userId, Long courseId) {
         try {
+
             TransactionManager.beginTransaction();
-            //            User user = userDao.existById();
-            //            Course course = courseDao.existById();
+
+            enrollmentDao.save(userId, courseId);
 
             TransactionManager.commit();
+            return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.err.println("Database error during enrollment: " + e.getMessage());
+
             TransactionManager.rollback();
-            throw new RuntimeException("Enrollment failed", e);
-        } finally {
-            TransactionManager.close();
+
+            throw new RuntimeException("Enrollment failed.", e);
+        }
+        // [FIXED] The 'finally' block that called TransactionManager.close() has been removed.
+    }
+
+    public boolean cancelEnrollment(Long userId, Long courseId) {
+        try {
+            TransactionManager.beginTransaction();
+            int deletedRows = enrollmentDao.delete(userId, courseId);
+            TransactionManager.commit();
+            return deletedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Database error during enrollment cancellation: " + e.getMessage());
+            TransactionManager.rollback();
+            throw new RuntimeException("Enrollment cancellation failed.", e);
         }
     }
 }

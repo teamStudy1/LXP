@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Category (
                           category_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           name VARCHAR(100) NOT NULL,
                           parent_id BIGINT,
-                          depth INT NOT NULL DEFAULT 1,
+                          depth INT NOT NULL DEFAULT 0,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           FOREIGN KEY (parent_id) REFERENCES Category(category_id) ON DELETE SET NULL
@@ -29,9 +29,9 @@ CREATE TABLE IF NOT EXISTS Category (
 
 CREATE TABLE IF NOT EXISTS User (
                       user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                      name VARCHAR(255) NOT NULL UNIQUE,
+                      email VARCHAR(255) NOT NULL UNIQUE,
                       password VARCHAR(255) NOT NULL,
-                      nickname VARCHAR(50) NOT NULL,
+                      name VARCHAR(50) NOT NULL,
                       active_status ENUM('ACTIVE', 'DEACTIVE') NOT NULL DEFAULT 'ACTIVE',
                       role ENUM('STUDENT', 'INSTRUCTOR', 'ADMIN') NOT NULL DEFAULT 'STUDENT',
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS Course (
                         title VARCHAR(255) NOT NULL,
                         instructor_id BIGINT NOT NULL,
                         category_id BIGINT,
-                        total_time DOUBLE DEFAULT 0,
+                        total_time DECIMAL(10, 2) DEFAULT 0.0,
                         total_lecture_count INT DEFAULT 0,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS Lecture (
                          lecture_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                          section_id BIGINT NOT NULL,
                          name VARCHAR(255) NOT NULL UNIQUE,
-                         lecture_time TIME,
+                         lecture_time INT,
                          order_num INT NOT NULL,
                          video_url VARCHAR(500),
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

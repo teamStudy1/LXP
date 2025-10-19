@@ -1,45 +1,41 @@
 package com.lxp.config;
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariPoolMXBean;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JDBCConnection {
-    private static final HikariDataSource dataSource;
-
-    static {
-        try {
-            Properties prop = new Properties();
-            prop.load(JDBCConnection.class.getClassLoader().getResourceAsStream("config.properties"));
-            HikariConfig config = new HikariConfig(prop);
-            dataSource = new HikariDataSource(config);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final Logger log = LoggerFactory.getLogger(JDBCConnection.class);
+    private static final HikariDataSource dataSource = DataSourceFactory.getDataSource();
 
     public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        log.debug("Requesting connection from pool...");
+        Connection connection = dataSource.getConnection();
+        log.debug("Connection [{}] obtained from pool.", connection);
+        return connection;
     }
 
     public static void close() {
-        if (dataSource != null) {
+        if (dataSource != null && !dataSource.isClosed()) {
             dataSource.close();
+            log.info("HikariCP DataSource has been closed.");
         }
     }
 
     public static void printConnectionPoolStatus() {
+        if (dataSource == null || dataSource.isClosed()) {
+            System.out.println("HikariCP connection pool is not active.");
+            return;
+        }
         HikariPoolMXBean poolMXBean = dataSource.getHikariPoolMXBean();
-        System.out.println("hikaricp 커넥션 풀 상태");
-        System.out.println("총 커넥션 개수" + poolMXBean.getTotalConnections());
-        System.out.println("활성 커넥션 개수" + poolMXBean.getActiveConnections());
-        System.out.println("유후 커넥션 개수" + poolMXBean.getIdleConnections());
-        System.out.println(
-                "대기중인 커넥션 요청 수" + poolMXBean.getThreadsAwaitingConnection()); // 풀에서 연결을 기다리는 스레드 수를 가져옴
+        System.out.println("\n--- HikariCP Connection Pool Status ---");
+        System.out.println("Total Connections: " + poolMXBean.getTotalConnections());
+        System.out.println("Active Connections: " + poolMXBean.getActiveConnections());
+        System.out.println("Idle Connections: " + poolMXBean.getIdleConnections());
+        System.out.println("Threads Awaiting Connection: " + poolMXBean.getThreadsAwaitingConnection());
+        System.out.println("-------------------------------------\n");
     }
 }

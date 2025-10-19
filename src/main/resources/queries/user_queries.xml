@@ -3,14 +3,59 @@
 <properties>
     <query key ="user.findById">
         SELECT
-            user_id,
-            name,
-            password,
-            nickname,
-            active_status,
-            created_at,
-            updated_at
+            u.user_id AS user_id,
+            u.email AS email,
+            u.password AS password,
+            u.name AS name,
+            u.active_status AS active_status,
+            u.role AS role,
+            u.created_at AS user_created_at,
+            u.updated_at AS user_updated_at,
+            up.user_profile_id AS user_profile_id,
+            up.introduction AS introduction,
+            up.resume AS resume,
+            up.created_at AS user_profile_created_at,
+            up.updated_at AS user_profile_updated_at
+        FROM user u
+        LEFT JOIN user_profile up ON u.user_id = up.user_id
+        WHERE u.user_id=?
+    </query>
+
+    <query key ="user.findRoleById">
+        SELECT
+            role
         FROM user
+        WHERE user_id=?
+    </query>
+
+    <query key="user.existsById">
+        SELECT
+            CASE WHEN count(user_id)>0 THEN TRUE ELSE FALSE END
+        FROM user
+        WHERE user_id=?
+    </query>
+
+    <query key="user.existsByEmail">
+        SELECT
+            CASE WHEN count(user_id)>0 THEN TRUE ELSE FALSE END
+        FROM user
+        WHERE email=?
+    </query>
+
+    <query key="user.save">
+        INSERT INTO user (email, password, name)
+        VALUES (?, ?, ?)
+    </query>
+
+    <query key="user.updateRoleById">
+        UPDATE user
+        SET role=?
+        WHERE user_id=?
+    </query>
+
+    <query key="user.updateActiveStatus">
+        UPDATE user
+        SET active_status=?
         WHERE user_id=?
     </query>
 

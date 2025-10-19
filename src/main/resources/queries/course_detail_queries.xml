@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<properties>
+    <query key="course_detail.save">
+        INSERT INTO course_detail (course_id, content, content_detail) VALUES (?, ?, ?)
+    </query>
+    </properties>

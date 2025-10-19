@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<properties>
+    <query key="tag.findByName">
+        SELECT * FROM tag WHERE name = ?
+    </query>
+
+    <query key="tag.save">
+        INSERT INTO tag (name) VALUES (?)
+    </query>
+
+    <query key="course_tag.save">
+        INSERT INTO course_tag (course_id, tag_id) VALUES (?, ?)
+    </query>
+</properties>

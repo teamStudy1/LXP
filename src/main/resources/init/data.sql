@@ -1,20 +1,20 @@
 INSERT INTO Category (name, parent_id, depth) VALUES
-                                           ('개발', NULL),
-                                           ('디자인', NULL),
-                                           ('비즈니스', NULL),
-                                           ('마케팅', NULL),
-                                           ('프론트엔드', 1),
-                                           ('백엔드', 1),
-                                           ('모바일', 1),
-                                           ('UI/UX', 2),
-                                           ('그래픽 디자인', 2),
-                                           ('경영', 3),
-                                           ('재무', 3),
-                                           ('디지털 마케팅', 4),
-                                           ('콘텐츠 마케팅', 4);
+                                           ('개발', NULL, 0),
+                                           ('디자인', NULL, 0),
+                                           ('비즈니스', NULL, 0),
+                                           ('마케팅', NULL, 0),
+                                           ('프론트엔드', 1, 1),
+                                           ('백엔드', 1, 1),
+                                           ('모바일', 1, 1),
+                                           ('UI/UX', 2, 1),
+                                           ('그래픽 디자인', 2, 1),
+                                           ('경영', 3, 1),
+                                           ('재무', 3, 1),
+                                           ('디지털 마케팅', 4, 1),
+                                           ('콘텐츠 마케팅', 4, 1);
 
 
-INSERT INTO User (name, password, nickname, active_status, role) VALUES
+INSERT INTO User (email, password, name, active_status, role) VALUES
                                                                      ('admin@example.com', '$2a$10$abcdefghijklmnopqrstuvwxyz', '관리자', 'ACTIVE', 'ADMIN'),
                                                                      ('john.doe@example.com', '$2a$10$abcdefghijklmnopqrstuvwxyz', 'John', 'ACTIVE', 'INSTRUCTOR'),
                                                                      ('jane.smith@example.com', '$2a$10$abcdefghijklmnopqrstuvwxyz', 'Jane', 'ACTIVE', 'INSTRUCTOR'),
@@ -109,31 +109,31 @@ INSERT INTO Section (course_id, name, order_num) VALUES
 
 INSERT INTO Lecture (section_id, name, lecture_time, order_num, video_url) VALUES
 -- Section 1: React 기초
-(1, 'React란 무엇인가?', '00:15:30', 1, 'https://video.example.com/react-intro'),
-(1, 'JSX 문법 이해하기', '00:20:15', 2, 'https://video.example.com/jsx-syntax'),
-(1, '컴포넌트와 Props', '00:25:40', 3, 'https://video.example.com/components'),
-(1, 'State와 생명주기', '00:30:20', 4, 'https://video.example.com/state'),
+(1, 'React란 무엇인가?', '1600', 1, 'https://video.example.com/react-intro'),
+(1, 'JSX 문법 이해하기', '4320', 2, 'https://video.example.com/jsx-syntax'),
+(1, '컴포넌트와 Props', '7140', 3, 'https://video.example.com/components'),
+(1, 'State와 생명주기', '3720', 4, 'https://video.example.com/state'),
 -- Section 2: React Hooks
-(2, 'useState Hook', '00:18:45', 1, 'https://video.example.com/usestate'),
-(2, 'useEffect Hook', '00:22:30', 2, 'https://video.example.com/useeffect'),
-(2, 'useContext Hook', '00:20:00', 3, 'https://video.example.com/usecontext'),
-(2, 'Custom Hooks', '00:25:15', 4, 'https://video.example.com/custom-hooks'),
+(2, 'useState Hook', '1040', 1, 'https://video.example.com/usestate'),
+(2, 'useEffect Hook', '3110', 2, 'https://video.example.com/useeffect'),
+(2, 'useContext Hook', '5020', 3, 'https://video.example.com/usecontext'),
+(2, 'Custom Hooks', '3040', 4, 'https://video.example.com/custom-hooks'),
 -- Section 3: 상태 관리
-(3, 'Context API', '00:28:30', 1, 'https://video.example.com/context-api'),
-(3, 'Redux 기초', '00:35:20', 2, 'https://video.example.com/redux-basics'),
-(3, 'Redux Toolkit', '00:30:45', 3, 'https://video.example.com/redux-toolkit'),
+(3, 'Context API', '2040', 1, 'https://video.example.com/context-api'),
+(3, 'Redux 기초', '1200', 2, 'https://video.example.com/redux-basics'),
+(3, 'Redux Toolkit', '1090', 3, 'https://video.example.com/redux-toolkit'),
 -- Section 5: Vue.js 소개
-(5, 'Vue.js 설치와 설정', '00:12:30', 1, 'https://video.example.com/vue-setup'),
-(5, '템플릿 문법', '00:18:20', 2, 'https://video.example.com/vue-template'),
-(5, '반응형 데이터', '00:22:15', 3, 'https://video.example.com/vue-reactive'),
+(5, 'Vue.js 설치와 설정', '4090', 1, 'https://video.example.com/vue-setup'),
+(5, '템플릿 문법', '1200', 2, 'https://video.example.com/vue-template'),
+(5, '반응형 데이터', '3200', 3, 'https://video.example.com/vue-reactive'),
 -- Section 9: 스프링 부트 시작하기
-(9, '스프링 부트 프로젝트 생성', '00:15:00', 1, 'https://video.example.com/spring-setup'),
-(9, 'IoC와 DI 이해하기', '00:25:30', 2, 'https://video.example.com/spring-ioc'),
-(9, '스프링 MVC', '00:30:20', 3, 'https://video.example.com/spring-mvc'),
+(9, '스프링 부트 프로젝트 생성', '3120', 1, 'https://video.example.com/spring-setup'),
+(9, 'IoC와 DI 이해하기', '4020', 2, 'https://video.example.com/spring-ioc'),
+(9, '스프링 MVC', '1020', 3, 'https://video.example.com/spring-mvc'),
 -- Section 13: Python 기초
-(13, 'Python 설치와 환경설정', '00:10:30', 1, 'https://video.example.com/python-setup'),
-(13, '변수와 자료형', '00:20:15', 2, 'https://video.example.com/python-types'),
-(13, '제어문과 반복문', '00:25:40', 3, 'https://video.example.com/python-control');
+(13, 'Python 설치와 환경설정', '1000', 1, 'https://video.example.com/python-setup'),
+(13, '변수와 자료형', '2000', 2, 'https://video.example.com/python-types'),
+(13, '제어문과 반복문', '1440', 3, 'https://video.example.com/python-control');
 
 -- Tag 더미 데이터
 INSERT INTO Tag (name) VALUES
