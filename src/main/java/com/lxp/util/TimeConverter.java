@@ -1,35 +1,29 @@
 package com.lxp.util;
 
-/** 시간 형식 변환을 도와주는 유틸리티 클래스입니다. */
 public class TimeConverter {
-    public static String getFormattedDuration(int totalSeconds) {
-        // 1. totalSeconds 값을 초단위로.
+    /**
+     * 소수점 형태의 시간(예: 13.5 시간)을 "X시간 Y분" 형식으로 변환합니다.
+     * @param totalHours 시간 단위의 소수점 값
+     * @return "X시간 Y분" 형식의 문자열
+     */
+    public static String getFormattedDurationFromHours(double totalHours) {
+        if (totalHours < 0) {
+            return "0분";
+        }
 
-        // 2. 시간 계산 (3600초 = 1시간)
-        int hours = totalSeconds / 3600;
+        // 정수 부분(시간)과 소수 부분(분으로 변환할 부분)을 분리
+        int hours = (int) totalHours;
+        double fractionalPart = totalHours - hours;
 
-        // 3. 남은 초 계산 (나머지 연산)
-        int remainingSeconds = totalSeconds % 3600;
+        // 소수 부분을 분으로 변환 (0.5시간 -> 30분)
+        int minutes = (int) Math.round(fractionalPart * 60);
 
-        // 4. 분 계산 (60초 = 1분)
-        int minutes = remainingSeconds / 60;
-
-        // 5. 문자열로 조합하여 반환
         StringBuilder sb = new StringBuilder();
-
-        if (hours > 0) sb.append(hours).append("시간");
-        if (minutes > 0) { // 분이 표시될 때만 공백 추가
-            sb.append(" ");
+        if (hours > 0) {
+            sb.append(hours).append("시간 ");
         }
-
-        // 분이 0보다 크거나, 시간이 0이고 분이라도 1분 이상일 경우에만 분을 표시
-        if (minutes > 0) {
+        if (minutes > 0 || hours == 0) { // 분이 있거나, 시간이 0일때는 0분이라도 표시
             sb.append(minutes).append("분");
-        }
-
-        // 총 시간이 0초일 경우 (빈 강좌)
-        if (sb.isEmpty()) {
-            return "0";
         }
 
         return sb.toString().trim();

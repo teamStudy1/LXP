@@ -6,8 +6,13 @@ public record CourseRow(
         Long courseId,
         String title,
         Long instructorId,
+        String instructorName,
+        String content,
+        String contentDetail,
+        String tags,
         Long categoryId,
-        int totalTime,
+        double totalTime,
         int totalLectureCount,
         Timestamp createdAt,
-        Timestamp updatedAt) {}
+        Timestamp updatedAt) {
+}

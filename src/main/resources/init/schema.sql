@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS Course (
                         title VARCHAR(255) NOT NULL,
                         instructor_id BIGINT NOT NULL,
                         category_id BIGINT,
-                        total_time INT DEFAULT 0,
+                        total_time DECIMAL(10, 2) DEFAULT 0.0,
                         total_lecture_count INT DEFAULT 0,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

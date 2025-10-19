@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <properties>
-    <query key ="enrollment.save">
-        INSERT INTO enrollment (course_id, user_id)
-        VALUES (?,?)
+    <query key="enrollment.save">
+        INSERT INTO enrollment (user_id, course_id) VALUES (?, ?)
+    </query>
+
+    <query key="enrollment.delete">
+        DELETE FROM enrollment WHERE user_id = ? AND course_id = ?
     </query>
 </properties>

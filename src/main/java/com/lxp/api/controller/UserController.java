@@ -4,9 +4,12 @@ import com.lxp.api.dto.CreateUserRequest;
 import com.lxp.api.dto.UpdateUserRoleRequest;
 import com.lxp.api.dto.UserResponse;
 import com.lxp.domain.user.enums.UserRole;
+import com.lxp.infrastructure.mapper.UserMapper;
 import com.lxp.service.UserService;
+import com.lxp.service.query.UserView;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserController {
     private final UserService userService;
@@ -15,8 +18,9 @@ public class UserController {
         this.userService = userService;
     }
 
+
     public UserResponse getUserById(Long id) throws Exception {
-        return userService.getUserViewById(id);
+        return UserMapper.toUserResponse(userService.getUserViewById(id));
     }
 
     public UserRole getUserRoleById(Long id) throws Exception {

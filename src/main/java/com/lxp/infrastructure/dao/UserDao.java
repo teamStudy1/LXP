@@ -10,6 +10,8 @@ import com.lxp.util.QueryType;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDao {
@@ -21,14 +23,14 @@ public class UserDao {
 
     public Optional<UserView> findUserViewById(Long id) throws SQLException {
         String sql = QueryType.USER_FIND_BY_ID.getQuery();
-        try (PreparedStatement pstmt = dataSource.getConnection().prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, id);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                UserRow row =
-                        UserMapper.fromResultSet(rs);
-                return Optional.of(UserMapper.toUserView(row));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    UserRow row = UserMapper.fromResultSet(rs);
+                    return Optional.of(UserMapper.toUserView(row));
+                }
             }
         }
         return Optional.empty();
@@ -37,13 +39,14 @@ public class UserDao {
 
     public Optional<UserRole> findRoleById(Long id) throws SQLException {
         String sql = QueryType.USER_FIND_ROLE_BY_ID.getQuery();
-        try (PreparedStatement pstmt = dataSource.getConnection().prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, id);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                UserRole role = UserRole.valueOf(rs.getString("role"));
-                return Optional.of(role);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    UserRole role = UserRole.valueOf(rs.getString("role"));
+                    return Optional.of(role);
+                }
             }
         }
         return Optional.empty();

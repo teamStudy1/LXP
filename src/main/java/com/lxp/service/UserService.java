@@ -1,16 +1,15 @@
 package com.lxp.service;
 
 import com.lxp.api.dto.CreateUserRequest;
-import com.lxp.api.dto.UserResponse;
 import com.lxp.config.TransactionManager;
 import com.lxp.domain.user.User;
 import com.lxp.domain.user.enums.UserRole;
 import com.lxp.infrastructure.dao.UserDao;
-import com.lxp.infrastructure.mapper.UserMapper;
 import com.lxp.service.query.UserView;
 import com.lxp.util.SHA256Util;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserService {
     private final UserDao userDao;
@@ -19,9 +18,10 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public UserResponse getUserViewById(Long id) throws Exception {
-            UserView userView = userDao.findUserViewById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
-            return UserMapper.toUserResponse(userView);
+
+
+    public UserView getUserViewById(Long id) throws Exception {
+        return userDao.findUserViewById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
     }
 
     public UserRole getUserRoleById(Long id) throws Exception {
@@ -55,16 +55,14 @@ public class UserService {
         } catch (SQLException ex) {
             TransactionManager.rollback();
             throw ex;
-        } finally {
-            TransactionManager.close();
         }
     }
 
-    public void updateUserRole(Long userId, UserRole userRole) throws SQLException {
-        User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
-        user.updateUserRole(userRole);
-
+    public void updateUserRole(Long userId, UserRole userRole) {
         try {
+            User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
+            user.updateUserRole(userRole);
+
             TransactionManager.beginTransaction();
             int result = userDao.updateUserRole(userId, user.getUserRole());
             if (result == 0) {
@@ -72,21 +70,18 @@ public class UserService {
             }
             System.out.println("사용자 권한 변경에 성공했습니다.");
             TransactionManager.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             TransactionManager.rollback();
-            throw new RuntimeException();
-        } finally {
-            TransactionManager.close();
+            throw new RuntimeException("사용자 권한 변경 실패", e);
         }
     }
 
-    public void deactivateUser(Long userId) throws SQLException {
-        User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
-        if (user.isWithdrawal()) throw new IllegalStateException("이미 탈퇴한 사용자 입니다.");
-
-        user.withdrawal();
-
+    public void deactivateUser(Long userId) {
         try {
+            User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 입니다."));
+            if (user.isWithdrawal()) throw new IllegalStateException("이미 탈퇴한 사용자 입니다.");
+            user.withdrawal();
+
             TransactionManager.beginTransaction();
             int result = userDao.updateUserActiveStatus(userId, user.getActiveStatus());
             if (result == 0) {
@@ -94,11 +89,9 @@ public class UserService {
             }
             System.out.println("사용자 탈퇴에 성공했습니다.");
             TransactionManager.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             TransactionManager.rollback();
-            throw new RuntimeException();
-        } finally {
-            TransactionManager.close();
+            throw new RuntimeException("사용자 탈퇴 실패", e);
         }
     }
 }
