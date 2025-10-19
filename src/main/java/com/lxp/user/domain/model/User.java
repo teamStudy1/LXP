@@ -1,7 +1,9 @@
-package com.lxp.domain.user;
+package com.lxp.user.domain.model;
 
-import com.lxp.domain.user.enums.ActiveStatus;
-import com.lxp.domain.user.enums.UserRole;
+import com.lxp.user.domain.model.enums.ActiveStatus;
+import com.lxp.user.domain.model.enums.UserRole;
+import com.lxp.user.web.dto.request.CreateUserRequest;
+import com.lxp.util.SHA256Util;
 import java.sql.Timestamp;
 
 public class User {
@@ -22,6 +24,7 @@ public class User {
             String name,
             ActiveStatus activeStatus,
             UserRole role,
+            UserProfile userProfile,
             Timestamp createdAt,
             Timestamp updatedAt) {
         this.id = id;
@@ -30,8 +33,26 @@ public class User {
         this.name = name;
         this.activeStatus = activeStatus;
         this.role = role;
+        this.profile = userProfile;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static User create(CreateUserRequest request) {
+        return new User(
+            null,
+            request.email(),
+            SHA256Util.getSHA256Hash(request.password()),
+            request.name(),
+            ActiveStatus.ACTIVE,
+            UserRole.STUDENT,
+            new UserProfile(
+                request.introduction(),
+                request.resume()
+            ),
+            null,
+            null
+        );
     }
 
     public void updateUserRole(UserRole userRole) {
@@ -52,6 +73,34 @@ public class User {
         return activeStatus == ActiveStatus.DEACTIVE;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
     public UserRole getUserRole() {
         return role;
     }
@@ -59,4 +108,6 @@ public class User {
     public ActiveStatus getActiveStatus() {
         return activeStatus;
     }
+
+    public UserProfile getProfile() { return profile; }
 }
