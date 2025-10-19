@@ -1,6 +1,7 @@
 package com.lxp.api.dto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public record CourseView(
         Long id,
@@ -8,6 +9,7 @@ public record CourseView(
         String instructorName,
         String content,
         String contentDetail,
+        Set<String> tags,
         double totalTime,
         int totalLectureCount,
         LocalDateTime createdAt

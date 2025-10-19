@@ -5,6 +5,7 @@ import com.lxp.domain.course.Course;
 import com.lxp.service.CourseService;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public class CourseController {
     private final CourseService courseService;
@@ -25,8 +26,8 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
-    public Course createCourse(String title, Long instructorId, double totalTime, int totalLectureCount, String content, String contentDetail) {
-        return courseService.createCourse(title, instructorId, totalTime, totalLectureCount, content, contentDetail);
+    public Course createCourse(String title, Long instructorId, double totalTime, int totalLectureCount, String content, String contentDetail, Set<String> tagNames) {
+        return courseService.createCourse(title, instructorId, totalTime, totalLectureCount, content, contentDetail, tagNames);
     }
 
     public boolean updateCourseTitle(Long id, String newTitle) throws SQLException {

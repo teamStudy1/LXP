@@ -33,7 +33,7 @@ public class JdbcCourseDao implements CourseDao {
             if (generatedKeys.next()) {
                 long newId = generatedKeys.getLong(1);
                 return new CourseRow(newId, course.getTitle(), course.getInstructorId(), null,
-                        course.getContent(), course.getContentDetail(), null,
+                        course.getContent(), course.getContentDetail(), null, null, // instructorName, content, contentDetail, tags, categoryId
                         course.getTotalTime(), course.getTotalLectureCount(),
                         new Timestamp(System.currentTimeMillis()),
                         new Timestamp(System.currentTimeMillis()));
@@ -56,10 +56,20 @@ public class JdbcCourseDao implements CourseDao {
 
 
     private CourseRow mapRow(ResultSet rs) throws SQLException {
-        return new CourseRow(rs.getLong("course_id"), rs.getString("title"), rs.getLong("instructor_id"),
-                rs.getString("instructor_name"), rs.getString("content"), rs.getString("content_detail"),
-                rs.getLong("category_id"), rs.getDouble("total_time"), rs.getInt("total_lecture_count"),
-                rs.getTimestamp("created_at"), rs.getTimestamp("updated_at"));
+        return new CourseRow(
+                rs.getLong("course_id"),
+                rs.getString("title"),
+                rs.getLong("instructor_id"),
+                rs.getString("instructor_name"),
+                rs.getString("content"),
+                rs.getString("content_detail"),
+                rs.getString("tags"), // [추가]
+                rs.getLong("category_id"),
+                rs.getDouble("total_time"),
+                rs.getInt("total_lecture_count"),
+                rs.getTimestamp("created_at"),
+                rs.getTimestamp("updated_at")
+        );
     }
 
     @Override

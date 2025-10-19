@@ -47,6 +47,8 @@ public class CLIRouter {
                 courseHandler.start();
                 break;
             case "1":
+                System.out.println("해당 기능은 아직 구현되지 않았습니다.");
+                break;
             case "3":
                 userHandler.start();
                 break;

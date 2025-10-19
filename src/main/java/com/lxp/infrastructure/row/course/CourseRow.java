@@ -9,6 +9,7 @@ public record CourseRow(
         String instructorName,
         String content,
         String contentDetail,
+        String tags,
         Long categoryId,
         double totalTime,
         int totalLectureCount,

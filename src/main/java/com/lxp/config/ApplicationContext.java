@@ -36,14 +36,23 @@ public class ApplicationContext {
     private static class UserDaoHolder {
         private static final UserDao INSTANCE = new UserDao();
     }
+
+    private static class TagDaoHolder {
+        private static final TagDao INSTANCE = new JdbcTagDao();
+    }
+    private static class CourseTagDaoHolder {
+        private static final CourseTagDao INSTANCE = new JdbcCourseTagDao();
+    }
     public static CourseDao getCourseDao() { return CourseDaoHolder.INSTANCE; }
     public static CourseDetailDao getCourseDetailDao() { return CourseDetailDaoHolder.INSTANCE; }
     public static EnrollmentDao getEnrollmentDao() { return EnrollmentDaoHolder.INSTANCE; }
+    public static TagDao getTagDao() { return TagDaoHolder.INSTANCE; }
+    public static CourseTagDao getCourseTagDao() { return CourseTagDaoHolder.INSTANCE; }
     public static UserDao getUserDao() { return UserDaoHolder.INSTANCE; }
 
 
     private static class CourseServiceHolder {
-        private static final CourseService INSTANCE = new CourseService(getCourseDao(), getCourseDetailDao());
+        private static final CourseService INSTANCE = new CourseService(getCourseDao(), getCourseDetailDao(), getTagDao(), getCourseTagDao());
     }
     private static class EnrollmentServiceHolder {
         private static final EnrollmentService INSTANCE = new EnrollmentService(getEnrollmentDao());

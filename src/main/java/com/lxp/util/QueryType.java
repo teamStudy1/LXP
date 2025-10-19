@@ -12,9 +12,13 @@ public enum QueryType {
     COURSE_FIND_BY_TITLE("course.findByTitle"),
     COURSE_SAVE("course.save"),
     COURSE_UPDATE_TITLE("course.updateTitle"),
+    COURSE_TAG_SAVE("course_tag.save"),
+    //tag
+    TAG_FIND_BY_NAME("tag.findByName"),
+    TAG_SAVE("tag.save"),
     // course_detail
     COURSE_DETAIL_SAVE("course_detail.save"),
-    ENROLLMENT_SAVE("enrollment.save"),       // [추가]
+    ENROLLMENT_SAVE("enrollment.save"),
     ENROLLMENT_DELETE("enrollment.delete");
     ;
 

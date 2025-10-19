@@ -7,8 +7,12 @@ import com.lxp.util.TimeConverter;
 
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CourseHandler {
     private final Scanner scanner;
@@ -107,23 +111,27 @@ public class CourseHandler {
         try {
             System.out.print("강좌 제목: ");
             String title = scanner.nextLine();
-
             System.out.print("강사 ID: ");
             long instructorId = Long.parseLong(scanner.nextLine());
-
             System.out.print("총 강의 시간 (예: 13.5): ");
             double totalTime = Double.parseDouble(scanner.nextLine());
-
             System.out.print("총 강의 수: ");
             int totalLectureCount = Integer.parseInt(scanner.nextLine());
-
             System.out.print("강좌 소개 (목록용): ");
             String content = scanner.nextLine();
-
             System.out.print("강좌 상세 설명: ");
             String contentDetail = scanner.nextLine();
+            System.out.print("태그 (쉼표(,)로 구분하여 여러 개 입력 가능): ");
+            String tagInput = scanner.nextLine();
 
-            Course createdCourse = courseController.createCourse(title, instructorId, totalTime, totalLectureCount, content, contentDetail);
+            Set<String> tagNames = new HashSet<>();
+            if (tagInput != null && !tagInput.trim().isEmpty()) {
+                tagNames = Arrays.stream(tagInput.split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toSet());
+            }
+
+            Course createdCourse = courseController.createCourse(title, instructorId, totalTime, totalLectureCount, content, contentDetail, tagNames);
             System.out.println("강좌가 성공적으로 생성되었습니다! (ID: " + createdCourse.getId() + ")");
 
         } catch (NumberFormatException e) {
@@ -136,18 +144,22 @@ public class CourseHandler {
     private void updateCourse() {
         System.out.println("\n--- 5. 강좌 수정 ---");
         try {
-            System.out.print("수정할 강좌 ID: ");
+            System.out.print("수정할 강좌의 ID를 입력하세요: ");
             long id = Long.parseLong(scanner.nextLine());
-            System.out.print("새로운 강좌 제목: ");
+            System.out.print("새로운 강좌 제목을 입력하세요: ");
             String newTitle = scanner.nextLine();
+
             boolean success = courseController.updateCourseTitle(id, newTitle);
+
             if (success) {
                 System.out.println("강좌 제목이 성공적으로 수정되었습니다.");
+            } else {
+                System.out.println("해당 ID의 강좌를 찾을 수 없어 수정에 실패했습니다.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("숫자 ID를 입력해야 합니다.");
+            System.out.println("ID는 숫자로 입력해야 합니다.");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -156,9 +168,10 @@ public class CourseHandler {
             System.out.println("조회된 강좌가 없습니다.");
         } else {
             System.out.println("총 " + courses.size() + "개의 강좌를 찾았습니다.");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
-            System.out.printf("%-4s | %-25s | %-8s | %-15s | %-25s | %s%n", "ID", "강좌 제목", "강사 이름", "총 강의 시간", "강좌 설명", "생성 시간");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+            // [수정] 헤더에 '강좌 설명'을 다시 추가하고 전체 너비 조정
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-4s | %-25s | %-8s | %-20s | %-25s | %-15s | %s%n", "ID", "강좌 제목", "강사 이름", "강좌 설명", "태그", "총 강의 시간", "생성 시간");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -173,17 +186,20 @@ public class CourseHandler {
                     shortContent = "";
                 }
 
+                String tagsDisplay = (c.tags() != null && !c.tags().isEmpty()) ? String.join(", ", c.tags()) : "태그 없음";
+
                 System.out.printf(
-                        "%-4d | %-25s | %-8s | %-15s | %-25s | %s%n",
+                        "%-4d | %-25s | %-8s | %-20s | %-25s | %-15s | %s%n",
                         c.id(),
                         c.title(),
                         c.instructorName(),
-                        formattedTime,
                         shortContent,
+                        tagsDisplay,
+                        formattedTime,
                         formattedCreatedAt
                 );
             }
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 }

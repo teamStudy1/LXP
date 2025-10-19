@@ -5,11 +5,15 @@
         c.*,
         u.name AS instructor_name,
         cd.content,
-        cd.content_detail
+        cd.content_detail,
+        GROUP_CONCAT(t.name SEPARATOR ', ') AS tags
         FROM
         course c
         LEFT JOIN user u ON c.instructor_id = u.user_id
         LEFT JOIN course_detail cd ON c.course_id = cd.course_id
+        LEFT JOIN course_tag ct ON c.course_id = ct.course_id
+        LEFT JOIN tag t ON ct.tag_id = t.tag_id
+        GROUP BY c.course_id
         ORDER BY c.course_id ASC
     </query>
 
@@ -18,26 +22,36 @@
         c.*,
         u.name AS instructor_name,
         cd.content,
-        cd.content_detail
+        cd.content_detail,
+        GROUP_CONCAT(t.name SEPARATOR ', ') AS tags
         FROM
         course c
         LEFT JOIN user u ON c.instructor_id = u.user_id
         LEFT JOIN course_detail cd ON c.course_id = cd.course_id
+        LEFT JOIN course_tag ct ON c.course_id = ct.course_id
+        LEFT JOIN tag t ON ct.tag_id = t.tag_id
         WHERE c.course_id = ?
+        GROUP BY c.course_id
     </query>
 
     <query key="course.findByTitle">
+        SELECT * FROM (
         SELECT
         c.*,
         u.name AS instructor_name,
         cd.content,
-        cd.content_detail
+        cd.content_detail,
+        GROUP_CONCAT(t.name SEPARATOR ', ') AS tags
         FROM
         course c
         LEFT JOIN user u ON c.instructor_id = u.user_id
         LEFT JOIN course_detail cd ON c.course_id = cd.course_id
-        WHERE c.title LIKE ?
-        ORDER BY c.course_id DESC
+        LEFT JOIN course_tag ct ON c.course_id = ct.course_id
+        LEFT JOIN tag t ON ct.tag_id = t.tag_id
+        GROUP BY c.course_id
+        ) AS course_with_tags
+        WHERE title LIKE ?
+        ORDER BY course_id DESC
     </query>
 
     <query key="course.save">
@@ -47,5 +61,6 @@
     <query key="course.updateTitle">
         UPDATE course SET title = ? WHERE course_id = ?
     </query>
+
 
     </properties>
