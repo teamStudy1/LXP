@@ -159,7 +159,7 @@ public class ApplicationContext {
 
     private static class CourseServiceHolder {
         private static final CourseService INSTANCE =
-                new CourseService(getJdbcCourseRepository(), getJdbcCategoryRepository());
+                new CourseService(getJdbcCourseRepository(), getJdbcCategoryRepository(),getJdbcUserRepository());
     }
 
     private static class CourseControllerHolder {

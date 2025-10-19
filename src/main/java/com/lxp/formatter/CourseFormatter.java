@@ -42,10 +42,10 @@ public class CourseFormatter {
 
             sb.append(
                     String.format(
-                            "%-5d | %-35.35s | %-7d | %-12s | %-7d | %-20s\n",
+                            "%-5d | %-35.35s | %-7s | %-12s | %-7d | %-20s\n",
                             course.id(),
                             course.title(),
-                            course.instructorId(),
+                            course.user().getName(),
                             course.totalSeconds(), // TimeConverter 적용 필요
                             course.totalLectureCount(),
                             createdAtFormatted));
@@ -61,7 +61,7 @@ public class CourseFormatter {
         sb.append("==================================================\n");
         sb.append(String.format(" [강좌] %s (ID: %d)\n", course.title(), course.id()));
         sb.append("==================================================\n");
-        sb.append(String.format("  - 강사 ID: %d\n", course.instructorId()));
+        sb.append(String.format("  - 강사 이름: %s\n", course.user().getName()));
         sb.append(String.format("  - 카테고리: %s\n", categoryPath));
         sb.append(String.format("  - 태그: [ %s ]\n", tags));
         sb.append(String.format("  - 강의 총 시간: [ %s ]\n", course.totalSeconds()));

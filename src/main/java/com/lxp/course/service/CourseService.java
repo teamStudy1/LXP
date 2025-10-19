@@ -13,6 +13,9 @@ import com.lxp.course.web.dto.request.CourseUpdateRequest;
 import com.lxp.course.web.dto.request.SectionRequest;
 import com.lxp.course.web.dto.response.CourseAllResponse;
 import com.lxp.course.web.dto.response.CourseResponse;
+import com.lxp.user.domain.model.User;
+import com.lxp.user.domain.repository.UserRespository;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -23,10 +26,16 @@ import java.util.stream.IntStream;
 public class CourseService {
     private final CourseRepository courseRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRespository userRespository;
 
-    public CourseService(CourseRepository courseRepository, CategoryRepository categoryRepository) {
+    public CourseService(
+            CourseRepository courseRepository,
+            CategoryRepository categoryRepository,
+            UserRespository userRespository) {
+
         this.courseRepository = courseRepository;
         this.categoryRepository = categoryRepository;
+        this.userRespository = userRespository;
     }
 
     public void save(CourseRequest courseRequest) throws SQLException {
@@ -36,8 +45,13 @@ public class CourseService {
                     categoryRepository
                             .findById(courseRequest.categoryId())
                             .orElseThrow(() -> new SQLException("Category not found"));
+
+            User user =
+                    userRespository.findUserById(courseRequest.instructorId())
+                            .orElseThrow(() -> new SQLException("User not found"));
+
             TransactionManager.beginTransaction();
-            // user 검사
+
             Set<Tag> tags = courseRepository.findOrCreateByNames(courseRequest.tagNames());
 
             List<SectionRequest> sectionRequests = courseRequest.sections();
@@ -48,7 +62,7 @@ public class CourseService {
             Course newCourse =
                     Course.create(
                             courseRequest.title(),
-                            courseRequest.instructorId(),
+                            user.getId(),
                             courseRequest.content(),
                             courseRequest.contentDetail(),
                             category.getId(),
@@ -77,7 +91,12 @@ public class CourseService {
 
             Category category = categoryRepository.findAllByParents(course.getCategoryId());
 
-            return CourseResponse.from(course, category);
+            User user =
+                    userRespository.findUserById(course.getInstructorId())
+                            .orElseThrow(() -> new SQLException("User not found"));
+
+
+            return CourseResponse.from(course, category,user);
         } catch (Exception e) {
             throw new RuntimeException("Course Detail failed", e);
         }
@@ -85,16 +104,30 @@ public class CourseService {
 
     public List<CourseAllResponse> findAll() {
         try {
-            return courseRepository.findAll().stream().map(CourseAllResponse::from).toList();
+            List<Course> courses = courseRepository.findAll();
+
+            return courses.stream()
+                    .map(course -> {
+                        User user = userRespository.findUserById(course.getInstructorId()).orElse(null);
+                        System.out.println(user.getName());
+                        return CourseAllResponse.from(course, user);
+                    })
+                    .toList();
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("Course Detail failed", e);
         }
     }
 
     public List<CourseAllResponse> searchCoursesByKeyword(String keyword) throws SQLException {
-        return courseRepository.findByTitleContaining(keyword).stream()
-                .map(CourseAllResponse::from)
+        List<Course> courses = courseRepository.findByTitleContaining(keyword);
+
+        return courses.stream()
+                .map(course -> {
+                    User user = userRespository.findUserById(course.getInstructorId()).orElse(null);
+                    return CourseAllResponse.from(course, user);
+                })
                 .toList();
     }
 

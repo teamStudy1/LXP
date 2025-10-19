@@ -17,8 +17,9 @@ public class UserDao {
 
     public Optional<UserRow> findUserById(Long id) throws SQLException {
         String sql = QueryType.USER_FIND_BY_ID.getQuery();
-        Connection connection = dataSource.getConnection();
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
 
