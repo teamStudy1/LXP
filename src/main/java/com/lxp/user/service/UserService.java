@@ -1,11 +1,11 @@
 package com.lxp.user.service;
 
-import com.lxp.user.domain.repository.UserRespository;
-import com.lxp.user.web.dto.request.CreateUserRequest;
-import com.lxp.user.web.dto.response.UserResponse;
 import com.lxp.config.TransactionManager;
 import com.lxp.user.domain.model.User;
 import com.lxp.user.domain.model.enums.UserRole;
+import com.lxp.user.domain.repository.UserRespository;
+import com.lxp.user.web.dto.request.CreateUserRequest;
+import com.lxp.user.web.dto.response.UserResponse;
 import java.sql.SQLException;
 
 public class UserService {
@@ -16,8 +16,11 @@ public class UserService {
     }
 
     public UserResponse getUserViewById(Long id) {
-        User user = userRespository.findUserById(id)
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));;
+        User user =
+                userRespository
+                        .findUserById(id)
+                        .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자 입니다."));
+        ;
 
         return UserResponse.from(user);
     }
@@ -28,7 +31,9 @@ public class UserService {
         if (isNotExistsUser) {
             throw new IllegalStateException("존재하지 않는 사용자 입니다. ");
         }
-        return userRespository.findUserRoleById(id).orElseThrow(() -> new IllegalStateException("권한 조회에 실패했습니다."));
+        return userRespository
+                .findUserRoleById(id)
+                .orElseThrow(() -> new IllegalStateException("권한 조회에 실패했습니다."));
     }
 
     public void saveUser(CreateUserRequest request) throws SQLException {

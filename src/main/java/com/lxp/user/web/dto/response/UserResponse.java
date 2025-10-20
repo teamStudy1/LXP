@@ -18,17 +18,17 @@ public record UserResponse(
 
     public static UserResponse from(User user) {
         return new UserResponse(
-            user.getId(),
-            user.getEmail(),
-            user.getName(),
-            user.getActiveStatus(),
-            user.getUserRole(),
-            user.getProfile().getIntroduction() == null ? "" : user.getProfile().getIntroduction(),
-            user.getProfile().getResume() == null ? "" : user.getProfile().getResume(),
-            user.getCreatedAt(),
-            user.getUpdatedAt()
-        );
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getActiveStatus(),
+                user.getUserRole(),
+                user.getProfile().getIntroduction() == null ? "" : user.getProfile().getIntroduction(),
+                user.getProfile().getResume() == null ? "" : user.getProfile().getResume(),
+                user.getCreatedAt(),
+                user.getUpdatedAt());
     }
+
     @Override
     public String toString() {
         return "UserResponse{"
