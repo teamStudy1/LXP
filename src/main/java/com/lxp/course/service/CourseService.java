@@ -14,8 +14,9 @@ import com.lxp.course.web.dto.request.SectionRequest;
 import com.lxp.course.web.dto.response.CourseAllResponse;
 import com.lxp.course.web.dto.response.CourseResponse;
 import com.lxp.user.domain.model.User;
+import com.lxp.user.domain.model.enums.ActiveStatus;
+import com.lxp.user.domain.model.enums.UserRole;
 import com.lxp.user.domain.repository.UserRespository;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -47,8 +48,13 @@ public class CourseService {
                             .orElseThrow(() -> new SQLException("Category not found"));
 
             User user =
-                    userRespository.findUserById(courseRequest.instructorId())
+                    userRespository
+                            .findUserById(courseRequest.instructorId())
                             .orElseThrow(() -> new SQLException("User not found"));
+
+            if (user.getRole() != UserRole.INSTRUCTOR && user.getActiveStatus() != ActiveStatus.ACTIVE) {
+                throw new SQLException("Instructor role not allowed.");
+            }
 
             TransactionManager.beginTransaction();
 
@@ -92,11 +98,11 @@ public class CourseService {
             Category category = categoryRepository.findAllByParents(course.getCategoryId());
 
             User user =
-                    userRespository.findUserById(course.getInstructorId())
+                    userRespository
+                            .findUserById(course.getInstructorId())
                             .orElseThrow(() -> new SQLException("User not found"));
 
-
-            return CourseResponse.from(course, category,user);
+            return CourseResponse.from(course, category, user);
         } catch (Exception e) {
             throw new RuntimeException("Course Detail failed", e);
         }
@@ -107,11 +113,12 @@ public class CourseService {
             List<Course> courses = courseRepository.findAll();
 
             return courses.stream()
-                    .map(course -> {
-                        User user = userRespository.findUserById(course.getInstructorId()).orElse(null);
-                        System.out.println(user.getName());
-                        return CourseAllResponse.from(course, user);
-                    })
+                    .map(
+                            course -> {
+                                User user = userRespository.findUserById(course.getInstructorId()).orElse(null);
+                                System.out.println(user.getName());
+                                return CourseAllResponse.from(course, user);
+                            })
                     .toList();
 
         } catch (Exception e) {
@@ -124,10 +131,11 @@ public class CourseService {
         List<Course> courses = courseRepository.findByTitleContaining(keyword);
 
         return courses.stream()
-                .map(course -> {
-                    User user = userRespository.findUserById(course.getInstructorId()).orElse(null);
-                    return CourseAllResponse.from(course, user);
-                })
+                .map(
+                        course -> {
+                            User user = userRespository.findUserById(course.getInstructorId()).orElse(null);
+                            return CourseAllResponse.from(course, user);
+                        })
                 .toList();
     }
 

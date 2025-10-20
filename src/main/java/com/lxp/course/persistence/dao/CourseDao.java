@@ -42,8 +42,7 @@ public class CourseDao {
         String query = QueryType.COURSE_INSERT.getQuery();
         Connection conn = TransactionManager.getConnection();
 
-        try (
-                PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, row.title());
             pstmt.setLong(2, row.instructorId());
             pstmt.setLong(3, row.categoryId());

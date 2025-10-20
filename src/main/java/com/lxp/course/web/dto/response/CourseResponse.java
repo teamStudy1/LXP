@@ -4,7 +4,6 @@ import com.lxp.category.domain.Category;
 import com.lxp.category.web.dto.response.CategoryResponse;
 import com.lxp.course.domain.model.Course;
 import com.lxp.user.domain.model.User;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;

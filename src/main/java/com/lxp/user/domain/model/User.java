@@ -40,19 +40,15 @@ public class User {
 
     public static User create(CreateUserRequest request) {
         return new User(
-            null,
-            request.email(),
-            SHA256Util.getSHA256Hash(request.password()),
-            request.name(),
-            ActiveStatus.ACTIVE,
-            UserRole.STUDENT,
-            new UserProfile(
-                request.introduction(),
-                request.resume()
-            ),
-            null,
-            null
-        );
+                null,
+                request.email(),
+                SHA256Util.getSHA256Hash(request.password()),
+                request.name(),
+                ActiveStatus.ACTIVE,
+                UserRole.STUDENT,
+                new UserProfile(request.introduction(), request.resume()),
+                null,
+                null);
     }
 
     public void updateUserRole(UserRole userRole) {
@@ -109,5 +105,7 @@ public class User {
         return activeStatus;
     }
 
-    public UserProfile getProfile() { return profile; }
+    public UserProfile getProfile() {
+        return profile;
+    }
 }

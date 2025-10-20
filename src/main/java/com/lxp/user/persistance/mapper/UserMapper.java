@@ -1,13 +1,13 @@
 package com.lxp.user.persistance.mapper;
 
-import com.lxp.user.domain.model.UserProfile;
-import com.lxp.user.web.dto.response.UserResponse;
 import com.lxp.user.domain.model.User;
+import com.lxp.user.domain.model.UserProfile;
 import com.lxp.user.domain.model.enums.ActiveStatus;
 import com.lxp.user.domain.model.enums.UserRole;
 import com.lxp.user.persistance.row.UserProfileRow;
 import com.lxp.user.persistance.row.UserRow;
 import com.lxp.user.service.UserView;
+import com.lxp.user.web.dto.response.UserResponse;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,32 +20,27 @@ public class UserMapper {
                 userRow.name(),
                 userRow.activeStatus(),
                 userRow.role(),
-                new UserProfile(
-                    userRow.userProfile().introduction(),
-                    userRow.userProfile().resume()
-                ),
+                new UserProfile(userRow.userProfile().introduction(), userRow.userProfile().resume()),
                 userRow.createdAt(),
                 userRow.updatedAt());
     }
 
     public static UserRow toRow(User user) {
         return new UserRow(
-            user.getId(),
-            user.getEmail(),
-            user.getPassword(),
-            user.getName(),
-            user.getActiveStatus(),
-            user.getRole(),
-            new UserProfileRow(
-                user.getProfile().getId(),
-                user.getProfile().getIntroduction(),
-                user.getProfile().getResume(),
-                user.getProfile().getCreatedAt(),
-                user.getProfile().getUpdatedAt()
-            ),
-            user.getCreatedAt(),
-            user.getUpdatedAt()
-        );
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getName(),
+                user.getActiveStatus(),
+                user.getRole(),
+                new UserProfileRow(
+                        user.getProfile().getId(),
+                        user.getProfile().getIntroduction(),
+                        user.getProfile().getResume(),
+                        user.getProfile().getCreatedAt(),
+                        user.getProfile().getUpdatedAt()),
+                user.getCreatedAt(),
+                user.getUpdatedAt());
     }
 
     public static UserResponse toUserResponse(UserView userView) {

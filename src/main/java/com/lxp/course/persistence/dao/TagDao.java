@@ -77,8 +77,7 @@ public class TagDao {
         List<TagRow> createdTags = new ArrayList<>();
 
         Connection connection = TransactionManager.getConnection();
-        try (
-                PreparedStatement pstmt =
+        try (PreparedStatement pstmt =
                 connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             for (String name : newTagNames) {

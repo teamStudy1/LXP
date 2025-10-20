@@ -2,7 +2,6 @@ package com.lxp.course.web.dto.response;
 
 import com.lxp.course.domain.model.Course;
 import com.lxp.user.domain.model.User;
-
 import java.time.LocalDateTime;
 
 public record CourseAllResponse(

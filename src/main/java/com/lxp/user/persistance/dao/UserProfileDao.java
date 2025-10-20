@@ -18,7 +18,7 @@ public class UserProfileDao {
     public Long saveUserProfile(Long userId, UserProfileRow row) throws SQLException {
         String sql = QueryType.USER_PROFILE.getQuery();
         try (PreparedStatement pstmt =
-            dataSource.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                dataSource.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setLong(1, userId);
             pstmt.setString(2, row.introduction());
             pstmt.setString(3, row.resume());
