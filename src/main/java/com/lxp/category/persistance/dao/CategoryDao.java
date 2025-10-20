@@ -75,7 +75,11 @@ public class CategoryDao {
         Connection conn = TransactionManager.getConnection();
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, row.name());
-            pstmt.setLong(2, row.parentId());
+            if (row.parentId() == null) {
+                pstmt.setNull(2, Types.BIGINT);
+            } else {
+                pstmt.setLong(2, row.parentId());
+            }
             pstmt.setInt(3, row.depth());
 
             pstmt.executeUpdate();

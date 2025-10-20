@@ -26,4 +26,65 @@ public class CategoryFormatter {
         }
         return String.join(" > ", pathNames);
     }
+
+    public static String formatCategories(List<CategoryResponse> categories) {
+        if (categories == null || categories.isEmpty()) return "표시할 카테고리가 없습니다.";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+                String.format(
+                        "%-5s | %-35s | %-5s | %-5s \n",
+                        "ID", "카테고리 이름", "계층", "부모 ID"
+                )
+        );
+        sb.append("-".repeat(100)).append("\n");
+        for (CategoryResponse category : categories) {
+            sb.append(
+                    String.format(
+                            "%-5s | %-35s | %-5s | %-5s \n",
+                            category.id(),
+                            category.name(),
+                            category.depth(),
+                            "없음"
+                    )
+            );
+
+            for (CategoryResponse child : category.children()) {
+                sb.append(
+                        String.format(
+                                "%-5s | %-35s | %-5s | %-5s \n",
+                                child.id(),
+                                child.name(),
+                                child.depth(),
+                                category.id()
+                        )
+                );
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String formatSearchCategory(List<CategoryResponse> categories) {
+        if (categories == null || categories.isEmpty()) return "표시할 카테고리가 없습니다.";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+                String.format(
+                        "%-5s | %-35s | %-5s \n",
+                        "ID", "카테고리 이름", "계층"
+                )
+        );
+        sb.append("-".repeat(100)).append("\n");
+        for (CategoryResponse category : categories) {
+            sb.append(
+                    String.format(
+                            "%-5s | %-35s | %-5s \n",
+                            category.id(),
+                            category.name(),
+                            category.depth()
+                    )
+            );
+        }
+        return sb.toString();
+    }
 }

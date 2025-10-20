@@ -18,7 +18,7 @@ public class CourseHandler {
     }
 
     public boolean start() {
-        System.out.println("=== Course Management System ===");
+        System.out.println("\n=== 강좌 관리시스템에 접속했습니다");
         while (true) {
             printMenu();
             String command = scanner.nextLine().trim();
@@ -101,7 +101,7 @@ public class CourseHandler {
 
     public void requestCreateCourse() throws SQLException {
         System.out.println("--- 강좌 기본 정보 입력 ---");
-        System.out.println("형식: title,instructorId,categoryId,content,contentDetail");
+        System.out.println("형식: 강좌 제목,강사 ID,카테고리 ID,내용,내용 상세");
         System.out.print("입력: ");
         String courseInput = scanner.nextLine();
         String[] courseParts = courseInput.split(",", -1);

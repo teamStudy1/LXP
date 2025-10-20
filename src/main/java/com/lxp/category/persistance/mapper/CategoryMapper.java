@@ -46,7 +46,12 @@ public class CategoryMapper {
 
     public static CategoryRow toRow(Category category) {
         return new CategoryRow(
-                null, category.getName(), category.getParent().getId(), category.getDepth(), null, null);
+                null,
+                category.getName(),
+                category.getParent() == null ? null : category.getParent().getId(),
+                category.getDepth(),
+                null,
+                null);
     }
 
     public static Category toDomainDescentdants(List<CategoryRow> rows, Long rootId) {

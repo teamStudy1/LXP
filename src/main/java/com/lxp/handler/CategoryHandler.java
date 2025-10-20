@@ -2,6 +2,7 @@ package com.lxp.handler;
 
 import com.lxp.category.web.CategoryController;
 import com.lxp.category.web.dto.response.CategoryResponse;
+import com.lxp.formatter.CategoryFormatter;
 import com.lxp.user.web.UserController;
 import java.util.List;
 import java.util.Scanner;
@@ -99,39 +100,40 @@ public class CategoryHandler {
         if (categoryTree.isEmpty()) {
             System.out.println("표시할 카테고리가 없습니다.");
         } else {
-            categoryTree.forEach(System.out::println);
+            System.out.println(CategoryFormatter.formatCategories(categoryTree));
         }
     }
 
     private void requestCreateCategory() throws Exception {
-        System.out.println("생성할 카테고리 이름을 입력하세요: ");
-        String name = scanner.nextLine();
-        System.out.println("부모 카테고리 ID를 입력하세요 (최상위는 Enter) : ");
-        String parentIdInput = scanner.nextLine();
-        Long parentId = parentIdInput.isEmpty() ? null : Long.parseLong(parentIdInput);
+        System.out.println("--- 카테고리 기본 정보 입력 ---");
+        System.out.println("형식: 카테고리 이름, 부모 카테고리 ID(최상위는 x 입력)");
+        System.out.println("입력: ");
+        String input = scanner.nextLine();
+        String[] parts = input.split(",", -1);
 
-        categoryController.createCategory(name, parentId);
+        categoryController.createCategory(parts[0].trim(), parts[1].equals("x") ? null : Long.parseLong(parts[1].trim()));
         System.out.println("성공");
     }
 
     private void requestUpdateCategoryName() throws Exception {
-        System.out.println("이름을 수정할 카테고리 ID를 입력하세요 : ");
-        long categoryId = Long.parseLong(scanner.nextLine());
-        System.out.println("새로운 카테고리 이름을 입력하세요: ");
-        String newName = scanner.nextLine();
+        System.out.println("--- 카테고리 이름 수정 ---");
+        System.out.println("형식 : 수정할 카테고리 ID,수정할 이름");
+        String input = scanner.nextLine();
+        String[] parts = input.split(",", -1);
 
-        categoryController.updateCategoryName(categoryId, newName);
+        categoryController.updateCategoryName(Long.parseLong(parts[0].trim()), parts[1].trim());
         System.out.println("성공 : 카테고리 이름이 수정되었습니다.");
     }
 
     private void requestMoveCategory() throws Exception {
-        System.out.println("이동할 카테고리 ID를 입력하세요: ");
-        long categoryId = Long.parseLong(scanner.nextLine());
-        System.out.println("새로운 부모 카테고리 ID를 입력하세요 (최상위는 Enter):");
-        String parentIdInput = scanner.nextLine();
-        Long newParentId = parentIdInput.isEmpty() ? null : Long.parseLong(parentIdInput);
+        System.out.println("--- 카테고리 이동 ---");
+        System.out.println("형식 : 이동할 카테고리 ID,부모 카테고리 ID(상위이면 x)");
+        String input = scanner.nextLine();
+        String[] parts = input.split(",", -1);
 
-        categoryController.moveCategory(categoryId, newParentId);
+        Long newParentId = parts[1].trim().equals("x") ? null : Long.parseLong(parts[1].trim());
+
+        categoryController.moveCategory(Long.parseLong(parts[0].trim()), newParentId);
         System.out.println("성공: 카테고리가 이동되었습니다.");
     }
 
@@ -154,10 +156,11 @@ public class CategoryHandler {
             System.out.println("검색된 카테고리가 없습니다.");
         } else {
             // 검색 결과는 계층 구조가 아닌 단순 목록으로 보여줍니다.
-            for (CategoryResponse category : results) {
-                System.out.println(
-                        "ID: " + category.id() + ", 이름: " + category.name() + ", 깊이:" + category.depth());
-            }
+//            for (CategoryResponse category : results) {
+//                System.out.println(
+//                        "ID: " + category.id() + ", 이름: " + category.name() + ", 깊이:" + category.depth());
+//            }
+            System.out.println(CategoryFormatter.formatSearchCategory(results));
         }
     }
 }
